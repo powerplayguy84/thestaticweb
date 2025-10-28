@@ -15,6 +15,7 @@ export interface Article {
   date: string;
   featured: boolean;
   tags?: string[];
+  image?: string;
   content: string;
 }
 
@@ -34,9 +35,7 @@ export function getCategories(): string[] {
 /**
  * Parse markdown file and extract metadata + content
  */
-async function parseMarkdownFile(
-  filePath: string
-): Promise<{
+async function parseMarkdownFile(filePath: string): Promise<{
   metadata: Omit<ArticleMetadata, "slug" | "category" | "index">;
   content: string;
 }> {
@@ -53,6 +52,7 @@ async function parseMarkdownFile(
       date: data.date || new Date().toISOString().split("T")[0],
       featured: data.featured || false,
       tags: data.tags || [],
+      image: data.image || undefined,
     },
     content: htmlContent,
   };

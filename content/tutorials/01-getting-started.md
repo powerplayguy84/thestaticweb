@@ -3,6 +3,7 @@ title: "Getting Started with Next.js"
 description: "Learn the basics of Next.js and how to build your first app"
 date: "2025-10-20"
 featured: true
+image: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=800&h=400&fit=crop"
 tags: ["nextjs", "beginner"]
 ---
 

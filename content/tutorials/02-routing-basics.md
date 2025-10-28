@@ -3,6 +3,7 @@ title: "Routing Basics in Next.js"
 description: "Master file-based routing in the App Router"
 date: "2025-10-22"
 featured: true
+image: "https://images.unsplash.com/photo-1628626983867-60a28444af0a?w=800&h=400&fit=crop"
 tags: ["nextjs", "routing"]
 ---
 
