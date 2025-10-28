@@ -16,6 +16,8 @@ A **static markdown-based blog** built with Next.js 16, TypeScript, and Tailwind
 
 ## 🚀 Quick Start
 
+**New to The Static Web?** Check out the [USER_GUIDE.md](./USER_GUIDE.md) for a complete introduction!
+
 ### Installation
 
 ```bash
@@ -42,6 +44,32 @@ npm start
 ```bash
 npm run lint
 ```
+
+## 📚 Documentation
+
+We have comprehensive guides to help you get started and master The Static Web:
+
+### Essential Guides
+
+- **[USER_GUIDE.md](./USER_GUIDE.md)** - 📍 START HERE! Complete documentation index
+- **[GETTING_STARTED.md](./GETTING_STARTED.md)** - Step-by-step setup and first article
+- **[HOW_TO_WRITE.md](./HOW_TO_WRITE.md)** - Master Markdown and writing great content
+- **[QUICK_START.md](./QUICK_START.md)** - Quick reference for common tasks
+
+### Advanced Guides
+
+- **[CUSTOMIZATION.md](./CUSTOMIZATION.md)** - Customize design, add features, and more
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deploy to Vercel, Netlify, or self-host
+- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Solutions to common issues
+- **[FAQ.md](./FAQ.md)** - Frequently asked questions
+
+### Reference
+
+- **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** - Detailed content organization guide
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture overview
+- **[FILE_REFERENCE.md](./FILE_REFERENCE.md)** - Complete file reference
+
+**💡 Tip:** Not sure where to start? Check the [USER_GUIDE.md](./USER_GUIDE.md) for learning paths!
 
 ## 📝 Adding Content
 
