@@ -14,6 +14,16 @@ interface ThemeData {
   radius: string;
 }
 
+async function checkForConflict(): Promise<boolean> {
+  try {
+    const themeFolderPath = path.join(process.cwd(), "content", "theme");
+    await fs.access(themeFolderPath);
+    return true; // Folder exists - conflict detected
+  } catch {
+    return false; // Folder doesn't exist - no conflict
+  }
+}
+
 async function getThemeData(): Promise<ThemeData> {
   const filePath = path.join(process.cwd(), "content", "theme.md");
   const fileContents = await fs.readFile(filePath, "utf8");
@@ -21,7 +31,111 @@ async function getThemeData(): Promise<ThemeData> {
   return data as ThemeData;
 }
 
+function ConflictError() {
+  return (
+    <main id="main-content" className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="bg-destructive/10 border-2 border-destructive rounded-lg p-8">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <svg
+                className="w-8 h-8 text-destructive"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold text-destructive mb-4">
+                Route Conflict Detected
+              </h1>
+              <div className="space-y-4 text-foreground">
+                <p>
+                  The{" "}
+                  <code className="bg-muted px-2 py-1 rounded text-sm">
+                    /theme
+                  </code>{" "}
+                  route cannot be displayed because there is a conflict between:
+                </p>
+                <ul className="list-disc list-inside space-y-2 ml-4">
+                  <li>
+                    <strong>Theme Settings Page:</strong>{" "}
+                    <code className="bg-muted px-2 py-1 rounded text-sm">
+                      src/app/theme/page.tsx
+                    </code>
+                  </li>
+                  <li>
+                    <strong>Theme Content Category:</strong>{" "}
+                    <code className="bg-muted px-2 py-1 rounded text-sm">
+                      content/theme/
+                    </code>
+                  </li>
+                </ul>
+                <div className="bg-muted border border-border rounded-lg p-4 mt-6">
+                  <h2 className="font-semibold mb-2">How to Fix This:</h2>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Choose one of these solutions:
+                  </p>
+                  <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+                    <li>
+                      <strong>Rename the content folder:</strong> Change{" "}
+                      <code className="bg-background px-1.5 py-0.5 rounded">
+                        content/theme/
+                      </code>{" "}
+                      to something else like{" "}
+                      <code className="bg-background px-1.5 py-0.5 rounded">
+                        content/themes/
+                      </code>{" "}
+                      or{" "}
+                      <code className="bg-background px-1.5 py-0.5 rounded">
+                        content/styling/
+                      </code>
+                    </li>
+                    <li>
+                      <strong>Move the theme settings:</strong> Rename{" "}
+                      <code className="bg-background px-1.5 py-0.5 rounded">
+                        src/app/theme/
+                      </code>{" "}
+                      to{" "}
+                      <code className="bg-background px-1.5 py-0.5 rounded">
+                        src/app/customize/
+                      </code>{" "}
+                      and update references in the code
+                    </li>
+                  </ol>
+                </div>
+                <div className="flex gap-4 mt-6">
+                  <Link
+                    href="/"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                  >
+                    Go to Homepage
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
 export default async function ThemePage() {
+  // Check for route conflict
+  const hasConflict = await checkForConflict();
+
+  if (hasConflict) {
+    return <ConflictError />;
+  }
+
   const theme = await getThemeData();
 
   const colorLabels: Record<string, string> = {
