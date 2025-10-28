@@ -89,6 +89,16 @@ npm run lint
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deploy to Vercel, Netlify, or self-host
 - **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Solutions to common issues
 
+### 🤖 AI-Assisted Development
+
+This template includes **custom GitHub Copilot instructions** to help AI tools understand your content structure and coding patterns:
+
+- **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Main Copilot instructions for code
+- **[.github/copilot-instructions-content.md](./.github/copilot-instructions-content.md)** - Content creation guidelines
+- **[.github/COPILOT_EXAMPLE.md](./.github/COPILOT_EXAMPLE.md)** - See the difference AI instructions make!
+
+These instructions teach Copilot about your project structure, naming conventions, and best practices so it can better assist with both code and content creation.
+
 ### 🔍 Reference
 
 - **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** - Content organization reference
