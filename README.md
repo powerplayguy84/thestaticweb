@@ -1,23 +1,234 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Static Web
 
-## Getting Started
+A **static markdown-based blog** built with Next.js 16, TypeScript, and Tailwind CSS v4. Write articles in markdown with YAML front matter, and the site automatically generates pages with categories, featured articles, navigation, and more.
 
-First, run the development server:
+## ✨ Features
+
+- 📝 **Markdown Content**: Write articles in markdown with YAML front matter
+- 🏷️ **Categories**: Organize articles by category with automatic navigation
+- ⭐ **Featured Articles**: Mark articles as featured to display on homepage
+- 🔗 **Smart Navigation**: Previous/next links and related articles sidebars
+- 🎨 **Beautiful UI**: Built with Tailwind CSS v4 for a clean, minimalist design
+- ⚡ **Static Generation**: Pre-rendered HTML for fast loading
+- 📱 **Responsive**: Mobile-first design that works on all devices
+- 🔍 **Type-Safe**: Full TypeScript support with strict mode
+- 🚀 **SEO-Friendly**: Proper metadata and structured content
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
+```bash
+npm run build
+npm start
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+## 📝 Adding Content
+
+Articles live in `content/[category]/[index]-[slug].md`:
+
+```markdown
+---
+title: "My First Article"
+description: "An awesome article"
+date: "2025-10-28"
+featured: true
+tags: ["nextjs", "javascript"]
+---
+
+# My First Article
+
+Article content here...
+```
+
+**File Structure Example:**
+
+```
+content/
+├── tutorials/
+│   ├── 01-getting-started.md
+│   └── 02-routing-basics.md
+└── guides/
+    ├── 01-setup.md
+    └── 02-advanced.md
+```
+
+→ See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for detailed documentation.
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx                    # Root layout with Navigation
+│   ├── page.tsx                      # Homepage
+│   ├── [category]/page.tsx           # Category listing
+│   ├── [category]/[slug]/page.tsx    # Article detail
+│   └── globals.css
+├── components/
+│   ├── Navigation.tsx
+│   ├── ArticleCard.tsx
+│   ├── ArticleNavigation.tsx
+│   └── RelatedArticles.tsx
+└── lib/
+    └── markdown.ts                   # Content utilities
+```
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript 5 (strict mode)
+- **Styling**: Tailwind CSS v4
+- **Markdown**: `remark` + `remark-html`
+- **Icons**: lucide-react
+- **Front Matter**: gray-matter
+
+## 📂 How It Works
+
+1. **Content Discovery**: Reads markdown files from `content/` directory
+2. **Front Matter Parsing**: Extracts metadata (title, date, featured, etc.)
+3. **HTML Rendering**: Converts markdown to HTML with `remark`
+4. **Static Generation**: Pre-renders all pages at build time with `generateStaticParams()`
+5. **Navigation**: Automatically builds category menu and article navigation
+
+## 🎯 Homepage
+
+- Hero section with site title
+- Grid of featured articles
+- Categories in navigation menu
+
+## 📄 Article Features
+
+- **Metadata**: Title, description, date, category, tags
+- **Content**: Full HTML-rendered markdown with proper styling
+- **Navigation**: Previous/next buttons to adjacent articles
+- **Related**: Sidebar with 3 related articles from the same category
+
+## 🔗 Routes
+
+| Route              | Page                                 |
+| ------------------ | ------------------------------------ |
+| `/`                | Homepage with featured articles      |
+| `/:category`       | Category listing (sorted by index)   |
+| `/:category/:slug` | Individual article with full content |
+| `/404`             | Not found page                       |
+
+## 🎨 Customization
+
+### Add a New Category
+
+```bash
+mkdir content/my-category
+```
+
+The category automatically appears in the navigation menu.
+
+### Add an Article
+
+```bash
+touch content/tutorials/05-my-article.md
+```
+
+Edit with front matter and markdown content.
+
+### Modify Styles
+
+- Global styles: `src/app/globals.css`
+- Tailwind config: `tailwind.config.ts`
+- Component styling: Use Tailwind classes directly
+
+## 📦 Build & Deploy
+
+### Local Build
+
+```bash
+npm run build
+```
+
+Output is in `.next/` for production server or `out/` for static export.
+
+### Deploy to Vercel (Recommended)
+
+```bash
+vercel
+```
+
+### Deploy as Static Site
+
+```bash
+npm run build
+# Copy `out/` directory to your hosting provider
+```
+
+## 📚 Documentation
+
+See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for:
+
+- Detailed file structure
+- Front matter reference
+- Utility function documentation
+- Deployment instructions
+- Troubleshooting guide
+
+## 📋 Example Content Files
+
+Sample articles are included:
+
+- `content/tutorials/01-getting-started.md`
+- `content/tutorials/02-routing-basics.md`
+- `content/guides/01-tailwind-setup.md`
+- `content/guides/02-typescript-best-practices.md`
+
+## 🔧 Development
+
+### Available Commands
+
+```bash
+npm run dev      # Start dev server
+npm run build    # Create production build
+npm start        # Start production server
+npm run lint     # Run ESLint
+```
+
+### TypeScript
+
+- Strict mode enabled
+- Path alias: `@/*` → `src/*`
+- Full type safety across utilities and components
+
+### Code Quality
+
+- ESLint configured with Next.js rules
+- TypeScript strict mode
+- Tailwind CSS best practices
+
+## 📝 License
+
+MIT - Feel free to use this template for your own projects!
+
+---
+
+**Happy blogging! 🎉**
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More

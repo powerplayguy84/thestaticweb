@@ -11,7 +11,11 @@
   "dependencies": {
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "next": "16.0.0"
+    "next": "16.0.0",
+    "gray-matter": "^4.0.3",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "lucide-react": "^0.468.0"
   },
   "devDependencies": {
     "typescript": "^5",
