@@ -56,13 +56,13 @@ export default async function Home() {
             </div>
           )}
           {/* CTA Button */}
-          {featuredArticles.length > 0 && (
+          {hero.cta && (
             <div className="pt-4">
               <Link
-                href={`/${featuredArticles[0].category}/${featuredArticles[0].slug}`}
+                href={hero.cta.link}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
               >
-                Start Reading
+                {hero.cta.text}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

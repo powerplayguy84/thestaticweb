@@ -211,6 +211,10 @@ export async function getHomepageHero(): Promise<{
   subtitle?: string;
   image?: string;
   logo?: string;
+  cta?: {
+    text: string;
+    link: string;
+  };
 }> {
   const homepageFilePath = path.join(CONTENT_DIR, "homepage.md");
 
@@ -233,5 +237,6 @@ export async function getHomepageHero(): Promise<{
     subtitle: data.subtitle || undefined,
     image: data.image || undefined,
     logo: data.logo || undefined,
+    cta: data.cta || undefined,
   };
 }
