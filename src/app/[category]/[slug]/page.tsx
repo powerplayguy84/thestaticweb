@@ -110,21 +110,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
 
         {/* Content */}
-        <div
-          className="prose prose-slate max-w-none mb-8
-            prose-headings:font-bold prose-headings:text-foreground
-            prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
-            prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-            prose-p:text-muted-foreground prose-p:leading-7 prose-p:mb-4
-            prose-a:text-primary prose-a:hover:text-primary/80
-            prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
-            prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
-            prose-li:text-muted-foreground prose-li:mb-2
-            prose-code:bg-muted prose-code:text-foreground prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-            prose-pre:bg-primary prose-pre:text-primary-foreground prose-pre:overflow-x-auto
-            prose-blockquote:border-l-4 prose-blockquote:border-border prose-blockquote:pl-4 prose-blockquote:italic"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
 
         {/* Navigation */}
         <ArticleNavigation

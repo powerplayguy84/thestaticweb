@@ -2,7 +2,11 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
-import html from "remark-html";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
+import rehypeRaw from "rehype-raw";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -42,7 +46,14 @@ async function parseMarkdownFile(filePath: string): Promise<{
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
 
-  const processedContent = await remark().use(html).process(content);
+  const processedContent = await remark()
+    .use(remarkGfm) // GitHub Flavored Markdown (tables, task lists, strikethrough)
+    .use(remarkRehype, { allowDangerousHtml: true }) // Convert to rehype (HTML)
+    .use(rehypeRaw) // Parse raw HTML in markdown
+    .use(rehypeHighlight) // Syntax highlighting for code blocks
+    .use(rehypeStringify) // Convert to HTML string
+    .process(content);
+
   const htmlContent = processedContent.toString();
 
   return {
