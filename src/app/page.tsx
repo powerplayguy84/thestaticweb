@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <main id="main-content" className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+      <section className="px-6 pt-16 pb-12 sm:pt-24 sm:pb-12 max-w-6xl mx-auto">
         <div className="space-y-6">
           <div className="space-y-4">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground">
@@ -71,7 +71,7 @@ export default async function Home() {
       </section>
 
       {/* Featured Articles Section */}
-      <section className="px-6 py-12 sm:py-16 max-w-6xl mx-auto">
+      <section className="px-6 pb-12 sm:pb-16 max-w-6xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8">
           Featured
         </h2>
