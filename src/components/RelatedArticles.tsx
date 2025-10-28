@@ -21,8 +21,8 @@ export default function RelatedArticles({
   }
 
   return (
-    <aside className="mt-12 pt-8 border-t border-slate-200">
-      <h3 className="text-lg font-semibold text-slate-900 mb-4">
+    <aside className="mt-12 pt-8 border-t border-border">
+      <h3 className="text-lg font-semibold text-foreground mb-4">
         More in {category}
       </h3>
       <ul className="space-y-3">
@@ -30,7 +30,7 @@ export default function RelatedArticles({
           <li key={article.slug}>
             <Link
               href={`/${category}/${article.slug}`}
-              className="text-slate-700 hover:text-slate-900 hover:underline transition-colors"
+              className="text-muted-foreground hover:text-foreground hover:underline transition-colors"
             >
               {article.title}
             </Link>

@@ -3,8 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArticleMetadata } from "@/lib/markdown";
+import { formatDate } from "@/lib/date";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 interface ArticleCardProps {
   article: ArticleMetadata;
@@ -12,17 +23,22 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   const [imageError, setImageError] = useState(false);
+  const router = useRouter();
   const hasValidImage =
     article.image && article.image.trim() !== "" && !imageError;
 
+  const handleCardClick = () => {
+    router.push(`/${article.category}/${article.slug}`);
+  };
+
   return (
-    <Link
-      href={`/${article.category}/${article.slug}`}
-      className="block rounded-lg border border-slate-200 hover:border-slate-400 hover:shadow-md transition-all overflow-hidden"
+    <Card
+      onClick={handleCardClick}
+      className="cursor-pointer transition-all hover:shadow-md overflow-hidden w-full"
     >
       {/* Image */}
       {hasValidImage && (
-        <div className="w-full h-48 bg-slate-100 overflow-hidden relative">
+        <div className="w-full h-48 bg-muted overflow-hidden relative">
           <Image
             src={article.image!}
             alt={article.title}
@@ -35,33 +51,38 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         </div>
       )}
 
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">
-              {article.title}
-            </h3>
-            <p className="text-sm text-slate-600 mb-4">{article.description}</p>
-            <div className="flex items-center gap-2 text-sm">
-              <time className="text-slate-500">{article.date}</time>
-              {article.tags && article.tags.length > 0 && (
-                <div className="flex gap-2">
-                  {article.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <ArrowRight className="w-5 h-5 text-slate-400 flex-shrink-0 mt-1" />
+      <CardHeader>
+        <CardTitle className="text-lg">{article.title}</CardTitle>
+        <CardDescription>{article.description}</CardDescription>
+        <CardAction>
+          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+        </CardAction>
+      </CardHeader>
+
+      <CardContent>
+        <div className="flex items-center gap-2 text-sm">
+          <time className="text-muted-foreground">
+            {formatDate(article.date)}
+          </time>
         </div>
-      </div>
-    </Link>
+      </CardContent>
+
+      {article.tags && article.tags.length > 0 && (
+        <CardFooter className="flex-col items-start gap-2">
+          <div className="flex flex-wrap gap-2">
+            {article.tags.map((tag) => (
+              <Link
+                key={tag}
+                href={`/tag/${tag}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded hover:bg-muted/80 transition-colors"
+              >
+                {tag}
+              </Link>
+            ))}
+          </div>
+        </CardFooter>
+      )}
+    </Card>
   );
 }

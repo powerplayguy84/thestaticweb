@@ -1,7 +1,7 @@
 ---
 title: "TypeScript Best Practices in Next.js"
 description: "Write type-safe Next.js applications"
-date: "2025-10-25"
+date: "25-10-2025"
 featured: false
 tags: ["typescript", "nextjs", "best-practices"]
 ---

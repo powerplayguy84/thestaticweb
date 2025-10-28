@@ -36,9 +36,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-background">
       <div className="px-6 py-12 sm:py-16 max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-8 capitalize">
+        <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-8 capitalize">
           {category}
         </h1>
 

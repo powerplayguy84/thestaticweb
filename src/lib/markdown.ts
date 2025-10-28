@@ -156,6 +156,34 @@ export async function getFeaturedArticles(): Promise<ArticleMetadata[]> {
 }
 
 /**
+ * Get articles by tag
+ */
+export async function getArticlesByTag(
+  tag: string
+): Promise<ArticleMetadata[]> {
+  const allArticles = await getAllArticles();
+  return allArticles.filter(
+    (article) => article.tags && article.tags.includes(tag)
+  );
+}
+
+/**
+ * Get all unique tags across all articles
+ */
+export async function getAllTags(): Promise<string[]> {
+  const allArticles = await getAllArticles();
+  const tagsSet = new Set<string>();
+
+  allArticles.forEach((article) => {
+    if (article.tags) {
+      article.tags.forEach((tag) => tagsSet.add(tag));
+    }
+  });
+
+  return Array.from(tagsSet).sort();
+}
+
+/**
  * Get previous and next articles in the same category
  */
 export async function getAdjacentArticles(
@@ -171,5 +199,39 @@ export async function getAdjacentArticles(
   return {
     previous: currentIdx > 0 ? articles[currentIdx - 1] : null,
     next: currentIdx < articles.length - 1 ? articles[currentIdx + 1] : null,
+  };
+}
+
+/**
+ * Get homepage hero content
+ */
+export async function getHomepageHero(): Promise<{
+  title: string;
+  description: string;
+  subtitle?: string;
+  image?: string;
+  logo?: string;
+}> {
+  const homepageFilePath = path.join(CONTENT_DIR, "homepage.md");
+
+  if (!fs.existsSync(homepageFilePath)) {
+    return {
+      title: "The Static Web",
+      description:
+        "A collection of articles, tutorials, and guides for modern web development. Built with Next.js and Markdown.",
+    };
+  }
+
+  const fileContent = fs.readFileSync(homepageFilePath, "utf-8");
+  const { data } = matter(fileContent);
+
+  return {
+    title: data.title || "The Static Web",
+    description:
+      data.description ||
+      "A collection of articles, tutorials, and guides for modern web development. Built with Next.js and Markdown.",
+    subtitle: data.subtitle || undefined,
+    image: data.image || undefined,
+    logo: data.logo || undefined,
   };
 }

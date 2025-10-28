@@ -1,7 +1,7 @@
 ---
 title: "Setting Up Tailwind CSS v4"
 description: "Configure Tailwind CSS v4 in your Next.js project"
-date: "2025-10-18"
+date: "25-11-2025"
 featured: true
 tags: ["tailwind", "css", "setup"]
 image: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg?v=1716221309"
