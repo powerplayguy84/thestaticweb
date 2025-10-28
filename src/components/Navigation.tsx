@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getCategories, getHomepageHero } from "@/lib/markdown";
 import MobileNav from "@/components/MobileNav";
+import ThemeToggle from "@/components/ThemeToggle";
+import Search from "@/components/Search";
 
 export default async function Navigation() {
   const [categories, hero] = await Promise.all([
@@ -14,7 +16,7 @@ export default async function Navigation() {
   const navbarLogo = hero.navbar?.logo || hero.logo;
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 border-b border-border">
+    <nav className="flex items-center justify-between px-6 py-4 border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
       <Link href="/" className="flex items-center gap-3">
         {navbarLogo ? (
           <>
@@ -37,7 +39,7 @@ export default async function Navigation() {
         )}
       </Link>
       {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center gap-6">
+      <div className="hidden md:flex items-center gap-4">
         {categories.map((category) => (
           <Link
             key={category}
@@ -47,6 +49,8 @@ export default async function Navigation() {
             {category}
           </Link>
         ))}
+        <Search />
+        <ThemeToggle />
       </div>
       {/* Mobile Navigation */}
       <MobileNav categories={categories} />

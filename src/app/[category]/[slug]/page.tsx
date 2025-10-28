@@ -3,11 +3,13 @@ import {
   getArticlesByCategory,
   getAdjacentArticles,
   getCategories,
+  getSiteSettings,
 } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
 import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
@@ -28,9 +30,30 @@ export async function generateMetadata({
     return {};
   }
 
+  const { siteUrl, siteTitle } = getSiteSettings();
+  const articleUrl = `${siteUrl}/${category}/${slug}`;
+
   return {
-    title: `${article.title} - The Static Web`,
+    title: `${article.title} - ${siteTitle}`,
     description: article.description,
+    openGraph: {
+      title: article.title,
+      description: article.description,
+      type: "article",
+      publishedTime: article.date,
+      authors: ["The Static Web"],
+      images: article.image ? [{ url: article.image }] : [],
+      url: articleUrl,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.description,
+      images: article.image ? [article.image] : [],
+    },
+    alternates: {
+      canonical: articleUrl,
+    },
   };
 }
 
@@ -62,61 +85,110 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const { previous, next } = await getAdjacentArticles(category, article.index);
   const relatedArticles = await getArticlesByCategory(category);
 
+  const { siteUrl, organizationName, logoUrl } = getSiteSettings();
+
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    image: article.image || undefined,
+    datePublished: article.date,
+    dateModified: article.date,
+    author: {
+      "@type": "Organization",
+      name: organizationName,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: organizationName,
+      logo: logoUrl
+        ? {
+            "@type": "ImageObject",
+            url: `${siteUrl}${logoUrl}`,
+          }
+        : undefined,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/${category}/${slug}`,
+    },
+  };
+
   return (
-    <main className="min-h-screen bg-background">
-      <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded capitalize">
-              {category}
-            </span>
-            <time className="text-sm text-muted-foreground">
-              {formatDate(article.date)}
-            </time>
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            {article.title}
-          </h1>
-          <p className="text-lg text-muted-foreground">{article.description}</p>
-        </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <main id="main-content" className="min-h-screen bg-background">
+        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto">
+          <Breadcrumbs
+            items={[
+              { label: category, href: `/${category}` },
+              { label: article.title },
+            ]}
+          />
 
-        {/* Featured Image */}
-        {article.image && article.image.trim() !== "" && (
-          <ArticleImage src={article.image} alt={article.title} />
-        )}
-
-        {/* Tags */}
-        {article.tags && article.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border">
-            {article.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded"
-              >
-                {tag}
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded capitalize">
+                {category}
               </span>
-            ))}
+              <time
+                className="text-sm text-muted-foreground"
+                dateTime={article.date}
+              >
+                {formatDate(article.date)}
+              </time>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+              {article.title}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              {article.description}
+            </p>
           </div>
-        )}
 
-        {/* Content */}
-        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          {/* Featured Image */}
+          {article.image && article.image.trim() !== "" && (
+            <ArticleImage src={article.image} alt={article.title} />
+          )}
 
-        {/* Navigation */}
-        <ArticleNavigation
-          previous={previous}
-          next={next}
-          category={category}
-        />
+          {/* Tags */}
+          {article.tags && article.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border">
+              {article.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
-        {/* Related Articles */}
-        <RelatedArticles
-          articles={relatedArticles}
-          category={category}
-          currentSlug={slug}
-        />
-      </article>
-    </main>
+          {/* Content */}
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+
+          {/* Navigation */}
+          <ArticleNavigation
+            previous={previous}
+            next={next}
+            category={category}
+          />
+
+          {/* Related Articles */}
+          <RelatedArticles
+            articles={relatedArticles}
+            category={category}
+            currentSlug={slug}
+          />
+        </article>
+      </main>
+    </>
   );
 }

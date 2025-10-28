@@ -214,6 +214,45 @@ export async function getAdjacentArticles(
 }
 
 /**
+ * Get site settings from settings.md
+ */
+export function getSiteSettings(): {
+  siteUrl: string;
+  siteTitle: string;
+  siteDescription: string;
+  author: string;
+  organizationName: string;
+  logoUrl?: string;
+} {
+  const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
+
+  if (!fs.existsSync(settingsFilePath)) {
+    return {
+      siteUrl: "https://yourdomain.com",
+      siteTitle: "The Static Web",
+      siteDescription:
+        "A collection of articles, tutorials, and guides for modern web development.",
+      author: "The Static Web",
+      organizationName: "The Static Web",
+    };
+  }
+
+  const fileContent = fs.readFileSync(settingsFilePath, "utf-8");
+  const { data } = matter(fileContent);
+
+  return {
+    siteUrl: data.siteUrl || "https://yourdomain.com",
+    siteTitle: data.siteTitle || "The Static Web",
+    siteDescription:
+      data.siteDescription ||
+      "A collection of articles, tutorials, and guides for modern web development.",
+    author: data.author || "The Static Web",
+    organizationName: data.organizationName || "The Static Web",
+    logoUrl: data.logoUrl || undefined,
+  };
+}
+
+/**
  * Get homepage hero content
  */
 export async function getHomepageHero(): Promise<{

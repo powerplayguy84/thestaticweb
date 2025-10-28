@@ -23,6 +23,7 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const router = useRouter();
   const hasValidImage =
     article.image && article.image.trim() !== "" && !imageError;
@@ -31,21 +32,37 @@ export default function ArticleCard({ article }: ArticleCardProps) {
     router.push(`/${article.category}/${article.slug}`);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      router.push(`/${article.category}/${article.slug}`);
+    }
+  };
+
   return (
     <Card
       onClick={handleCardClick}
-      className="cursor-pointer transition-all hover:shadow-md overflow-hidden w-full"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="article"
+      aria-label={`Read article: ${article.title}`}
+      className="cursor-pointer transition-all hover:shadow-md focus:ring-2 focus:ring-ring focus:outline-none overflow-hidden w-full"
     >
       {/* Image */}
       {hasValidImage && (
         <div className="w-full h-48 bg-muted overflow-hidden relative">
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-muted animate-pulse" />
+          )}
           <Image
             src={article.image!}
             alt={article.title}
             fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
+            className={`object-cover hover:scale-105 transition-transform duration-300 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            unoptimized={!article.image!.startsWith("http")}
+            onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
           />
         </div>
@@ -55,13 +72,16 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         <CardTitle className="text-lg">{article.title}</CardTitle>
         <CardDescription>{article.description}</CardDescription>
         <CardAction>
-          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+          <ArrowRight
+            className="w-5 h-5 text-muted-foreground"
+            aria-hidden="true"
+          />
         </CardAction>
       </CardHeader>
 
       <CardContent>
         <div className="flex items-center gap-2 text-sm">
-          <time className="text-muted-foreground">
+          <time className="text-muted-foreground" dateTime={article.date}>
             {formatDate(article.date)}
           </time>
         </div>
@@ -75,7 +95,8 @@ export default function ArticleCard({ article }: ArticleCardProps) {
                 key={tag}
                 href={`/tag/${tag}`}
                 onClick={(e) => e.stopPropagation()}
-                className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded hover:bg-muted/80 transition-colors"
+                className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded hover:bg-muted/80 transition-colors focus:ring-2 focus:ring-ring focus:outline-none"
+                aria-label={`View all articles tagged with ${tag}`}
               >
                 {tag}
               </Link>
