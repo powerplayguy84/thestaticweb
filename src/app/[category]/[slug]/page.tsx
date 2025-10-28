@@ -12,6 +12,7 @@ import ArticleImage from "@/components/ArticleImage";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import Link from "next/link";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -161,12 +162,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {article.tags && article.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border">
               {article.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded"
+                  href={`/tag/${tag}`}
+                  className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded hover:bg-muted/80 transition-colors"
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
