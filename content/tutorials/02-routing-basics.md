@@ -7,6 +7,12 @@ image: "https://images.unsplash.com/photo-1628626983867-60a28444af0a?w=800&h=400
 tags: ["nextjs", "routing"]
 ---
 
+<!--
+  ⚠️ EXAMPLE CONTENT
+  This is a sample article for demonstration purposes.
+  Replace with your own content or delete this file.
+-->
+
 # Routing Basics in Next.js
 
 Next.js uses a file-based routing system. Every file in the `app/` directory automatically becomes a route.

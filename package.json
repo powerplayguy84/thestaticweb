@@ -1,7 +1,24 @@
 {
   "name": "thestaticweb",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "A modern, AI-friendly starter template for markdown-based websites. Built with Next.js 16, TypeScript, and Tailwind CSS v4.",
   "private": true,
+  "keywords": [
+    "nextjs",
+    "markdown",
+    "blog",
+    "static-site",
+    "template",
+    "starter",
+    "typescript",
+    "tailwind"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/powerplayguy84/thestaticweb"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

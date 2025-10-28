@@ -1,32 +1,84 @@
 # 📚 Documentation Index
 
-Welcome to **The Static Web**! A production-ready markdown-based blog built with Next.js 16, TypeScript, and Tailwind CSS v4.
+Welcome to **The Static Web**! A production-ready, AI-friendly starter template for markdown-based websites.
 
-## 📖 Start Here
+---
 
-### New to the project?
+## 🚀 Getting Started (Pick Your Path)
 
-👉 **Start with [README.md](./README.md)** - Overview, features, and quick start guide
+### � First Time Here?
 
-### Want to add content immediately?
+**→ [START_HERE.md](./START_HERE.md)** - 5-minute quick start guide  
+_Perfect for: Absolute beginners who want to see it working fast_
 
-👉 **Read [QUICK_START.md](./QUICK_START.md)** - Commands, file naming, step-by-step examples
+### ✅ Ready to Set Up Properly?
 
-### Need detailed information?
+**→ [STARTER_CHECKLIST.md](./STARTER_CHECKLIST.md)** - Complete setup checklist  
+_Perfect for: Methodical setup with nothing missed_
 
-👉 **See [CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** - Complete API reference and content management
+### ⚡ Need Quick Customization?
 
-### Curious about how it works?
+**→ [CUSTOMIZATION_QUICK_START.md](./CUSTOMIZATION_QUICK_START.md)** - Top 5 customizations  
+_Perfect for: Getting your branding in place fast_
 
-👉 **Check [ARCHITECTURE.md](./ARCHITECTURE.md)** - System design, data flow, and routing
+### 🤖 Using AI Tools?
 
-### Looking for a specific file?
+**→ [AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)** - AI-assisted content guide  
+_Perfect for: Copilot, ChatGPT, Claude users_
 
-👉 **Browse [FILE_REFERENCE.md](./FILE_REFERENCE.md)** - Complete file structure and explanations
+### � Need a Reference?
 
-### Want to verify what was built?
+**→ [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Commands and quick lookups  
+_Perfect for: Keep open while working_
 
-👉 **Review [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md)** - Complete checklist of all features
+---
+
+## 📖 Complete Documentation
+
+### Core Guides
+
+| Guide                                          | Purpose                     | Best For                   |
+| ---------------------------------------------- | --------------------------- | -------------------------- |
+| **[README.md](./README.md)**                   | Project overview & features | Understanding what this is |
+| **[USER_GUIDE.md](./USER_GUIDE.md)**           | Complete user manual        | Deep understanding         |
+| **[GETTING_STARTED.md](./GETTING_STARTED.md)** | Detailed setup walkthrough  | Step-by-step learning      |
+
+### Content Creation
+
+| Guide                                                  | Purpose                  | Best For                |
+| ------------------------------------------------------ | ------------------------ | ----------------------- |
+| **[HOW_TO_WRITE.md](./HOW_TO_WRITE.md)**               | Writing guide & markdown | Content creation        |
+| **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)**             | Content organization     | Reference               |
+| **[AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)** | AI workflows             | Fast content generation |
+
+### Customization
+
+| Guide                                                              | Purpose                  | Best For            |
+| ------------------------------------------------------------------ | ------------------------ | ------------------- |
+| **[CUSTOMIZATION.md](./CUSTOMIZATION.md)**                         | Deep customization guide | Advanced styling    |
+| **[CUSTOMIZATION_QUICK_START.md](./CUSTOMIZATION_QUICK_START.md)** | Quick essentials         | Branding basics     |
+| **[theme.md](./theme.md)**                                         | Theme documentation      | Theme understanding |
+
+### Deployment
+
+| Guide                                | Purpose                | Best For   |
+| ------------------------------------ | ---------------------- | ---------- |
+| **[DEPLOYMENT.md](./DEPLOYMENT.md)** | Deploy to any platform | Going live |
+
+### Reference
+
+| Guide                                          | Purpose                 | Best For                |
+| ---------------------------------------------- | ----------------------- | ----------------------- |
+| **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** | Commands & quick tips   | Daily reference         |
+| **[FILE_REFERENCE.md](./FILE_REFERENCE.md)**   | Complete file structure | Finding files           |
+| **[ARCHITECTURE.md](./ARCHITECTURE.md)**       | Technical architecture  | Understanding internals |
+
+### Help
+
+| Guide                                          | Purpose           | Best For         |
+| ---------------------------------------------- | ----------------- | ---------------- |
+| **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** | Fix common issues | When stuck       |
+| **[FAQ.md](./FAQ.md)**                         | Quick answers     | Common questions |
 
 ---
 
@@ -34,20 +86,32 @@ Welcome to **The Static Web**! A production-ready markdown-based blog built with
 
 ### "I want to..."
 
-**Add a new article**
-→ See [QUICK_START.md](./QUICK_START.md#adding-an-article-most-common-task)
+**→ Get started in 5 minutes**  
+[START_HERE.md](./START_HERE.md)
 
-**Understand the project structure**
-→ See [FILE_REFERENCE.md](./FILE_REFERENCE.md#complete-file-listing)
+**→ Customize my site**  
+[CUSTOMIZATION_QUICK_START.md](./CUSTOMIZATION_QUICK_START.md)
 
-**Learn the routing system**
-→ See [ARCHITECTURE.md](./ARCHITECTURE.md#file-reading-process)
+**→ Create content with AI**  
+[AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)
 
-**Customize the styling**
-→ See [README.md](./README.md#-customization)
+**→ Add a new article**  
+[QUICK_REFERENCE.md](./QUICK_REFERENCE.md#-common-tasks) or [HOW_TO_WRITE.md](./HOW_TO_WRITE.md)
 
-**Deploy the site**
-→ See [README.md](./README.md#-build--deploy)
+**→ Understand the project**  
+[README.md](./README.md) → [ARCHITECTURE.md](./ARCHITECTURE.md)
+
+**→ Deploy my site**  
+[DEPLOYMENT.md](./DEPLOYMENT.md)
+
+**→ Fix an issue**  
+[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+**→ Change colors/theme**  
+[CUSTOMIZATION.md](./CUSTOMIZATION.md)
+
+**→ Organize my content**  
+[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)
 
 **Use utility functions**
 → See [CONTENT_GUIDE.md](./CONTENT_GUIDE.md#-utilities)

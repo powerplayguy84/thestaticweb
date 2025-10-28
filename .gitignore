@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Optional: Uncomment to exclude example content
+# (Keep _templates directory tracked!)
+# content/tutorials/*
+# content/guides/*
+# !content/_templates/

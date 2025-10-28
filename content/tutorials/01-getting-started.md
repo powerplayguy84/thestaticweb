@@ -7,6 +7,12 @@ image: "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=800&h=400
 tags: ["nextjs", "beginner"]
 ---
 
+<!--
+  ⚠️ EXAMPLE CONTENT
+  This is a sample article for demonstration purposes.
+  Replace with your own content or delete this file.
+-->
+
 # Getting Started with Next.js
 
 Next.js is a powerful React framework that makes building web applications easier. In this tutorial, we'll cover the fundamentals.

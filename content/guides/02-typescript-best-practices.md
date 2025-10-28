@@ -6,6 +6,12 @@ featured: false
 tags: ["typescript", "nextjs", "best-practices"]
 ---
 
+<!--
+  ⚠️ EXAMPLE CONTENT
+  This is a sample article for demonstration purposes.
+  Replace with your own content or delete this file.
+-->
+
 # TypeScript Best Practices in Next.js
 
 TypeScript ensures your code is type-safe and catches errors before runtime.

@@ -7,6 +7,12 @@ tags: ["tailwind", "css", "setup", "styling"]
 image: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg?v=1716221309"
 ---
 
+<!--
+  ⚠️ EXAMPLE CONTENT
+  This is a sample article for demonstration purposes.
+  Replace with your own content or delete this file.
+-->
+
 # Setting Up Tailwind CSS v4
 
 Tailwind CSS v4 represents a major evolution in utility-first CSS, bringing significant improvements, a simplified setup process, and enhanced performance. This guide walks you through everything you need to get started.
