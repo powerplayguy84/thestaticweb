@@ -307,4 +307,45 @@
   code:not(pre code) {
     @apply bg-muted text-foreground px-1.5 py-0.5 rounded-sm text-sm font-semibold font-mono;
   }
+
+  /* Markdown Tables - Minimal */
+  table {
+    @apply w-full my-6 text-sm border border-border rounded-md;
+  }
+
+  thead th {
+    @apply px-3 py-2 text-left font-medium text-muted-foreground border-b border-r border-border;
+  }
+
+  thead th:last-child {
+    @apply border-r-0;
+  }
+
+  tbody td {
+    @apply px-3 py-2 border-b border-r border-border/50;
+  }
+
+  tbody td:last-child {
+    @apply border-r-0;
+  }
+
+  tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  /* Table cell alignment */
+  th[align="center"],
+  td[align="center"] {
+    @apply text-center;
+  }
+
+  th[align="right"],
+  td[align="right"] {
+    @apply text-right;
+  }
+
+  th[align="left"],
+  td[align="left"] {
+    @apply text-left;
+  }
 }
