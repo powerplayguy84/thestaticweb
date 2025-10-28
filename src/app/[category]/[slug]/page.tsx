@@ -7,9 +7,9 @@ import {
 import { formatDate } from "@/lib/date";
 import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
+import ArticleImage from "@/components/ArticleImage";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Image from "next/image";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -83,16 +83,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Featured Image */}
         {article.image && article.image.trim() !== "" && (
-          <div className="w-full h-64 sm:h-96 bg-muted overflow-hidden rounded-lg relative mb-8">
-            <Image
-              src={article.image}
-              alt={article.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 768px"
-              priority
-            />
-          </div>
+          <ArticleImage src={article.image} alt={article.title} />
         )}
 
         {/* Tags */}
