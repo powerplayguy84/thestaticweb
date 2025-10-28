@@ -9,26 +9,30 @@ export default async function Navigation() {
     getHomepageHero(),
   ]);
 
+  // Use navbar-specific values if provided, otherwise fall back to hero values
+  const navbarTitle = hero.navbar?.title || hero.title;
+  const navbarLogo = hero.navbar?.logo || hero.logo;
+
   return (
     <nav className="flex items-center justify-between px-6 py-4 border-b border-border">
       <Link href="/" className="flex items-center gap-3">
-        {hero.logo ? (
+        {navbarLogo ? (
           <>
             <div className="relative w-8 h-8">
               <Image
-                src={hero.logo}
-                alt={`${hero.title} logo`}
+                src={navbarLogo}
+                alt={`${navbarTitle} logo`}
                 fill
                 className="object-contain"
               />
             </div>
             <span className="text-xl font-bold text-foreground">
-              {hero.title}
+              {navbarTitle}
             </span>
           </>
         ) : (
           <span className="text-xl font-bold text-foreground">
-            {hero.title}
+            {navbarTitle}
           </span>
         )}
       </Link>

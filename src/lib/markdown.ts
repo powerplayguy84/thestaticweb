@@ -222,6 +222,10 @@ export async function getHomepageHero(): Promise<{
   subtitle?: string;
   image?: string;
   logo?: string;
+  navbar?: {
+    title?: string;
+    logo?: string;
+  };
   cta?: {
     text: string;
     link: string;
@@ -248,6 +252,7 @@ export async function getHomepageHero(): Promise<{
     subtitle: data.subtitle || undefined,
     image: data.image || undefined,
     logo: data.logo || undefined,
+    navbar: data.navbar || undefined,
     cta: data.cta || undefined,
   };
 }
