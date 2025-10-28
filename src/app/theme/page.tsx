@@ -1,0 +1,423 @@
+import { promises as fs } from "fs";
+import path from "path";
+import matter from "gray-matter";
+import Link from "next/link";
+
+interface ThemeData {
+  title: string;
+  subtitle: string;
+  description: string;
+  colors: {
+    light: Record<string, string>;
+    dark: Record<string, string>;
+  };
+  radius: string;
+}
+
+async function getThemeData(): Promise<ThemeData> {
+  const filePath = path.join(process.cwd(), "content", "theme.md");
+  const fileContents = await fs.readFile(filePath, "utf8");
+  const { data } = matter(fileContents);
+  return data as ThemeData;
+}
+
+export default async function ThemePage() {
+  const theme = await getThemeData();
+
+  const colorLabels: Record<string, string> = {
+    background: "Background",
+    foreground: "Foreground",
+    primary: "Primary",
+    primaryForeground: "Primary Foreground",
+    secondary: "Secondary",
+    secondaryForeground: "Secondary Foreground",
+    accent: "Accent",
+    accentForeground: "Accent Foreground",
+    muted: "Muted",
+    mutedForeground: "Muted Foreground",
+    destructive: "Destructive",
+    border: "Border",
+    input: "Input",
+    ring: "Ring",
+  };
+
+  return (
+    <main id="main-content" className="min-h-screen">
+      {/* Light Mode Preview */}
+      <div
+        className="border-b-4"
+        style={{
+          backgroundColor: theme.colors.light.background,
+          color: theme.colors.light.foreground,
+          borderColor: theme.colors.light.border,
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="mb-8">
+            <div
+              className="inline-block px-3 py-1 mb-4 text-xs font-semibold rounded"
+              style={{
+                backgroundColor: theme.colors.light.muted,
+                color: theme.colors.light.mutedForeground,
+              }}
+            >
+              Light Mode Preview
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+              {theme.title}
+            </h1>
+            <p
+              className="text-xl mb-6"
+              style={{ color: theme.colors.light.mutedForeground }}
+            >
+              {theme.subtitle}
+            </p>
+            <p
+              className="text-base"
+              style={{ color: theme.colors.light.mutedForeground }}
+            >
+              {theme.description}
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Demo Components */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.light.primary,
+                  color: theme.colors.light.primaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Primary Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.light.secondary,
+                  color: theme.colors.light.secondaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Secondary Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.light.accent,
+                  color: theme.colors.light.accentForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Accent Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.light.destructive,
+                  color: theme.colors.light.primaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Destructive Button
+              </button>
+            </div>
+
+            <div
+              className="p-6 border"
+              style={{
+                backgroundColor: theme.colors.light.background,
+                borderColor: theme.colors.light.border,
+                borderRadius: theme.radius,
+              }}
+            >
+              <h3 className="text-lg font-semibold mb-2">Card Component</h3>
+              <p style={{ color: theme.colors.light.mutedForeground }}>
+                This is an example card using the background and border colors.
+              </p>
+            </div>
+
+            <div
+              className="p-6"
+              style={{
+                backgroundColor: theme.colors.light.muted,
+                color: theme.colors.light.mutedForeground,
+                borderRadius: theme.radius,
+              }}
+            >
+              <p className="text-sm">
+                This is a muted section showing muted background and foreground
+                colors.
+              </p>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Input field example"
+              className="w-full px-4 py-2 border outline-none focus:ring-2"
+              style={{
+                borderColor: theme.colors.light.input,
+                borderRadius: theme.radius,
+                backgroundColor: theme.colors.light.background,
+                color: theme.colors.light.foreground,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Dark Mode Preview */}
+      <div
+        style={{
+          backgroundColor: theme.colors.dark.background,
+          color: theme.colors.dark.foreground,
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="mb-8">
+            <div
+              className="inline-block px-3 py-1 mb-4 text-xs font-semibold rounded"
+              style={{
+                backgroundColor: theme.colors.dark.muted,
+                color: theme.colors.dark.mutedForeground,
+              }}
+            >
+              Dark Mode Preview
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+              {theme.title}
+            </h1>
+            <p
+              className="text-xl mb-6"
+              style={{ color: theme.colors.dark.mutedForeground }}
+            >
+              {theme.subtitle}
+            </p>
+            <p
+              className="text-base"
+              style={{ color: theme.colors.dark.mutedForeground }}
+            >
+              {theme.description}
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.dark.primary,
+                  color: theme.colors.dark.primaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Primary Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.dark.secondary,
+                  color: theme.colors.dark.secondaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Secondary Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.dark.accent,
+                  color: theme.colors.dark.accentForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Accent Button
+              </button>
+
+              <button
+                className="w-full px-4 py-2 font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: theme.colors.dark.destructive,
+                  color: theme.colors.dark.primaryForeground,
+                  borderRadius: theme.radius,
+                }}
+              >
+                Destructive Button
+              </button>
+            </div>
+
+            <div
+              className="p-6 border"
+              style={{
+                backgroundColor: theme.colors.dark.background,
+                borderColor: theme.colors.dark.border,
+                borderRadius: theme.radius,
+              }}
+            >
+              <h3 className="text-lg font-semibold mb-2">Card Component</h3>
+              <p style={{ color: theme.colors.dark.mutedForeground }}>
+                This is an example card using the background and border colors.
+              </p>
+            </div>
+
+            <div
+              className="p-6"
+              style={{
+                backgroundColor: theme.colors.dark.muted,
+                color: theme.colors.dark.mutedForeground,
+                borderRadius: theme.radius,
+              }}
+            >
+              <p className="text-sm">
+                This is a muted section showing muted background and foreground
+                colors.
+              </p>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Input field example"
+              className="w-full px-4 py-2 border outline-none focus:ring-2"
+              style={{
+                borderColor: theme.colors.dark.input,
+                borderRadius: theme.radius,
+                backgroundColor: theme.colors.dark.background,
+                color: theme.colors.dark.foreground,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Color Reference */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="space-y-12">
+          {/* Light Mode Colors */}
+          <section>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              Light Mode Colors
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {Object.entries(theme.colors.light).map(([key, value]) => (
+                <div
+                  key={key}
+                  className="bg-card border border-border rounded-lg p-4"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div
+                      className="w-10 h-10 rounded border border-border"
+                      style={{ backgroundColor: value }}
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-foreground">
+                        {colorLabels[key] || key}
+                      </p>
+                      <code className="text-xs text-muted-foreground">
+                        {value}
+                      </code>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Dark Mode Colors */}
+          <section>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              Dark Mode Colors
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {Object.entries(theme.colors.dark).map(([key, value]) => (
+                <div
+                  key={key}
+                  className="bg-card border border-border rounded-lg p-4"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div
+                      className="w-10 h-10 rounded border border-border"
+                      style={{ backgroundColor: value }}
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-foreground">
+                        {colorLabels[key] || key}
+                      </p>
+                      <code className="text-xs text-muted-foreground">
+                        {value}
+                      </code>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Border Radius */}
+          <section>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              Border Radius
+            </h2>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-foreground">
+                  Current Value
+                </span>
+                <code className="text-sm bg-muted px-3 py-1 rounded">
+                  {theme.radius}
+                </code>
+              </div>
+            </div>
+          </section>
+
+          {/* Instructions */}
+          <section className="bg-muted border border-border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
+              How to Update Colors
+            </h3>
+            <ol className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                1. Edit the <code>content/theme.md</code> file with your desired
+                hex color values
+              </li>
+              <li>
+                2. Save the file and refresh this page to see the updated colors
+              </li>
+              <li>
+                3. To apply these colors to your app, update{" "}
+                <code>src/app/globals.css</code> with the converted OKLCH values
+              </li>
+              <li>
+                4. Use tools like{" "}
+                <a
+                  href="https://oklch.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline"
+                >
+                  oklch.com
+                </a>{" "}
+                to convert hex to OKLCH format
+              </li>
+            </ol>
+          </section>
+
+          <div className="flex justify-center">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
