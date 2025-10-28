@@ -73,6 +73,7 @@ Use this checklist when setting up **The Static Web** for a new project.
 
 - [ ] Read [AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)
 - [ ] Set up GitHub Copilot or preferred AI tool
+- [ ] **Optional:** Copy Copilot instructions: `cp .github/copilot-instructions-content.md .github/copilot-instructions.md`
 - [ ] Review `content/_templates/article-template.md`
 
 ### Create Initial Content

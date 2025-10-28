@@ -46,9 +46,18 @@ Fill in the front matter at the top, write your content, save, and refresh!
 
 **You're in the right place!** This template is optimized for AI tools.
 
+### Quick Setup for GitHub Copilot:
+
+```bash
+# Copy the Copilot instructions for content creation
+cp .github/copilot-instructions-content.md .github/copilot-instructions.md
+```
+
+Now Copilot knows your content structure automatically! 🎉
+
 → See **[AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)** for:
 
-- GitHub Copilot workflows
+- Complete GitHub Copilot workflows
 - ChatGPT prompts
 - Content generation templates
 - Batch creation strategies
