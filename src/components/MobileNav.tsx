@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import ThemeToggle from "@/components/ThemeToggle";
+import Search from "@/components/Search";
 
 interface MobileNavProps {
   categories: string[];
@@ -21,6 +22,7 @@ export default function MobileNav({ categories }: MobileNavProps) {
 
   return (
     <div className="md:hidden flex items-center gap-2">
+      <Search />
       <ThemeToggle />
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
