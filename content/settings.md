@@ -12,7 +12,6 @@ siteDescription: "A collection of articles, tutorials, and guides for modern web
 # Author information (used in structured data)
 author: "The Static Web"
 organizationName: "The Static Web"
-
 # Logo URL (optional - used in structured data)
 # logoUrl: "/logo.png"
 ---

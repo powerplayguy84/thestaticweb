@@ -127,7 +127,9 @@ src/app/globals.css                      - Enhanced dark mode support
 ### 🚀 How to Use New Features
 
 #### Configuration (settings.md)
+
 Edit `content/settings.md` to configure your site:
+
 - `siteUrl`: Your production URL (used in sitemap and SEO)
 - `siteTitle`: Your site's title
 - `siteDescription`: Your site's description

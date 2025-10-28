@@ -1,4 +1,8 @@
-import { getArticlesByCategory, getCategories, getSiteSettings } from "@/lib/markdown";
+import {
+  getArticlesByCategory,
+  getCategories,
+  getSiteSettings,
+} from "@/lib/markdown";
 import ArticleCard from "@/components/ArticleCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { notFound } from "next/navigation";
