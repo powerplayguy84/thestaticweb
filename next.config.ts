@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export", // Enable static export
-  distDir: "dist", // Use 'dist' instead of 'out' for better compatibility
+  // Remove 'output: export' for Vercel deployment - it breaks dynamic routing
+  // distDir defaults to '.next' which Vercel expects
   images: {
-    unoptimized: true, // Required for static export
+    // Keep unoptimized for remote images
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
