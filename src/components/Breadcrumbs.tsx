@@ -32,16 +32,18 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="hover:text-foreground transition-colors capitalize"
+                  className="hover:text-foreground transition-colors capitalize truncate max-w-32"
+                  title={item.label}
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
-                  className={`capitalize ${
+                  className={`capitalize truncate max-w-32 ${
                     isLast ? "text-foreground font-medium" : ""
                   }`}
                   aria-current={isLast ? "page" : undefined}
+                  title={item.label}
                 >
                   {item.label}
                 </span>
