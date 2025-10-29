@@ -408,4 +408,9 @@
   em {
     @apply italic;
   }
+
+  /* Horizontal rules */
+  hr {
+    @apply my-8 border-0 border-t border-border;
+  }
 }

@@ -46,7 +46,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       tabIndex={0}
       role="article"
       aria-label={`Read article: ${article.title}`}
-      className="cursor-pointer transition-all hover:shadow-md focus:ring-2 focus:ring-ring focus:outline-none overflow-hidden w-full"
+      className="cursor-pointer transition-all hover:shadow-md focus:ring-2 focus:ring-ring focus:outline-none overflow-hidden w-full pt-0"
     >
       {/* Image */}
       {hasValidImage && (
