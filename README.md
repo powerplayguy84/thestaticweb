@@ -1,6 +1,6 @@
 # The Static Web
 
-> **A production-ready starter template for markdown-based websites.** Deploy in minutes, customize with AI assistance, and publish beautiful static content.
+> **A production-ready starter template for markdown-based websites.** Deploy in minutes, customize with AI assistance, and publish beautiful static content with built-in search, dark mode, and image optimization.
 
 ## 👋 First Time Here?
 
@@ -18,20 +18,26 @@
 - 🤖 **AI-Friendly**: Optimized for AI tools like GitHub Copilot to generate content
 - 📝 **Markdown-First**: Write content in simple markdown files
 - ⚡ **Lightning Fast**: Static generation for instant page loads
-- 🎨 **Customizable**: Clean, minimal design that's easy to theme
-- 🔧 **Modern Stack**: Next.js 16, TypeScript, Tailwind CSS v4
+- 🎨 **Customizable**: Dark/light themes with visual editor, clean minimal design
+- 🔍 **Built-in Search**: Client-side search with keyboard shortcuts
+- 🖼️ **Image Support**: Automatic thumbnail optimization with Next.js Image
+- 🔧 **Modern Stack**: Next.js 16, TypeScript, Tailwind CSS v4, shadcn/ui
 
 ## ✨ Features
 
 - 📝 **Markdown Content**: Write articles in markdown with YAML front matter
-- 🏷️ **Categories**: Organize articles by category with automatic navigation
+- 🏷️ **Categories & Tags**: Organize articles by category with automatic navigation and tag-based filtering
 - ⭐ **Featured Articles**: Mark articles as featured to display on homepage
-- 🔗 **Smart Navigation**: Previous/next links and related articles sidebars
-- 🎨 **Beautiful UI**: Built with Tailwind CSS v4 for a clean, minimalist design
-- ⚡ **Static Generation**: Pre-rendered HTML for fast loading
-- 📱 **Responsive**: Mobile-first design that works on all devices
+- �️ **Thumbnail Images**: Add beautiful hero images to your articles with automatic optimization
+- 🔍 **Built-in Search**: Client-side search with keyboard shortcuts (Cmd+K / Ctrl+K)
+- 🎨 **Theme System**: Dark/light mode toggle with customizable color schemes via `content/theme.md`
+- �🔗 **Smart Navigation**: Previous/next links, breadcrumbs, and related articles sidebars
+- 📱 **Responsive Design**: Mobile-first UI with shadcn components
+- ⚙️ **Site Settings**: Configure site metadata, URLs, and hidden categories in `content/settings.md`
+- 🗺️ **Auto Sitemap**: Automatically generated sitemap.xml for SEO
+- ⚡ **Static Generation**: Pre-rendered HTML for instant page loads
 - 🔍 **Type-Safe**: Full TypeScript support with strict mode
-- 🚀 **SEO-Friendly**: Proper metadata and structured content
+- 🚀 **SEO-Friendly**: Proper metadata, structured data, and optimized images
 
 ## 🚀 Quick Start
 
@@ -74,6 +80,15 @@ npm run lint
 
 ## 📚 Documentation
 
+### ⚡ New Features Highlights
+
+- **🔍 Search**: Press `Cmd+K` (Mac) or `Ctrl+K` (Windows/Linux) to open the search modal
+- **🎨 Theme Editor**: Visit `/theme` to customize colors for light/dark modes
+- **🖼️ Images**: Add `image: "https://..."` to article front matter for thumbnails
+- **🏷️ Tags**: Filter articles by tags via `/tag/[tag]` routes
+- **⚙️ Settings**: Configure site-wide options in `content/settings.md`
+- **🗺️ Sitemap**: Automatically generated at `/sitemap.xml` for SEO
+
 ### 🎯 Essential for New Users
 
 - **[STARTER_CHECKLIST.md](./STARTER_CHECKLIST.md)** - 📋 Complete setup checklist
@@ -101,6 +116,7 @@ These instructions teach Copilot about your project structure, naming convention
 
 ### 🔍 Reference
 
+- **[IMAGE_SUPPORT.md](./IMAGE_SUPPORT.md)** - How to add hero images to articles
 - **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** - Content organization reference
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture
 - **[FILE_REFERENCE.md](./FILE_REFERENCE.md)** - Complete file reference
@@ -160,16 +176,27 @@ src/
 ├── app/
 │   ├── layout.tsx                    # Root layout with Navigation
 │   ├── page.tsx                      # Homepage
+│   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── [category]/page.tsx           # Category listing
 │   ├── [category]/[slug]/page.tsx    # Article detail
-│   └── globals.css
+│   ├── tag/[tag]/page.tsx            # Tag-filtered articles
+│   ├── theme/page.tsx                # Theme customization
+│   └── globals.css                   # Global styles + CSS variables
 ├── components/
-│   ├── Navigation.tsx
-│   ├── ArticleCard.tsx
-│   ├── ArticleNavigation.tsx
-│   └── RelatedArticles.tsx
+│   ├── Navigation.tsx                # Main navigation
+│   ├── MobileNav.tsx                 # Mobile navigation drawer
+│   ├── Search.tsx                    # Search modal with shortcuts
+│   ├── ThemeToggle.tsx               # Dark/light mode switch
+│   ├── ArticleCard.tsx               # Article preview cards
+│   ├── ArticleImage.tsx              # Optimized hero images
+│   ├── ArticleNavigation.tsx         # Prev/next links
+│   ├── Breadcrumbs.tsx               # Breadcrumb navigation
+│   ├── RelatedArticles.tsx           # Sidebar suggestions
+│   └── ui/                           # shadcn components
 └── lib/
-    └── markdown.ts                   # Content utilities
+    ├── markdown.ts                   # Content utilities
+    ├── date.ts                       # Date formatting
+    └── utils.ts                      # Helper functions
 ```
 
 ## 🛠️ Tech Stack
@@ -177,9 +204,11 @@ src/
 - **Framework**: Next.js 16 with App Router
 - **Language**: TypeScript 5 (strict mode)
 - **Styling**: Tailwind CSS v4
-- **Markdown**: `remark` + `remark-html`
+- **UI Components**: shadcn/ui with Radix UI primitives
+- **Markdown**: `remark` + `remark-html` + `rehype` plugins
 - **Icons**: lucide-react
 - **Front Matter**: gray-matter
+- **Syntax Highlighting**: highlight.js via rehype-highlight
 
 ## 📂 How It Works
 
@@ -192,15 +221,19 @@ src/
 ## 🎯 Homepage
 
 - Hero section with site title
-- Grid of featured articles
+- Grid of featured articles with thumbnails
 - Categories in navigation menu
+- Search button (Cmd+K / Ctrl+K to open)
+- Dark/light mode toggle
 
 ## 📄 Article Features
 
-- **Metadata**: Title, description, date, category, tags
-- **Content**: Full HTML-rendered markdown with proper styling
+- **Metadata**: Title, description, date, category, tags, thumbnail images
+- **Content**: Full HTML-rendered markdown with syntax highlighting
 - **Navigation**: Previous/next buttons to adjacent articles
 - **Related**: Sidebar with 3 related articles from the same category
+- **Breadcrumbs**: Clear navigation path on every article
+- **Images**: Optional hero images with Next.js Image optimization
 
 ## 🔗 Routes
 
@@ -209,9 +242,28 @@ src/
 | `/`                | Homepage with featured articles      |
 | `/:category`       | Category listing (sorted by index)   |
 | `/:category/:slug` | Individual article with full content |
+| `/tag/:tag`        | Articles filtered by tag             |
+| `/theme`           | Theme customization page             |
 | `/404`             | Not found page                       |
 
 ## 🎨 Customization
+
+### Global Site Settings
+
+Edit `content/settings.md` to configure:
+
+- Site URL and metadata
+- Site title and description
+- Author information
+- Hidden categories (excluded from navigation)
+
+### Theme Customization
+
+Visit `/theme` or edit `content/theme.md` to customize:
+
+- Light and dark mode colors
+- Border radius
+- All shadcn semantic color tokens
 
 ### Add a New Category
 
@@ -219,7 +271,7 @@ src/
 mkdir content/my-category
 ```
 
-The category automatically appears in the navigation menu.
+The category automatically appears in the navigation menu (unless hidden in settings).
 
 ### Add an Article
 
@@ -227,7 +279,26 @@ The category automatically appears in the navigation menu.
 touch content/tutorials/05-my-article.md
 ```
 
-Edit with front matter and markdown content.
+Edit with front matter and markdown content. Optionally include:
+
+- `image`: URL to thumbnail/hero image
+- `tags`: Array of tags for filtering
+- `featured`: Boolean to display on homepage
+
+**Example with all features:**
+
+```markdown
+---
+title: "My Amazing Article"
+description: "Learn something new"
+date: "2025-10-29"
+featured: true
+tags: ["nextjs", "typescript"]
+image: "https://images.unsplash.com/photo-..."
+---
+
+Your content here...
+```
 
 ### Modify Styles
 

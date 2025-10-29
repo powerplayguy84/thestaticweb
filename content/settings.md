@@ -19,6 +19,7 @@ organizationName: "The Static Web"
 # Add category folder names you want to hide from the navbar
 hiddenCategories:
   - "sample"
+  - "_templates"
 ---
 
 # Settings
