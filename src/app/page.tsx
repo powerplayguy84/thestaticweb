@@ -82,7 +82,7 @@ export default async function Home() {
         )}
 
         {/* Featured Articles Section */}
-        <section className="px-6 max-w-6xl mx-auto">
+        <section className="px-6 max-w-6xl mb-12 mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 mt-0">
             Featured
           </h2>
