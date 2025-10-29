@@ -16,7 +16,7 @@ export default async function Navigation() {
   const navbarLogo = hero.navbar?.logo || hero.logo;
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
+    <nav className="flex items-center justify-between px-6 py-4 border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 print:hidden">
       <Link href="/" className="flex items-center gap-3">
         {navbarLogo ? (
           <>
