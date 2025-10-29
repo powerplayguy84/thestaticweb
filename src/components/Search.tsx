@@ -111,7 +111,7 @@ export default function Search() {
   const handleResultClick = (category: string, slug: string) => {
     setIsOpen(false);
     setQuery("");
-    router.push(`/${category}/${slug}`);
+    router.push(`/${encodeURIComponent(category)}/${slug}`);
   };
 
   if (!isOpen) {

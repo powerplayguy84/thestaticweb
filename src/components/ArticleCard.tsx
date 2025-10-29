@@ -29,13 +29,13 @@ export default function ArticleCard({ article }: ArticleCardProps) {
     article.image && article.image.trim() !== "" && !imageError;
 
   const handleCardClick = () => {
-    router.push(`/${article.category}/${article.slug}`);
+    router.push(`/${encodeURIComponent(article.category)}/${article.slug}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      router.push(`/${article.category}/${article.slug}`);
+      router.push(`/${encodeURIComponent(article.category)}/${article.slug}`);
     }
   };
 

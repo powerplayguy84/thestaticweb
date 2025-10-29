@@ -52,7 +52,7 @@ export default function MobileNav({ categories }: MobileNavProps) {
             {categories.map((category) => (
               <Link
                 key={category}
-                href={`/${category}`}
+                href={`/${encodeURIComponent(category)}`}
                 onClick={() => setIsOpen(false)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors capitalize py-3 px-2 rounded-lg hover:bg-muted min-h-[48px]"
               >

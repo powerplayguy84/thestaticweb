@@ -17,8 +17,8 @@ export default function ArticleNavigation({
     <div className="flex gap-4 mt-12 pt-8 border-t border-border">
       {previous ? (
         <Link
-          href={`/${category}/${previous.slug}`}
-          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group"
+          href={`/${encodeURIComponent(category)}/${previous.slug}`}
+          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group min-w-0"
         >
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
             <ChevronLeft className="w-4 h-4" />
@@ -34,8 +34,8 @@ export default function ArticleNavigation({
 
       {next ? (
         <Link
-          href={`/${category}/${next.slug}`}
-          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group text-right"
+          href={`/${encodeURIComponent(category)}/${next.slug}`}
+          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group text-right min-w-0"
         >
           <div className="flex items-center justify-end gap-2 text-sm text-muted-foreground mb-2">
             Next

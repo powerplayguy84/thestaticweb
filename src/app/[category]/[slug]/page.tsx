@@ -24,7 +24,8 @@ interface ArticlePageProps {
 export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
-  const { category, slug } = await params;
+  const { category: encodedCategory, slug } = await params;
+  const category = decodeURIComponent(encodedCategory);
   const article = await getArticle(category, slug);
 
   if (!article) {
@@ -66,7 +67,7 @@ export async function generateStaticParams() {
     const articles = await getArticlesByCategory(category);
     for (const article of articles) {
       params.push({
-        category,
+        category: encodeURIComponent(category),
         slug: article.slug,
       });
     }
@@ -76,7 +77,8 @@ export async function generateStaticParams() {
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { category, slug } = await params;
+  const { category: encodedCategory, slug } = await params;
+  const category = decodeURIComponent(encodedCategory);
   const article = await getArticle(category, slug);
 
   if (!article) {
@@ -127,7 +129,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto">
           <Breadcrumbs
             items={[
-              { label: category, href: `/${category}` },
+              { label: category, href: `/${encodeURIComponent(category)}` },
               { label: article.title },
             ]}
           />

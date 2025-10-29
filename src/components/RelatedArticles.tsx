@@ -29,7 +29,7 @@ export default function RelatedArticles({
         {related.map((article) => (
           <li key={article.slug}>
             <Link
-              href={`/${category}/${article.slug}`}
+              href={`/${encodeURIComponent(category)}/${article.slug}`}
               className="text-muted-foreground hover:text-foreground hover:underline transition-colors"
             >
               {article.title}

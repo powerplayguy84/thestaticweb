@@ -43,7 +43,7 @@ export default async function Navigation() {
         {categories.map((category) => (
           <Link
             key={category}
-            href={`/${category}`}
+            href={`/${encodeURIComponent(category)}`}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors capitalize"
           >
             {category}

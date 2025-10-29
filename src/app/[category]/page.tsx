@@ -17,7 +17,8 @@ interface CategoryPageProps {
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
-  const { category } = await params;
+  const { category: encodedCategory } = await params;
+  const category = decodeURIComponent(encodedCategory);
   const { siteTitle } = getSiteSettings();
   const capitalizedCategory =
     category.charAt(0).toUpperCase() + category.slice(1);
@@ -35,12 +36,13 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const categories = getCategories();
   return categories.map((category) => ({
-    category,
+    category: encodeURIComponent(category),
   }));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = await params;
+  const { category: encodedCategory } = await params;
+  const category = decodeURIComponent(encodedCategory);
   const articles = await getArticlesByCategory(category);
 
   if (articles.length === 0) {
