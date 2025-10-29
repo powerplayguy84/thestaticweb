@@ -14,6 +14,11 @@ author: "The Static Web"
 organizationName: "The Static Web"
 # Logo URL (optional - used in structured data)
 # logoUrl: "/logo.png"
+
+# Hidden categories (won't appear in navigation)
+# Add category folder names you want to hide from the navbar
+hiddenCategories:
+  - "sample"
 ---
 
 # Settings

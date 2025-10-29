@@ -26,13 +26,25 @@ export interface Article {
 export type ArticleMetadata = Omit<Article, "content">;
 
 /**
- * Get all categories
+ * Get all categories (excluding hidden ones)
  */
 export function getCategories(): string[] {
   const items = fs.readdirSync(CONTENT_DIR, { withFileTypes: true });
+
+  // Read hidden categories from settings
+  const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
+  let hiddenCategories: string[] = [];
+
+  if (fs.existsSync(settingsFilePath)) {
+    const fileContent = fs.readFileSync(settingsFilePath, "utf-8");
+    const { data } = matter(fileContent);
+    hiddenCategories = data.hiddenCategories || [];
+  }
+
   return items
     .filter((item) => item.isDirectory())
     .map((item) => item.name)
+    .filter((name) => !hiddenCategories.includes(name))
     .sort();
 }
 
@@ -223,6 +235,7 @@ export function getSiteSettings(): {
   author: string;
   organizationName: string;
   logoUrl?: string;
+  hiddenCategories?: string[];
 } {
   const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
 
@@ -234,6 +247,7 @@ export function getSiteSettings(): {
         "A collection of articles, tutorials, and guides for modern web development.",
       author: "The Static Web",
       organizationName: "The Static Web",
+      hiddenCategories: [],
     };
   }
 
@@ -249,6 +263,7 @@ export function getSiteSettings(): {
     author: data.author || "The Static Web",
     organizationName: data.organizationName || "The Static Web",
     logoUrl: data.logoUrl || undefined,
+    hiddenCategories: data.hiddenCategories || [],
   };
 }
 
