@@ -189,434 +189,627 @@
   }
 }
 
-/* Syntax Highlighting with Shadcn Semantic Colors */
+/* Markdown content styles - scoped to article, .prose, and .markdown containers */
 @layer components {
-  .hljs {
+  /* Syntax Highlighting with Shadcn Semantic Colors */
+  article .hljs,
+  .prose .hljs,
+  .markdown .hljs {
     @apply block overflow-x-auto p-4 bg-muted text-foreground;
   }
 
-  .hljs-comment,
-  .hljs-quote {
+  article .hljs-comment,
+  article .hljs-quote,
+  .prose .hljs-comment,
+  .prose .hljs-quote,
+  .markdown .hljs-comment,
+  .markdown .hljs-quote {
     @apply text-muted-foreground italic;
   }
 
-  .hljs-keyword,
-  .hljs-selector-tag,
-  .hljs-subst {
+  article .hljs-keyword,
+  article .hljs-selector-tag,
+  article .hljs-subst,
+  .prose .hljs-keyword,
+  .prose .hljs-selector-tag,
+  .prose .hljs-subst,
+  .markdown .hljs-keyword,
+  .markdown .hljs-selector-tag,
+  .markdown .hljs-subst {
     @apply text-destructive;
   }
 
-  .hljs-number,
-  .hljs-literal,
-  .hljs-variable,
-  .hljs-template-variable,
-  .hljs-tag .hljs-attr {
+  article .hljs-number,
+  article .hljs-literal,
+  article .hljs-variable,
+  article .hljs-template-variable,
+  article .hljs-tag .hljs-attr,
+  .prose .hljs-number,
+  .prose .hljs-literal,
+  .prose .hljs-variable,
+  .prose .hljs-template-variable,
+  .prose .hljs-tag .hljs-attr,
+  .markdown .hljs-number,
+  .markdown .hljs-literal,
+  .markdown .hljs-variable,
+  .markdown .hljs-template-variable,
+  .markdown .hljs-tag .hljs-attr {
     @apply text-chart-1;
   }
 
-  .hljs-string,
-  .hljs-doctag {
+  article .hljs-string,
+  article .hljs-doctag,
+  .prose .hljs-string,
+  .prose .hljs-doctag,
+  .markdown .hljs-string,
+  .markdown .hljs-doctag {
     @apply text-chart-2;
   }
 
-  .hljs-title,
-  .hljs-section,
-  .hljs-selector-id {
+  article .hljs-title,
+  article .hljs-section,
+  article .hljs-selector-id,
+  .prose .hljs-title,
+  .prose .hljs-section,
+  .prose .hljs-selector-id,
+  .markdown .hljs-title,
+  .markdown .hljs-section,
+  .markdown .hljs-selector-id {
     @apply text-chart-4 font-bold;
   }
 
-  .hljs-type,
-  .hljs-class .hljs-title {
+  article .hljs-type,
+  article .hljs-class .hljs-title,
+  .prose .hljs-type,
+  .prose .hljs-class .hljs-title,
+  .markdown .hljs-type,
+  .markdown .hljs-class .hljs-title {
     @apply text-chart-5;
   }
 
-  .hljs-tag,
-  .hljs-name,
-  .hljs-attribute {
+  article .hljs-tag,
+  article .hljs-name,
+  article .hljs-attribute,
+  .prose .hljs-tag,
+  .prose .hljs-name,
+  .prose .hljs-attribute,
+  .markdown .hljs-tag,
+  .markdown .hljs-name,
+  .markdown .hljs-attribute {
     @apply text-chart-2 font-normal;
   }
 
-  .hljs-regexp,
-  .hljs-link {
+  article .hljs-regexp,
+  article .hljs-link,
+  .prose .hljs-regexp,
+  .prose .hljs-link,
+  .markdown .hljs-regexp,
+  .markdown .hljs-link {
     @apply text-primary;
   }
 
-  .hljs-symbol,
-  .hljs-bullet {
+  article .hljs-symbol,
+  article .hljs-bullet,
+  .prose .hljs-symbol,
+  .prose .hljs-bullet,
+  .markdown .hljs-symbol,
+  .markdown .hljs-bullet {
     @apply text-chart-1;
   }
 
-  .hljs-built_in,
-  .hljs-builtin-name {
+  article .hljs-built_in,
+  article .hljs-builtin-name,
+  .prose .hljs-built_in,
+  .prose .hljs-builtin-name,
+  .markdown .hljs-built_in,
+  .markdown .hljs-builtin-name {
     @apply text-chart-5;
   }
 
-  .hljs-meta {
+  article .hljs-meta,
+  .prose .hljs-meta,
+  .markdown .hljs-meta {
     @apply text-muted-foreground;
   }
 
-  .hljs-deletion {
+  article .hljs-deletion,
+  .prose .hljs-deletion,
+  .markdown .hljs-deletion {
     @apply bg-destructive/10 text-destructive;
   }
 
-  .hljs-addition {
+  article .hljs-addition,
+  .prose .hljs-addition,
+  .markdown .hljs-addition {
     @apply bg-chart-2/10 text-chart-2;
   }
 
-  .hljs-emphasis {
+  article .hljs-emphasis,
+  .prose .hljs-emphasis,
+  .markdown .hljs-emphasis {
     @apply italic;
   }
 
-  .hljs-strong {
+  article .hljs-strong,
+  .prose .hljs-strong,
+  .markdown .hljs-strong {
     @apply font-bold;
   }
 
   /* Code block container */
-  pre {
+  article pre,
+  .prose pre,
+  .markdown pre {
     @apply bg-muted border border-border rounded-md p-0 my-6 overflow-hidden;
   }
 
-  pre code {
+  article pre code,
+  .prose pre code,
+  .markdown pre code {
     @apply block overflow-x-auto p-4 bg-transparent text-foreground text-sm leading-relaxed font-mono;
   }
 
   /* Thin scrollbar for code blocks */
-  pre code::-webkit-scrollbar {
+  article pre code::-webkit-scrollbar,
+  .prose pre code::-webkit-scrollbar,
+  .markdown pre code::-webkit-scrollbar {
     @apply h-2;
   }
 
-  pre code::-webkit-scrollbar-track {
+  article pre code::-webkit-scrollbar-track,
+  .prose pre code::-webkit-scrollbar-track,
+  .markdown pre code::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
 
-  pre code::-webkit-scrollbar-thumb {
+  article pre code::-webkit-scrollbar-thumb,
+  .prose pre code::-webkit-scrollbar-thumb,
+  .markdown pre code::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full;
   }
 
-  pre code::-webkit-scrollbar-thumb:hover {
+  article pre code::-webkit-scrollbar-thumb:hover,
+  .prose pre code::-webkit-scrollbar-thumb:hover,
+  .markdown pre code::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/50;
   }
 
   /* Firefox thin scrollbar */
-  pre code {
+  article pre code,
+  .prose pre code,
+  .markdown pre code {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
 
   /* Inline code */
-  code:not(pre code) {
+  article code:not(pre code),
+  .prose code:not(pre code),
+  .markdown code:not(pre code) {
     @apply bg-muted text-foreground px-1.5 py-0.5 rounded-sm text-sm font-semibold font-mono;
   }
 
-  /* Markdown Tables - Minimal */
-  table {
+  /* Markdown Tables */
+  article table,
+  .prose table,
+  .markdown table {
     @apply w-full my-6 text-sm border border-border rounded-md;
   }
 
-  thead th {
+  article thead th,
+  .prose thead th,
+  .markdown thead th {
     @apply px-3 py-2 text-left font-medium text-muted-foreground border-b border-r border-border;
   }
 
-  thead th:last-child {
+  article thead th:last-child,
+  .prose thead th:last-child,
+  .markdown thead th:last-child {
     @apply border-r-0;
   }
 
-  tbody td {
+  article tbody td,
+  .prose tbody td,
+  .markdown tbody td {
     @apply px-3 py-2 border-b border-r border-border/50;
   }
 
-  tbody td:last-child {
+  article tbody td:last-child,
+  .prose tbody td:last-child,
+  .markdown tbody td:last-child {
     @apply border-r-0;
   }
 
-  tbody tr:last-child td {
+  article tbody tr:last-child td,
+  .prose tbody tr:last-child td,
+  .markdown tbody tr:last-child td {
     @apply border-b-0;
   }
 
   /* Table cell alignment */
-  th[align="center"],
-  td[align="center"] {
+  article th[align="center"],
+  article td[align="center"],
+  .prose th[align="center"],
+  .prose td[align="center"],
+  .markdown th[align="center"],
+  .markdown td[align="center"] {
     @apply text-center;
   }
 
-  th[align="right"],
-  td[align="right"] {
+  article th[align="right"],
+  article td[align="right"],
+  .prose th[align="right"],
+  .prose td[align="right"],
+  .markdown th[align="right"],
+  .markdown td[align="right"] {
     @apply text-right;
   }
 
-  th[align="left"],
-  td[align="left"] {
+  article th[align="left"],
+  article td[align="left"],
+  .prose th[align="left"],
+  .prose td[align="left"],
+  .markdown th[align="left"],
+  .markdown td[align="left"] {
     @apply text-left;
   }
 
   /* Markdown content heading styles */
-  h1 {
+  article h1,
+  .prose h1,
+  .markdown h1 {
     @apply text-3xl font-bold mt-8 mb-6 text-foreground;
   }
 
-  h2 {
+  article h2,
+  .prose h2,
+  .markdown h2 {
     @apply text-2xl font-bold mt-8 mb-4 text-foreground;
   }
 
-  h3 {
+  article h3,
+  .prose h3,
+  .markdown h3 {
     @apply text-xl font-semibold mt-6 mb-3 text-foreground;
   }
 
-  h4 {
+  article h4,
+  .prose h4,
+  .markdown h4 {
     @apply text-lg font-semibold mt-6 mb-3 text-foreground;
   }
 
-  h5 {
+  article h5,
+  .prose h5,
+  .markdown h5 {
     @apply text-base font-semibold mt-4 mb-2 text-foreground;
   }
 
-  h6 {
+  article h6,
+  .prose h6,
+  .markdown h6 {
     @apply text-sm font-semibold mt-4 mb-2 text-foreground;
   }
 
   /* Markdown prose styles */
-  p {
+  article p,
+  .prose p,
+  .markdown p {
     @apply mb-4 leading-relaxed;
   }
 
-  ul {
+  article ul,
+  .prose ul,
+  .markdown ul {
     @apply mb-4 ml-6 list-disc space-y-1;
   }
 
-  ol {
+  article ol,
+  .prose ol,
+  .markdown ol {
     @apply mb-4 ml-6 list-decimal space-y-1;
   }
 
-  li {
+  article li,
+  .prose li,
+  .markdown li {
     @apply leading-relaxed;
   }
 
-  blockquote {
+  article blockquote,
+  .prose blockquote,
+  .markdown blockquote {
     @apply my-6 border-l-4 border-border pl-6 text-muted-foreground italic;
   }
 
-  /* Links in markdown content only */
-  p a,
-  li a,
-  blockquote a,
-  h1 a,
-  h2 a,
-  h3 a,
-  h4 a,
-  h5 a,
-  h6 a,
-  td a,
-  th a {
+  /* Links in markdown content */
+  .prose p a,
+  .prose li a,
+  .prose blockquote a,
+  .prose h1 a,
+  .prose h2 a,
+  .prose h3 a,
+  .prose h4 a,
+  .prose h5 a,
+  .prose h6 a,
+  .prose td a,
+  .prose th a,
+  .markdown p a,
+  .markdown li a,
+  .markdown blockquote a,
+  .markdown h1 a,
+  .markdown h2 a,
+  .markdown h3 a,
+  .markdown h4 a,
+  .markdown h5 a,
+  .markdown h6 a,
+  .markdown td a,
+  .markdown th a {
     @apply underline;
   }
 
   /* Strong and emphasis */
-  strong {
+  article strong,
+  .prose strong,
+  .markdown strong {
     @apply font-semibold;
   }
 
-  em {
+  article em,
+  .prose em,
+  .markdown em {
     @apply italic;
   }
 
   /* Horizontal rules */
-  hr {
+  article hr,
+  .prose hr,
+  .markdown hr {
     @apply my-8 border-0 border-t border-border;
   }
 
   /* Strikethrough */
-  del,
-  s {
+  article del,
+  article s,
+  .prose del,
+  .prose s,
+  .markdown del,
+  .markdown s {
     @apply text-muted-foreground line-through;
   }
 
   /* Task lists */
-  input[type="checkbox"] {
+  article input[type="checkbox"],
+  .prose input[type="checkbox"],
+  .markdown input[type="checkbox"] {
     @apply mr-2 accent-primary cursor-pointer;
   }
 
-  li input[type="checkbox"] {
+  article li input[type="checkbox"],
+  .prose li input[type="checkbox"],
+  .markdown li input[type="checkbox"] {
     @apply -ml-6 mr-2;
   }
 
   /* Keyboard input */
-  kbd {
+  article kbd,
+  .prose kbd,
+  .markdown kbd {
     @apply bg-muted text-foreground px-2 py-1 rounded-sm text-xs font-mono border border-border shadow-sm;
   }
 
   /* Mark/Highlight */
-  mark {
+  article mark,
+  .prose mark,
+  .markdown mark {
     @apply bg-chart-4/20 text-foreground px-1 rounded-sm;
   }
 
   /* Small text */
-  small {
+  article small,
+  .prose small,
+  .markdown small {
     @apply text-xs text-muted-foreground;
   }
 
   /* Subscript and Superscript */
-  sub {
+  article sub,
+  .prose sub,
+  .markdown sub {
     @apply text-xs align-sub;
   }
 
-  sup {
+  article sup,
+  .prose sup,
+  .markdown sup {
     @apply text-xs align-super;
   }
 
   /* Abbreviations */
-  abbr[title] {
+  article abbr[title],
+  .prose abbr[title],
+  .markdown abbr[title] {
     @apply border-b border-dotted border-muted-foreground cursor-help no-underline;
   }
 
   /* Citations */
-  cite {
+  article cite,
+  .prose cite,
+  .markdown cite {
     @apply italic text-muted-foreground;
   }
 
   /* Definition lists */
-  dl {
+  article dl,
+  .prose dl,
+  .markdown dl {
     @apply my-6;
   }
 
-  dt {
+  article dt,
+  .prose dt,
+  .markdown dt {
     @apply font-semibold mt-4 first:mt-0;
   }
 
-  dd {
+  article dd,
+  .prose dd,
+  .markdown dd {
     @apply ml-6 mt-1 text-muted-foreground;
   }
 
   /* Nested blockquotes */
-  blockquote blockquote {
+  article blockquote blockquote,
+  .prose blockquote blockquote,
+  .markdown blockquote blockquote {
     @apply mt-4 border-l-2 pl-4;
   }
 
   /* Footnote references */
-  sup[id^="fnref"] a {
+  article sup[id^="fnref"] a,
+  .prose sup[id^="fnref"] a,
+  .markdown sup[id^="fnref"] a {
     @apply text-primary no-underline hover:underline;
   }
 
   /* Footnote section */
-  .footnotes {
+  article .footnotes,
+  .prose .footnotes,
+  .markdown .footnotes {
     @apply mt-12 pt-6 border-t border-border text-sm;
   }
 
-  .footnotes ol {
+  article .footnotes ol,
+  .prose .footnotes ol,
+  .markdown .footnotes ol {
     @apply list-decimal;
   }
 
-  /* Images in markdown */
-  img {
-    @apply rounded-md my-6 max-w-full h-auto;
+  /* Images in markdown content */
+  article img,
+  .prose img,
+  .markdown img {
+    @apply rounded-md max-w-full h-auto;
   }
 
   /* Figure and figcaption */
-  figure {
+  article figure,
+  .prose figure,
+  .markdown figure {
     @apply my-6;
   }
 
-  figcaption {
+  article figcaption,
+  .prose figcaption,
+  .markdown figcaption {
     @apply text-sm text-muted-foreground text-center mt-2 italic;
   }
 
-  /* Details and Summary (collapsible content) */
-  details {
+  /* Details and Summary */
+  article details,
+  .prose details,
+  .markdown details {
     @apply my-4 border border-border rounded-md p-4;
   }
 
-  summary {
+  article summary,
+  .prose summary,
+  .markdown summary {
     @apply cursor-pointer font-semibold select-none hover:text-primary;
   }
 
-  details[open] summary {
+  article details[open] summary,
+  .prose details[open] summary,
+  .markdown details[open] summary {
     @apply mb-4;
   }
 
   /* Preformatted text (not code) */
-  pre:not(:has(code)) {
+  article pre:not(:has(code)),
+  .prose pre:not(:has(code)),
+  .markdown pre:not(:has(code)) {
     @apply bg-muted p-4 rounded-md overflow-x-auto my-6 text-sm;
   }
 
   /* Address */
-  address {
+  article address,
+  .prose address,
+  .markdown address {
     @apply not-italic my-4 text-muted-foreground;
   }
 
   /* Video and Audio */
-  video,
-  audio {
+  article video,
+  article audio,
+  .prose video,
+  .prose audio,
+  .markdown video,
+  .markdown audio {
     @apply w-full my-6 rounded-md border border-border;
   }
 
-  video {
+  article video,
+  .prose video,
+  .markdown video {
     @apply max-w-full h-auto;
   }
 
-  /* Iframe embeds (YouTube, Twitter, etc.) */
-  iframe {
+  /* Iframe embeds */
+  article iframe,
+  .prose iframe,
+  .markdown iframe {
     @apply w-full my-6 rounded-md border border-border aspect-video;
   }
 
   /* Responsive iframe container */
-  .embed-container {
+  article .embed-container,
+  .prose .embed-container,
+  .markdown .embed-container {
     @apply relative w-full my-6 rounded-md overflow-hidden;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
   }
 
-  .embed-container iframe {
+  article .embed-container iframe,
+  .prose .embed-container iframe,
+  .markdown .embed-container iframe {
     @apply absolute top-0 left-0 w-full h-full border-0 my-0;
   }
 
-  /* Text selection */
-  ::selection {
-    @apply bg-primary/20 text-foreground;
-  }
-
-  ::-moz-selection {
-    @apply bg-primary/20 text-foreground;
-  }
-
-  /* Nested lists - Different markers for visual hierarchy */
-  ul ul {
+  /* Nested lists */
+  article ul ul,
+  .prose ul ul,
+  .markdown ul ul {
     @apply mt-1;
     list-style-type: circle;
   }
 
-  ul ul ul {
+  article ul ul ul,
+  .prose ul ul ul,
+  .markdown ul ul ul {
     list-style-type: square;
   }
 
-  ol ol {
+  article ol ol,
+  .prose ol ol,
+  .markdown ol ol {
     @apply mt-1;
     list-style-type: lower-alpha;
   }
 
-  ol ol ol {
+  article ol ol ol,
+  .prose ol ol ol,
+  .markdown ol ol ol {
     list-style-type: lower-roman;
   }
 
   /* Mixed nested lists */
-  ul ol,
-  ol ul {
+  article ul ol,
+  article ol ul,
+  .prose ul ol,
+  .prose ol ul,
+  .markdown ul ol,
+  .markdown ol ul {
     @apply mt-1;
-  }
-
-  /* Focus states for accessibility */
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  textarea:focus-visible,
-  select:focus-visible {
-    @apply outline-2 outline-offset-2 outline-ring;
-  }
-
-  summary:focus-visible {
-    @apply outline-2 outline-offset-2 outline-ring rounded-sm;
-  }
-
-  /* Keyboard navigation for links */
-  a:focus-visible {
-    @apply bg-primary/10 rounded-sm;
   }
 
   /* Skip to content link (for accessibility) */
