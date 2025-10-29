@@ -181,7 +181,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           )}
 
           {/* Content */}
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div
+            className="prose"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
 
           {/* Navigation */}
           <ArticleNavigation
