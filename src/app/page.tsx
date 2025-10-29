@@ -27,7 +27,7 @@ export default async function Home() {
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-12 sm:gap-16 max-w-6xl mx-auto pb-12 px-6">
+      <div className="flex flex-col gap-12 sm:gap-16 max-w-6xl mx-auto pb-12 sm:pb-16 px-6">
         {/* Hero Section */}
         <section className="pt-16">
           <div className="space-y-6">
@@ -45,7 +45,7 @@ export default async function Home() {
               </p>
             </div>
             {hero.image && (
-              <div className="relative w-full max-w-3xl aspect-[4/3] sm:aspect-video rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[4/3] sm:aspect-video rounded-lg overflow-hidden">
                 <Image
                   src={hero.image}
                   alt={`${hero.title} hero image`}
