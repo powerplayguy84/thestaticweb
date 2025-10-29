@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Search as SearchIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +30,13 @@ export default function Search() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  // Ensure we're mounted on the client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Initialize search index from window object
   useEffect(() => {
@@ -130,16 +137,21 @@ export default function Search() {
     );
   }
 
-  return (
+  // Don't render the modal until we're mounted on the client
+  if (!mounted) {
+    return null;
+  }
+
+  const searchModal = (
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+        className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[9999]"
         onClick={() => setIsOpen(false)}
       />
 
       {/* Search Modal */}
-      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-4">
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-[10000] px-4">
         <div className="bg-background border border-border rounded-lg shadow-lg overflow-hidden">
           {/* Search Input */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
@@ -222,6 +234,26 @@ export default function Search() {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Search trigger button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted min-h-[40px]"
+        aria-label="Search articles (⌘K)"
+      >
+        <SearchIcon className="w-4 h-4" />
+        <span className="hidden sm:inline">Search</span>
+        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded border border-border">
+          <span>⌘</span>K
+        </kbd>
+      </button>
+
+      {/* Render modal via portal if open */}
+      {isOpen && createPortal(searchModal, document.body)}
     </>
   );
 }
