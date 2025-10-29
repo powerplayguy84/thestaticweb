@@ -591,6 +591,13 @@
     @apply -ml-6 mr-2;
   }
 
+  /* Hide bullet points for task list items */
+  article li:has(> input[type="checkbox"]),
+  .prose li:has(> input[type="checkbox"]),
+  .markdown li:has(> input[type="checkbox"]) {
+    @apply list-none;
+  }
+
   /* Keyboard input */
   article kbd,
   .prose kbd,
