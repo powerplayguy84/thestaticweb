@@ -11,6 +11,7 @@ import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import PrintButton from "@/components/PrintButton";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -128,34 +129,39 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <main id="main-content" className="min-h-screen bg-background">
-        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto">
-          <Breadcrumbs
-            items={[
-              {
-                label: displayCategory,
-                href: `/${encodeURIComponent(category)}`,
-              },
-              { label: article.title },
-            ]}
-          />
+        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto print:px-0 print:py-0">
+          <div className="print:hidden">
+            <Breadcrumbs
+              items={[
+                {
+                  label: displayCategory,
+                  href: `/${encodeURIComponent(category)}`,
+                },
+                { label: article.title },
+              ]}
+            />
+          </div>
 
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded">
-                {displayCategory}
-              </span>
-              <time
-                className="text-sm text-muted-foreground"
-                dateTime={article.date}
-              >
-                {formatDate(article.date)}
-              </time>
+          <div className="mb-8 print:mb-4">
+            <div className="flex items-center justify-between gap-2 mb-4 print:hidden">
+              <div className="flex items-center gap-2">
+                <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded">
+                  {displayCategory}
+                </span>
+                <time
+                  className="text-sm text-muted-foreground"
+                  dateTime={article.date}
+                >
+                  {formatDate(article.date)}
+                </time>
+              </div>
+              <PrintButton />
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 print:text-3xl">
               {article.title}
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground print:hidden">
               {article.description}
             </p>
           </div>
@@ -167,7 +173,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border">
+            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden">
               {article.tags.map((tag) => (
                 <Link
                   key={tag}
@@ -182,23 +188,27 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Content */}
           <div
-            className="prose"
+            className="prose print:prose-sm"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
           {/* Navigation */}
-          <ArticleNavigation
-            previous={previous}
-            next={next}
-            category={category}
-          />
+          <div className="print:hidden">
+            <ArticleNavigation
+              previous={previous}
+              next={next}
+              category={category}
+            />
+          </div>
 
           {/* Related Articles */}
-          <RelatedArticles
-            articles={relatedArticles}
-            category={category}
-            currentSlug={slug}
-          />
+          <div className="print:hidden">
+            <RelatedArticles
+              articles={relatedArticles}
+              category={category}
+              currentSlug={slug}
+            />
+          </div>
         </article>
       </main>
     </>

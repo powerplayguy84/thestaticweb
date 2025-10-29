@@ -36,7 +36,7 @@ export default async function TagPage({ params }: TagPageProps) {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="px-6 max-w-4xl mx-auto">
+      <div className="px-6 pt-16 pb-8 max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
             #{tag}

@@ -27,9 +27,9 @@ export default async function Home() {
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-12 sm:gap-16">
+      <div className="flex flex-col gap-12 sm:gap-16 max-w-6xl mx-auto pb-12 px-6">
         {/* Hero Section */}
-        <section className="px-6 pt-16 max-w-6xl mx-auto">
+        <section className="pt-16">
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground">
@@ -73,7 +73,7 @@ export default async function Home() {
 
         {/* Markdown Content Section */}
         {hero.content && (
-          <section className="px-6 max-w-6xl mx-auto">
+          <section>
             <div
               className="prose prose-sm sm:prose-base dark:prose-invert max-w-none"
               dangerouslySetInnerHTML={{ __html: hero.content }}
@@ -82,7 +82,7 @@ export default async function Home() {
         )}
 
         {/* Featured Articles Section */}
-        <section className="px-6 max-w-6xl mb-12 mx-auto">
+        <section>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 mt-0">
             Featured
           </h2>
