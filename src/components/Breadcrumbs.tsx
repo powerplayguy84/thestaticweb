@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="mb-8">
-      <ol className="flex items-center gap-2 text-sm text-muted-foreground list-none">
+      <ol className="flex items-center gap-2 text-sm text-muted-foreground list-none ml-0">
         <li>
           <Link
             href="/"
