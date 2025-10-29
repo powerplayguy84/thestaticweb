@@ -269,6 +269,7 @@ export async function getHomepageHero(): Promise<{
     text: string;
     link: string;
   };
+  content?: string;
 }> {
   const homepageFilePath = path.join(CONTENT_DIR, "homepage.md");
 
@@ -281,7 +282,18 @@ export async function getHomepageHero(): Promise<{
   }
 
   const fileContent = fs.readFileSync(homepageFilePath, "utf-8");
-  const { data } = matter(fileContent);
+  const { data, content } = matter(fileContent);
+
+  // Process markdown content to HTML
+  const processedContent = await remark()
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeHighlight)
+    .use(rehypeStringify)
+    .process(content);
+
+  const htmlContent = processedContent.toString();
 
   return {
     title: data.title || "The Static Web",
@@ -293,5 +305,6 @@ export async function getHomepageHero(): Promise<{
     logo: data.logo || undefined,
     navbar: data.navbar || undefined,
     cta: data.cta || undefined,
+    content: htmlContent,
   };
 }
