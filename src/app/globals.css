@@ -395,9 +395,19 @@
     @apply my-6 border-l-4 border-border pl-6 text-muted-foreground italic;
   }
 
-  /* Links in content */
-  a {
-    @apply text-primary hover:underline;
+  /* Links in markdown content only */
+  p a,
+  li a,
+  blockquote a,
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a,
+  td a,
+  th a {
+    @apply underline;
   }
 
   /* Strong and emphasis */
@@ -412,5 +422,205 @@
   /* Horizontal rules */
   hr {
     @apply my-8 border-0 border-t border-border;
+  }
+
+  /* Strikethrough */
+  del,
+  s {
+    @apply text-muted-foreground line-through;
+  }
+
+  /* Task lists */
+  input[type="checkbox"] {
+    @apply mr-2 accent-primary cursor-pointer;
+  }
+
+  li input[type="checkbox"] {
+    @apply -ml-6 mr-2;
+  }
+
+  /* Keyboard input */
+  kbd {
+    @apply bg-muted text-foreground px-2 py-1 rounded-sm text-xs font-mono border border-border shadow-sm;
+  }
+
+  /* Mark/Highlight */
+  mark {
+    @apply bg-chart-4/20 text-foreground px-1 rounded-sm;
+  }
+
+  /* Small text */
+  small {
+    @apply text-xs text-muted-foreground;
+  }
+
+  /* Subscript and Superscript */
+  sub {
+    @apply text-xs align-sub;
+  }
+
+  sup {
+    @apply text-xs align-super;
+  }
+
+  /* Abbreviations */
+  abbr[title] {
+    @apply border-b border-dotted border-muted-foreground cursor-help no-underline;
+  }
+
+  /* Citations */
+  cite {
+    @apply italic text-muted-foreground;
+  }
+
+  /* Definition lists */
+  dl {
+    @apply my-6;
+  }
+
+  dt {
+    @apply font-semibold mt-4 first:mt-0;
+  }
+
+  dd {
+    @apply ml-6 mt-1 text-muted-foreground;
+  }
+
+  /* Nested blockquotes */
+  blockquote blockquote {
+    @apply mt-4 border-l-2 pl-4;
+  }
+
+  /* Footnote references */
+  sup[id^="fnref"] a {
+    @apply text-primary no-underline hover:underline;
+  }
+
+  /* Footnote section */
+  .footnotes {
+    @apply mt-12 pt-6 border-t border-border text-sm;
+  }
+
+  .footnotes ol {
+    @apply list-decimal;
+  }
+
+  /* Images in markdown */
+  img {
+    @apply rounded-md my-6 max-w-full h-auto;
+  }
+
+  /* Figure and figcaption */
+  figure {
+    @apply my-6;
+  }
+
+  figcaption {
+    @apply text-sm text-muted-foreground text-center mt-2 italic;
+  }
+
+  /* Details and Summary (collapsible content) */
+  details {
+    @apply my-4 border border-border rounded-md p-4;
+  }
+
+  summary {
+    @apply cursor-pointer font-semibold select-none hover:text-primary;
+  }
+
+  details[open] summary {
+    @apply mb-4;
+  }
+
+  /* Preformatted text (not code) */
+  pre:not(:has(code)) {
+    @apply bg-muted p-4 rounded-md overflow-x-auto my-6 text-sm;
+  }
+
+  /* Address */
+  address {
+    @apply not-italic my-4 text-muted-foreground;
+  }
+
+  /* Video and Audio */
+  video,
+  audio {
+    @apply w-full my-6 rounded-md border border-border;
+  }
+
+  video {
+    @apply max-w-full h-auto;
+  }
+
+  /* Iframe embeds (YouTube, Twitter, etc.) */
+  iframe {
+    @apply w-full my-6 rounded-md border border-border aspect-video;
+  }
+
+  /* Responsive iframe container */
+  .embed-container {
+    @apply relative w-full my-6 rounded-md overflow-hidden;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+
+  .embed-container iframe {
+    @apply absolute top-0 left-0 w-full h-full border-0 my-0;
+  }
+
+  /* Text selection */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  ::-moz-selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  /* Nested lists - Different markers for visual hierarchy */
+  ul ul {
+    @apply mt-1;
+    list-style-type: circle;
+  }
+
+  ul ul ul {
+    list-style-type: square;
+  }
+
+  ol ol {
+    @apply mt-1;
+    list-style-type: lower-alpha;
+  }
+
+  ol ol ol {
+    list-style-type: lower-roman;
+  }
+
+  /* Mixed nested lists */
+  ul ol,
+  ol ul {
+    @apply mt-1;
+  }
+
+  /* Focus states for accessibility */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  summary:focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring rounded-sm;
+  }
+
+  /* Keyboard navigation for links */
+  a:focus-visible {
+    @apply bg-primary/10 rounded-sm;
+  }
+
+  /* Skip to content link (for accessibility) */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg;
   }
 }
