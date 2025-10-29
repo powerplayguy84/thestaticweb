@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Menu, Home } from "lucide-react";
 import { useState } from "react";
+import { formatCategoryName } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
@@ -54,9 +55,9 @@ export default function MobileNav({ categories }: MobileNavProps) {
                 key={category}
                 href={`/${encodeURIComponent(category)}`}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors capitalize py-3 px-2 rounded-lg hover:bg-muted min-h-[48px]"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-3 px-2 rounded-lg hover:bg-muted min-h-[48px]"
               >
-                {category}
+                {formatCategoryName(category)}
               </Link>
             ))}
           </nav>

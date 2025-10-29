@@ -6,6 +6,7 @@ import {
   getSiteSettings,
 } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
+import { formatCategoryName } from "@/lib/utils";
 import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
@@ -85,6 +86,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const displayCategory = formatCategoryName(category);
   const { previous, next } = await getAdjacentArticles(category, article.index);
   const relatedArticles = await getArticlesByCategory(category);
 
@@ -129,7 +131,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto">
           <Breadcrumbs
             items={[
-              { label: category, href: `/${encodeURIComponent(category)}` },
+              {
+                label: displayCategory,
+                href: `/${encodeURIComponent(category)}`,
+              },
               { label: article.title },
             ]}
           />
@@ -137,8 +142,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded capitalize">
-                {category}
+              <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded">
+                {displayCategory}
               </span>
               <time
                 className="text-sm text-muted-foreground"

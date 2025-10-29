@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArticleMetadata } from "@/lib/markdown";
+import { formatCategoryName } from "@/lib/utils";
 
 interface RelatedArticlesProps {
   articles: ArticleMetadata[];
@@ -23,7 +24,7 @@ export default function RelatedArticles({
   return (
     <aside className="mt-12 pt-8 border-t border-border">
       <h3 className="text-lg font-semibold text-foreground mb-4">
-        More in {category}
+        More in {formatCategoryName(category)}
       </h3>
       <ul className="space-y-3">
         {related.map((article) => (

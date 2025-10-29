@@ -3,6 +3,7 @@ import {
   getCategories,
   getSiteSettings,
 } from "@/lib/markdown";
+import { formatCategoryName } from "@/lib/utils";
 import ArticleCard from "@/components/ArticleCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { notFound } from "next/navigation";
@@ -20,15 +21,14 @@ export async function generateMetadata({
   const { category: encodedCategory } = await params;
   const category = decodeURIComponent(encodedCategory);
   const { siteTitle } = getSiteSettings();
-  const capitalizedCategory =
-    category.charAt(0).toUpperCase() + category.slice(1);
+  const displayCategory = formatCategoryName(category);
 
   return {
-    title: `${capitalizedCategory} - ${siteTitle}`,
-    description: `Browse all ${capitalizedCategory} articles`,
+    title: `${displayCategory} - ${siteTitle}`,
+    description: `Browse all ${displayCategory} articles`,
     openGraph: {
-      title: `${capitalizedCategory} - ${siteTitle}`,
-      description: `Browse all ${capitalizedCategory} articles`,
+      title: `${displayCategory} - ${siteTitle}`,
+      description: `Browse all ${displayCategory} articles`,
     },
   };
 }
@@ -49,14 +49,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
+  const displayCategory = formatCategoryName(category);
+
   return (
     <main id="main-content" className="min-h-screen bg-background">
       <div className="px-6 py-12 sm:py-16 max-w-6xl mx-auto">
-        <Breadcrumbs items={[{ label: category }]} />
+        <Breadcrumbs items={[{ label: displayCategory }]} />
 
         <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-2 capitalize">
-            {category}
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
+            {displayCategory}
           </h1>
           <p className="text-lg text-muted-foreground">
             {articles.length} {articles.length === 1 ? "article" : "articles"}
