@@ -29,18 +29,43 @@ All content lives in `content/[category]/[number]-[slug].md`
 - **Slug:** Lowercase with dashes (no spaces, no underscores)
 - **Examples:** `01-intro.md`, `15-advanced-tips.md`
 
+### ⚠️ CRITICAL: File Numbering Rules
+
+**BEFORE creating ANY new article:**
+
+1. **Check existing files** in the target category folder
+2. **Find the highest number** currently in use
+3. **Add 1 to that number** for your new file
+4. **NEVER duplicate numbers** - each file must have a unique number
+
+**Example workflow:**
+
+```
+Existing files in content/tutorials/:
+- 01-getting-started.md
+- 02-routing-basics.md
+- 03-api-routes.md
+
+Next file should be: 04-[new-topic].md (NOT 01, 02, or 03!)
+```
+
+**If the category folder doesn't exist:**
+
+- Start with `01-[slug].md`
+- Create the folder first: `content/[category]/`
+
 ---
 
 ## Article Template
 
-**ALWAYS use this structure** when creating new articles:
+**ALWAYS use this EXACT structure** when creating new articles:
 
 ```markdown
 ---
 title: "Article Title Here"
 description: "SEO-friendly description (120-160 characters)"
 date: "DD-MM-YYYY"
-featured: true/false
+featured: true
 tags: ["tag1", "tag2", "tag3"]
 image: "https://example.com/image.jpg"
 ---
@@ -74,16 +99,55 @@ Summary and next steps...
 
 ### Front Matter Rules
 
-**Required fields:**
+**Required fields (NEVER omit any):**
 
 - `title` - Article title (60 chars max for SEO)
 - `description` - Meta description (120-160 chars, compelling)
-- `date` - Format: DD-MM-YYYY (example: 28-10-2025)
-- `featured` - Boolean (true = shows on homepage)
-- `tags` - Array of 3-7 tags (lowercase, relevant)
+- `date` - Format: DD-MM-YYYY (example: 30-10-2025)
+- `featured` - Boolean (true or false, NO quotes)
+- `tags` - Array of 3-7 tags (lowercase, relevant, in brackets)
 - `image` - Hero image URL (use Unsplash or hosted images)
 
-**Date format is critical:** Always DD-MM-YYYY (28-10-2025, not 2025-10-28)
+### ⚠️ CRITICAL: Front Matter Format
+
+**COMMON MISTAKES TO AVOID:**
+
+❌ **WRONG:**
+
+```yaml
+---
+title: Article Title (missing quotes)
+featured: "true" (quoted boolean)
+tags: tag1, tag2 (missing brackets)
+date: 2025-10-30 (wrong date format)
+---
+```
+
+✅ **CORRECT:**
+
+```yaml
+---
+title: "Article Title Here"
+description: "Clear and compelling description"
+date: "30-10-2025"
+featured: true
+tags: ["tag1", "tag2", "tag3"]
+image: "https://images.unsplash.com/photo-1234567890"
+---
+```
+
+**Front Matter Validation Checklist:**
+
+- [ ] Title has quotes: `"title"`
+- [ ] Description has quotes: `"description"`
+- [ ] Date format is DD-MM-YYYY with quotes: `"30-10-2025"`
+- [ ] Featured is boolean without quotes: `true` or `false`
+- [ ] Tags are in array with brackets: `["tag1", "tag2"]`
+- [ ] Image URL has quotes: `"https://..."`
+- [ ] Three dashes (---) before and after
+- [ ] No extra spaces or indentation
+
+**Date format is critical:** Always DD-MM-YYYY (30-10-2025, not 2025-10-30)
 
 ---
 
@@ -134,7 +198,36 @@ Summary and next steps...
 - `tutorials` - Step-by-step learning content
 - `guides` - In-depth how-to articles
 - `blog` - General posts and updates
-- Create new categories by making new folders
+- `sample` - Example content
+- Create new categories by making new folders in `content/`
+
+### ⚠️ CRITICAL: Creating New Categories
+
+**BEFORE writing content for a new category:**
+
+1. **Check if the category folder exists** in `content/`
+2. **If it doesn't exist, CREATE IT FIRST**
+3. **Then create the article file inside it**
+
+**Workflow for new category:**
+
+```bash
+# Step 1: Create the category folder
+content/[new-category]/
+
+# Step 2: Create the first article
+content/[new-category]/01-first-article.md
+```
+
+**Example:**
+
+```
+User requests: "Create an article about web design in the 'design' category"
+
+Step 1: Check - does content/design/ exist? NO
+Step 2: CREATE folder: content/design/
+Step 3: CREATE file: content/design/01-web-design-basics.md
+```
 
 ### Category Tone
 
@@ -146,6 +239,16 @@ Summary and next steps...
 
 ## When I Ask You to Create Content
 
+### ⚠️ MANDATORY FIRST STEPS
+
+**BEFORE creating ANY content, you MUST:**
+
+1. **List existing files** in the target category using file search
+2. **Identify the highest number** currently used
+3. **Check if category folder exists** - create if needed
+4. **Plan the numbering** for new articles (next sequential number)
+5. **Show me the plan** before generating content
+
 ### Single Article Request
 
 **Example prompt from me:**
@@ -154,14 +257,16 @@ Summary and next steps...
 
 **Your response should:**
 
-1. Ask clarifying questions:
+1. **First, say:** "Let me check existing files in content/tutorials/..."
+2. **List current files** and their numbers
+3. **Propose next number:** "I'll create 04-react-hooks.md (following 01, 02, 03)"
+4. Ask clarifying questions:
    - Target audience? (beginner/intermediate/advanced)
    - Specific hooks to cover?
    - Length preference?
    - Should it be featured?
-2. Generate complete article with proper front matter
-3. Suggest filename: `content/tutorials/[number]-react-hooks.md`
-4. Provide the full content ready to save
+5. Generate complete article with proper front matter
+6. Provide full content ready to save
 
 ### Multiple Articles Request
 
@@ -171,11 +276,20 @@ Summary and next steps...
 
 **Your response should:**
 
-1. Suggest topics and ordering
-2. Generate all 5 articles with sequential numbering
-3. Vary the `featured` flag (first 2 true, rest false)
-4. Use consistent tags across related articles
-5. Provide all content ready to save
+1. **First, check existing files** in the target category
+2. **Identify next available numbers** (e.g., if 01-03 exist, use 04-08)
+3. Suggest topics and ordering with correct numbers
+4. Generate all 5 articles with sequential numbering (NO duplicates!)
+5. Vary the `featured` flag (first 2 true, rest false)
+6. Use consistent tags across related articles
+7. **Show file structure** before content:
+   ```
+   content/tutorials/04-nextjs-intro.md
+   content/tutorials/05-nextjs-routing.md
+   content/tutorials/06-nextjs-data.md
+   content/tutorials/07-nextjs-api.md
+   content/tutorials/08-nextjs-deploy.md
+   ```
 
 ### Series Creation
 
@@ -185,10 +299,12 @@ Summary and next steps...
 
 **Your response should:**
 
-1. Plan the series arc (Part 1: Basics → Part 2: Intermediate → Part 3: Advanced)
-2. Reference previous parts when relevant
-3. Use consistent tags: `["typescript", "series"]`
-4. Number sequentially: 01-basics, 02-intermediate, 03-advanced
+1. **Check existing files** in target category
+2. **Plan sequential numbers** (e.g., 04-05-06, NOT 01-01-01)
+3. Plan the series arc (Part 1: Basics → Part 2: Intermediate → Part 3: Advanced)
+4. Reference previous parts when relevant
+5. Use consistent tags: `["typescript", "series"]`
+6. Number sequentially: 04-basics, 05-intermediate, 06-advanced
 
 ---
 
@@ -348,9 +464,13 @@ Key points...
 
 Before providing content, ensure:
 
+- [ ] **CHECKED existing files** for numbering (NO duplicates!)
+- [ ] **VERIFIED category folder exists** (create if needed)
+- [ ] **PLANNED sequential numbering** (next available number)
 - [ ] Front matter is complete and properly formatted
-- [ ] Date is in DD-MM-YYYY format
-- [ ] Tags are relevant and lowercase
+- [ ] Date is in DD-MM-YYYY format with quotes
+- [ ] Featured is boolean WITHOUT quotes (true or false)
+- [ ] Tags are in array brackets with quotes: `["tag1", "tag2"]`
 - [ ] Title is under 60 characters
 - [ ] Description is 120-160 characters
 - [ ] Code examples have language identifiers
@@ -358,6 +478,7 @@ Before providing content, ensure:
 - [ ] Images have descriptive URLs or placeholders
 - [ ] Content matches the requested category tone
 - [ ] Article provides real value (not filler)
+- [ ] **SHOWED user the file structure/numbering plan** before generating
 
 ---
 
@@ -408,20 +529,32 @@ Target: developers new to Tailwind. 1200 words."
 ❌ Skip heading levels (# to ###)  
 ❌ Use relative image paths  
 ❌ Include raw HTML (use markdown)  
-❌ Write generic filler content
+❌ Write generic filler content  
+❌ **DUPLICATE file numbers** (e.g., two files named 01-\*.md)  
+❌ **Create files without checking existing numbering**  
+❌ **Quote boolean values** (use `true` not `"true"`)  
+❌ **Forget to create category folders**  
+❌ **Skip the array brackets for tags**  
+❌ **Add "index" or file numbers to CTA links** (e.g., `/guides/01-setup` or `/guides/setup/index`)
 
 ---
 
 ## Do This Instead
 
 ✅ Complete all front matter  
-✅ Use DD-MM-YYYY dates  
+✅ Use DD-MM-YYYY dates with quotes: `"30-10-2025"`  
 ✅ Write compelling descriptions  
 ✅ Specify code languages  
 ✅ Nest headings properly  
 ✅ Use full image URLs  
 ✅ Use markdown features  
-✅ Provide real, valuable content
+✅ Provide real, valuable content  
+✅ **CHECK existing files FIRST**  
+✅ **Use next sequential number** (if last is 03, use 04)  
+✅ **Use boolean without quotes:** `featured: true`  
+✅ **Create category folder if needed**  
+✅ **Use array syntax for tags:** `["tag1", "tag2"]`  
+✅ **Use clean CTA links:** `/category/slug` (no numbers, no index)
 
 ---
 
@@ -464,12 +597,86 @@ Target: developers new to Tailwind. 1200 words."
 
 ## Remember
 
-1. **Always follow the template** - Consistency is key
-2. **Front matter is critical** - The site won't work without it
-3. **Date format matters** - DD-MM-YYYY, not YYYY-MM-DD
-4. **Quality over quantity** - Better one great article than five mediocre ones
-5. **Test locally** - I'll run `npm run dev` to preview
-6. **Think SEO** - Optimize titles, descriptions, and content
+1. **ALWAYS check existing files FIRST** - Never duplicate numbers
+2. **ALWAYS create category folders** - Before creating content
+3. **Front matter format is critical** - Boolean without quotes, tags in brackets
+4. **Date format matters** - DD-MM-YYYY with quotes: `"30-10-2025"`
+5. **Sequential numbering** - If 01-05 exist, next is 06
+6. **Quality over quantity** - Better one great article than five mediocre ones
+7. **Show your plan** - List existing files and proposed numbering before generating
+8. **Test the format** - Verify front matter matches the template exactly
+
+---
+
+## Special File: homepage.md
+
+### Location
+
+`content/homepage.md` (NOT in a category folder)
+
+### Structure
+
+```yaml
+---
+title: "Site Title"
+subtitle: "Site Subtitle"
+description: "SEO description"
+image: "https://images.unsplash.com/photo-..."
+navbar:
+  title: "Nav Title"
+  logo: ""
+cta:
+  text: "Button Text"
+  link: "/category/article-slug"
+---
+```
+
+### ⚠️ CRITICAL: CTA Link Format
+
+**CTA links should point to article slugs WITHOUT "index"**
+
+❌ **WRONG:**
+
+```yaml
+cta:
+  link: "/guides/01-tailwind-setup"  # NO file number!
+  link: "/tutorials/index"           # NO index!
+  link: "/guides/tailwind-setup/index" # NO index!
+```
+
+✅ **CORRECT:**
+
+```yaml
+cta:
+  link: "/guides/tailwind-setup"     # Just category + slug
+  link: "/tutorials/getting-started" # Clean URL
+  link: "/blog/welcome"              # No file numbers
+```
+
+**Link Format Rules:**
+
+- Format: `/[category]/[slug]` (NO file numbers, NO index)
+- Use the article's slug (from filename), not the number
+- Never append `/index` to any link
+- Example: File `01-tailwind-setup.md` → Link `/guides/tailwind-setup`
+
+---
+
+## Pre-Generation Checklist
+
+**BEFORE generating ANY content, ask yourself:**
+
+1. ✅ Did I search for existing files in this category?
+2. ✅ Did I identify the highest number used?
+3. ✅ Did I plan the next sequential number(s)?
+4. ✅ Does the category folder exist? (Create if not)
+5. ✅ Did I show the user my numbering plan?
+6. ✅ Is my front matter format exactly correct?
+7. ✅ Are all required fields present?
+8. ✅ Is the date in DD-MM-YYYY format?
+9. ✅ If editing homepage.md, did I use correct CTA link format? (NO index!)
+
+**If you answered NO to any question, STOP and fix it first!**
 
 ---
 

@@ -64,7 +64,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const categories = getCategories();
+  const categories = await getCategories();
   const params = [];
 
   for (const category of categories) {

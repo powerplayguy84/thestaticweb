@@ -24,6 +24,12 @@ interface Article {
   rawContent: string;
 }
 
+interface CategoryInfo {
+  folderName: string;
+  slug: string;
+  index: number;
+}
+
 type SaveStatus = "saved" | "saving" | "unsaved" | "idle";
 
 export default function AdminPage() {
@@ -31,7 +37,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [isProduction, setIsProduction] = useState(false);
 
   // Editor state

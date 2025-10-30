@@ -2,6 +2,7 @@ import {
   getArticlesByCategory,
   getCategories,
   getSiteSettings,
+  getCategoriesWithInfo,
 } from "@/lib/markdown";
 import { formatCategoryName } from "@/lib/utils";
 import ArticleCard from "@/components/ArticleCard";
@@ -21,20 +22,26 @@ export async function generateMetadata({
   const { category: encodedCategory } = await params;
   const category = decodeURIComponent(encodedCategory);
   const { siteTitle } = getSiteSettings();
-  const displayCategory = formatCategoryName(category);
+
+  const categoriesInfo = await getCategoriesWithInfo();
+  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+
+  const displayCategory = categoryInfo?.title || formatCategoryName(category);
+  const description =
+    categoryInfo?.description || `Browse all ${displayCategory} articles`;
 
   return {
     title: `${displayCategory} - ${siteTitle}`,
-    description: `Browse all ${displayCategory} articles`,
+    description,
     openGraph: {
       title: `${displayCategory} - ${siteTitle}`,
-      description: `Browse all ${displayCategory} articles`,
+      description,
     },
   };
 }
 
 export async function generateStaticParams() {
-  const categories = getCategories();
+  const categories = await getCategories();
   return categories.map((category) => ({
     category: encodeURIComponent(category),
   }));
@@ -49,7 +56,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const displayCategory = formatCategoryName(category);
+  const categoriesInfo = await getCategoriesWithInfo();
+  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+
+  const displayCategory = categoryInfo?.title || formatCategoryName(category);
+  const description = categoryInfo?.description;
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
@@ -60,7 +71,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
             {displayCategory}
           </h1>
-          <p className="text-lg text-muted-foreground">
+          {description && (
+            <p className="text-lg text-muted-foreground mb-2">{description}</p>
+          )}
+          <p className="text-sm text-muted-foreground">
             {articles.length} {articles.length === 1 ? "article" : "articles"}
           </p>
         </div>

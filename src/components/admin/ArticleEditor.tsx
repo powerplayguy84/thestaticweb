@@ -13,9 +13,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FileText, FileSearch } from "lucide-react";
+import { formatCategoryName } from "@/lib/utils";
+
+interface CategoryInfo {
+  folderName: string;
+  slug: string;
+  index: number;
+}
 
 interface ArticleEditorProps {
-  categories: string[];
+  categories: CategoryInfo[];
   initialContent?: string;
   initialCategory?: string;
   initialIndex?: string;
@@ -144,8 +151,8 @@ export function ArticleEditor({
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
+                <SelectItem key={cat.slug} value={cat.slug}>
+                  {formatCategoryName(cat.slug)}
                 </SelectItem>
               ))}
             </SelectContent>

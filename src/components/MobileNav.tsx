@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/sheet";
 import ThemeToggle from "@/components/ThemeToggle";
 import Search from "@/components/Search";
+import type { CategoryInfo } from "@/lib/markdown";
 
 interface MobileNavProps {
-  categories: string[];
+  categoriesInfo: CategoryInfo[];
 }
 
-export default function MobileNav({ categories }: MobileNavProps) {
+export default function MobileNav({ categoriesInfo }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -50,14 +51,14 @@ export default function MobileNav({ categories }: MobileNavProps) {
               <Home className="w-5 h-5" />
               Home
             </Link>
-            {categories.map((category) => (
+            {categoriesInfo.map((category) => (
               <Link
-                key={category}
-                href={`/${encodeURIComponent(category)}`}
+                key={category.slug}
+                href={`/${encodeURIComponent(category.slug)}`}
                 onClick={() => setIsOpen(false)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-3 px-2 rounded-lg hover:bg-muted min-h-[48px]"
               >
-                {formatCategoryName(category)}
+                {category.title || formatCategoryName(category.slug)}
               </Link>
             ))}
           </nav>

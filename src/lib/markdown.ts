@@ -25,10 +25,43 @@ export interface Article {
 
 export type ArticleMetadata = Omit<Article, "content">;
 
+export interface CategoryInfo {
+  slug: string;
+  name: string;
+  index: number;
+  title?: string;
+  description?: string;
+}
+
 /**
- * Get all categories (excluding hidden ones)
+ * Get category metadata from index.md if it exists
  */
-export function getCategories(): string[] {
+async function getCategoryMetadata(
+  categoryFolderName: string
+): Promise<{ title?: string; description?: string }> {
+  const indexPath = path.join(CONTENT_DIR, categoryFolderName, "index.md");
+
+  if (!fs.existsSync(indexPath)) {
+    return {};
+  }
+
+  try {
+    const fileContent = fs.readFileSync(indexPath, "utf-8");
+    const { data } = matter(fileContent);
+
+    return {
+      title: data.title,
+      description: data.description,
+    };
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Get all categories with their metadata (excluding hidden ones)
+ */
+export async function getCategoriesWithInfo(): Promise<CategoryInfo[]> {
   const items = fs.readdirSync(CONTENT_DIR, { withFileTypes: true });
 
   // Read hidden categories from settings
@@ -41,11 +74,50 @@ export function getCategories(): string[] {
     hiddenCategories = data.hiddenCategories || [];
   }
 
-  return items
+  const categoriesPromises = items
     .filter((item) => item.isDirectory())
-    .map((item) => item.name)
-    .filter((name) => !hiddenCategories.includes(name))
-    .sort();
+    .map(async (item) => {
+      const folderName = item.name;
+      // Extract index from folder name (e.g., "01-guides" -> index: 1, slug: "guides")
+      const indexMatch = folderName.match(/^(\d+)-/);
+      const index = indexMatch ? parseInt(indexMatch[1], 10) : 999;
+      const slug = folderName.replace(/^\d+-/, "");
+
+      // Get metadata from index.md if it exists
+      const metadata = await getCategoryMetadata(folderName);
+
+      return {
+        slug,
+        name: folderName,
+        index,
+        title: metadata.title,
+        description: metadata.description,
+      };
+    });
+
+  const categories = await Promise.all(categoriesPromises);
+
+  const filtered = categories.filter(
+    (cat) =>
+      !hiddenCategories.includes(cat.slug) &&
+      !hiddenCategories.includes(cat.name)
+  );
+
+  // Sort by index first, then by slug alphabetically
+  return filtered.sort((a, b) => {
+    if (a.index !== b.index) {
+      return a.index - b.index;
+    }
+    return a.slug.localeCompare(b.slug);
+  });
+}
+
+/**
+ * Get all categories (excluding hidden ones) - returns slugs only
+ */
+export async function getCategories(): Promise<string[]> {
+  const categoriesInfo = await getCategoriesWithInfo();
+  return categoriesInfo.map((cat) => cat.slug);
 }
 
 /**
@@ -87,7 +159,15 @@ async function parseMarkdownFile(filePath: string): Promise<{
 export async function getArticlesByCategory(
   category: string
 ): Promise<ArticleMetadata[]> {
-  const categoryPath = path.join(CONTENT_DIR, category);
+  // Find the actual folder name for this category slug
+  const categoriesInfo = await getCategoriesWithInfo();
+  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+
+  if (!categoryInfo) {
+    return [];
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, categoryInfo.name);
 
   if (!fs.existsSync(categoryPath)) {
     return [];
@@ -95,7 +175,7 @@ export async function getArticlesByCategory(
 
   const files = fs
     .readdirSync(categoryPath)
-    .filter((file) => file.endsWith(".md"));
+    .filter((file) => file.endsWith(".md") && file !== "index.md");
 
   const articles: ArticleMetadata[] = await Promise.all(
     files.map(async (file) => {
@@ -125,7 +205,15 @@ export async function getArticle(
   category: string,
   slug: string
 ): Promise<Article | null> {
-  const categoryPath = path.join(CONTENT_DIR, category);
+  // Find the actual folder name for this category slug
+  const categoriesInfo = await getCategoriesWithInfo();
+  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+
+  if (!categoryInfo) {
+    return null;
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, categoryInfo.name);
 
   if (!fs.existsSync(categoryPath)) {
     return null;
@@ -133,7 +221,7 @@ export async function getArticle(
 
   const files = fs
     .readdirSync(categoryPath)
-    .filter((file) => file.endsWith(".md"));
+    .filter((file) => file.endsWith(".md") && file !== "index.md");
   const targetFile = files.find(
     (file) => file.replace(/^\d+-/, "").replace(/\.md$/, "") === slug
   );
@@ -161,7 +249,7 @@ export async function getArticle(
  * Get all articles (across all categories)
  */
 export async function getAllArticles(): Promise<ArticleMetadata[]> {
-  const categories = getCategories();
+  const categories = await getCategories();
   const allArticles = await Promise.all(
     categories.map((cat) => getArticlesByCategory(cat))
   );
@@ -174,16 +262,16 @@ export async function getAllArticles(): Promise<ArticleMetadata[]> {
  * Get all articles with full content (for search indexing)
  */
 export async function getAllArticlesWithContent(): Promise<Article[]> {
-  const categories = getCategories();
+  const categoriesInfo = await getCategoriesWithInfo();
   const allArticles: Article[] = [];
 
-  for (const category of categories) {
-    const categoryPath = path.join(CONTENT_DIR, category);
+  for (const categoryInfo of categoriesInfo) {
+    const categoryPath = path.join(CONTENT_DIR, categoryInfo.name);
     if (!fs.existsSync(categoryPath)) continue;
 
     const files = fs
       .readdirSync(categoryPath)
-      .filter((file) => file.endsWith(".md"));
+      .filter((file) => file.endsWith(".md") && file !== "index.md");
 
     for (const file of files) {
       const filePath = path.join(categoryPath, file);
@@ -195,7 +283,7 @@ export async function getAllArticlesWithContent(): Promise<Article[]> {
 
       allArticles.push({
         slug,
-        category,
+        category: categoryInfo.slug,
         index,
         ...metadata,
         content,

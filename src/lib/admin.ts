@@ -29,13 +29,33 @@ export function getAdminSettings(): AdminSettings {
 /**
  * Get all categories including hidden ones
  */
-export function getAllCategories(): string[] {
+export function getAllCategories(): Array<{
+  folderName: string;
+  slug: string;
+  index: number;
+}> {
   const items = fs.readdirSync(CONTENT_DIR, { withFileTypes: true });
 
   return items
     .filter((item) => item.isDirectory())
-    .map((item) => item.name)
-    .sort();
+    .map((item) => {
+      const folderName = item.name;
+      const indexMatch = folderName.match(/^(\d+)-/);
+      const index = indexMatch ? parseInt(indexMatch[1], 10) : 999;
+      const slug = folderName.replace(/^\d+-/, "");
+
+      return {
+        folderName,
+        slug,
+        index,
+      };
+    })
+    .sort((a, b) => {
+      if (a.index !== b.index) {
+        return a.index - b.index;
+      }
+      return a.slug.localeCompare(b.slug);
+    });
 }
 
 /**
@@ -92,14 +112,22 @@ export function renameCategory(oldName: string, newName: string): void {
 /**
  * Get all articles in a category with their raw content
  */
-export function getArticlesRaw(category: string): Array<{
+export function getArticlesRaw(categorySlug: string): Array<{
   filename: string;
   slug: string;
   index: number;
   title: string;
   rawContent: string;
 }> {
-  const categoryPath = path.join(CONTENT_DIR, category);
+  // Find the actual folder name for this category slug
+  const categories = getAllCategories();
+  const category = categories.find((cat) => cat.slug === categorySlug);
+
+  if (!category) {
+    return [];
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, category.folderName);
 
   if (!fs.existsSync(categoryPath)) {
     return [];
@@ -107,7 +135,7 @@ export function getArticlesRaw(category: string): Array<{
 
   const files = fs
     .readdirSync(categoryPath)
-    .filter((file) => file.endsWith(".md"));
+    .filter((file) => file.endsWith(".md") && file !== "index.md");
 
   return files
     .map((filename) => {
@@ -134,15 +162,23 @@ export function getArticlesRaw(category: string): Array<{
  * Create a new article
  */
 export function createArticle(
-  category: string,
+  categorySlug: string,
   index: number,
   slug: string,
   content: string
 ): void {
-  const categoryPath = path.join(CONTENT_DIR, category);
+  // Find the actual folder name for this category slug
+  const categories = getAllCategories();
+  const category = categories.find((cat) => cat.slug === categorySlug);
+
+  if (!category) {
+    throw new Error(`Category "${categorySlug}" does not exist`);
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, category.folderName);
 
   if (!fs.existsSync(categoryPath)) {
-    throw new Error(`Category "${category}" does not exist`);
+    throw new Error(`Category "${categorySlug}" does not exist`);
   }
 
   const filename = `${String(index).padStart(2, "0")}-${slug}.md`;
@@ -159,13 +195,21 @@ export function createArticle(
  * Update an existing article
  */
 export function updateArticle(
-  category: string,
+  categorySlug: string,
   oldFilename: string,
   newIndex: number,
   newSlug: string,
   content: string
 ): void {
-  const categoryPath = path.join(CONTENT_DIR, category);
+  // Find the actual folder name for this category slug
+  const categories = getAllCategories();
+  const category = categories.find((cat) => cat.slug === categorySlug);
+
+  if (!category) {
+    throw new Error(`Category "${categorySlug}" does not exist`);
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, category.folderName);
   const oldFilePath = path.join(categoryPath, oldFilename);
 
   if (!fs.existsSync(oldFilePath)) {
@@ -187,8 +231,16 @@ export function updateArticle(
 /**
  * Delete an article
  */
-export function deleteArticle(category: string, filename: string): void {
-  const categoryPath = path.join(CONTENT_DIR, category);
+export function deleteArticle(categorySlug: string, filename: string): void {
+  // Find the actual folder name for this category slug
+  const categories = getAllCategories();
+  const category = categories.find((cat) => cat.slug === categorySlug);
+
+  if (!category) {
+    throw new Error(`Category "${categorySlug}" does not exist`);
+  }
+
+  const categoryPath = path.join(CONTENT_DIR, category.folderName);
   const filePath = path.join(categoryPath, filename);
 
   if (!fs.existsSync(filePath)) {

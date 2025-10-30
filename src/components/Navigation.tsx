@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getCategories, getHomepageHero } from "@/lib/markdown";
+import { getCategoriesWithInfo, getHomepageHero } from "@/lib/markdown";
 import MobileNav from "@/components/MobileNav";
 import ThemeToggle from "@/components/ThemeToggle";
 import Search from "@/components/Search";
+import { formatCategoryName } from "@/lib/utils";
 
 export default async function Navigation() {
-  const [categories, hero] = await Promise.all([
-    getCategories(),
+  const [categoriesInfo, hero] = await Promise.all([
+    getCategoriesWithInfo(),
     getHomepageHero(),
   ]);
 
@@ -41,20 +42,20 @@ export default async function Navigation() {
         </Link>
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
-          {categories.map((category) => (
+          {categoriesInfo.map((category) => (
             <Link
-              key={category}
-              href={`/${encodeURIComponent(category)}`}
+              key={category.slug}
+              href={`/${encodeURIComponent(category.slug)}`}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors capitalize"
             >
-              {category}
+              {category.title || formatCategoryName(category.slug)}
             </Link>
           ))}
           <Search />
           <ThemeToggle />
         </div>
         {/* Mobile Navigation */}
-        <MobileNav categories={categories} />
+        <MobileNav categoriesInfo={categoriesInfo} />
       </div>
     </nav>
   );

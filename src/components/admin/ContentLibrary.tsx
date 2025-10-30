@@ -40,6 +40,12 @@ interface Article {
   rawContent: string;
 }
 
+interface CategoryInfo {
+  folderName: string;
+  slug: string;
+  index: number;
+}
+
 interface TreeDataItem {
   id: string;
   name: string;
@@ -59,7 +65,7 @@ export function ContentLibrary({
   onCreateNew,
 }: ContentLibraryProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [categoryArticles, setCategoryArticles] = useState<
     Record<string, Article[]>
   >({});
@@ -119,8 +125,8 @@ export function ContentLibrary({
   useEffect(() => {
     // Fetch articles for all categories when they change
     categories.forEach((category) => {
-      if (!categoryArticles[category]) {
-        fetchArticlesForCategory(category);
+      if (!categoryArticles[category.slug]) {
+        fetchArticlesForCategory(category.slug);
       }
     });
   }, [categories]);
@@ -128,11 +134,13 @@ export function ContentLibrary({
   // Build tree data structure
   const treeData = useMemo<TreeDataItem[]>(() => {
     return categories.map((category) => {
-      const articles = categoryArticles[category] || [];
+      const articles = categoryArticles[category.slug] || [];
+      const displayName =
+        category.slug.charAt(0).toUpperCase() + category.slug.slice(1);
 
       return {
-        id: `category-${category}`,
-        name: category,
+        id: `category-${category.slug}`,
+        name: displayName,
         icon: Folder,
         actions: (
           <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
@@ -151,8 +159,8 @@ export function ContentLibrary({
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
-                setTargetCategory(category);
-                setRenameTo(category);
+                setTargetCategory(category.slug);
+                setRenameTo(category.slug);
                 setCategoryAction("rename");
                 setShowCategoryDialog(true);
               }}
@@ -164,7 +172,7 @@ export function ContentLibrary({
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
-                setTargetCategory(category);
+                setTargetCategory(category.slug);
                 setCategoryAction("delete");
                 setShowCategoryDialog(true);
               }}
@@ -174,8 +182,8 @@ export function ContentLibrary({
             </div>
           </div>
         ),
-        children: articles.map((article) => ({
-          id: `article-${category}-${article.filename}`,
+        children: articles.map((article: Article) => ({
+          id: `article-${category.slug}-${article.filename}`,
           name: article.title,
           icon: FileText,
           actions: (
@@ -184,7 +192,7 @@ export function ContentLibrary({
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onLoadArticle(category, article);
+                  onLoadArticle(category.slug, article);
                   setIsOpen(false);
                 }}
               >
@@ -194,7 +202,7 @@ export function ContentLibrary({
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setArticleToDelete({ article, category });
+                  setArticleToDelete({ article, category: category.slug });
                   setShowDeleteDialog(true);
                 }}
               >
@@ -203,7 +211,7 @@ export function ContentLibrary({
             </div>
           ),
           onClick: () => {
-            onLoadArticle(category, article);
+            onLoadArticle(category.slug, article);
             setIsOpen(false);
           },
         })),
