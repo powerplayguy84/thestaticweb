@@ -21,7 +21,7 @@ image: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jp
 | Task lists    | ✅        | `- [ ]` and `- [x]`      |
 | Strikethrough | ✅        | `~~text~~`               |
 
-# Setting Up Tailwind CSS v4s
+# Setting Up Tailwind CSS v4
 
 Tailwind CSS v4 represents a major evolution in utility-first CSS, bringing significant improvements, a simplified setup process, and enhanced performance. This guide walks you through everything you need to get started.
 

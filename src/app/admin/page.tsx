@@ -62,6 +62,8 @@ export default function AdminPage() {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  // Snapshot of the editor state at last load/save. Used to detect real "dirty" changes
+  const [editorSnapshot, setEditorSnapshot] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -109,6 +111,15 @@ export default function AdminPage() {
           setCurrentCategory(category);
           setIsCreatingNew(false);
           setEditorKey((prev) => prev + 1);
+          // Set snapshot so the editor isn't marked as "unsaved" immediately
+          setEditorSnapshot(
+            JSON.stringify({
+              category,
+              index: String(article.index).padStart(2, "0"),
+              slug: article.slug,
+              content: article.rawContent,
+            })
+          );
         }
       } catch (err) {
         console.error("Failed to restore selected article:", err);
@@ -116,6 +127,9 @@ export default function AdminPage() {
       }
     }
   }, [isAuthenticated]);
+
+  // Helper to produce the default content for a new article (keeps in sync with JSX below)
+  const buildNewArticleTemplate = () => `---\ntitle: "New Article"\ndescription: "Article description"\ndate: "${new Date().toISOString().split("T")[0]}"\nfeatured: false\ntags: []\n---\n\n# New Article\n\nYour content here...\n`;
 
   const fetchCategories = async () => {
     try {
@@ -175,6 +189,15 @@ export default function AdminPage() {
       "admin_selected_article",
       JSON.stringify({ category, article })
     );
+    // Capture snapshot of the loaded article so we don't immediately mark as dirty
+    setEditorSnapshot(
+      JSON.stringify({
+        category,
+        index: String(article.index).padStart(2, "0"),
+        slug: article.slug,
+        content: article.rawContent,
+      })
+    );
   };
 
   const handleCreateNew = (preselectedCategory?: string) => {
@@ -185,6 +208,15 @@ export default function AdminPage() {
 
     // Clear localStorage when creating new
     localStorage.removeItem("admin_selected_article");
+    // Set a snapshot equal to the initial new-article template so the editor isn't "dirty" on open
+    setEditorSnapshot(
+      JSON.stringify({
+        category: preselectedCategory || "",
+        index: "01",
+        slug: "",
+        content: buildNewArticleTemplate(),
+      })
+    );
   };
 
   // Get next available index for a category
@@ -353,6 +385,15 @@ export default function AdminPage() {
       fetchCategories();
       setSaveStatus("saved");
       setLastSaved(new Date());
+      // Update snapshot to the current editor values so subsequent state is considered clean
+      setEditorSnapshot(
+        JSON.stringify({
+          category: editorState.category,
+          index: String(parseInt(editorState.index, 10)).padStart(2, "0"),
+          slug: editorState.slug.trim(),
+          content: editorState.content,
+        })
+      );
       setRefreshTrigger((prev) => prev + 1); // Trigger content library refresh
 
       // Reset to idle after 3 seconds
@@ -365,23 +406,38 @@ export default function AdminPage() {
     }
   };
 
-  // Track unsaved changes
+  // Track unsaved changes by comparing the current editor state to the saved snapshot
   useEffect(() => {
     // Don't track if not editing an article
     if (!currentArticle && !isCreatingNew) {
       return;
     }
 
-    // Mark as unsaved when content changes (unless currently saving)
-    if (saveStatus !== "saving") {
-      setSaveStatus(editorState.isValid ? "unsaved" : "idle");
+    if (saveStatus === "saving") return;
+
+    // If we don't have a snapshot yet, treat as clean (idle)
+    if (!editorSnapshot) {
+      setSaveStatus("idle");
+      return;
     }
+
+    const current = JSON.stringify({
+      category: editorState.category,
+      index: editorState.index,
+      slug: editorState.slug,
+      content: editorState.content,
+    });
+
+    setSaveStatus(current !== editorSnapshot ? "unsaved" : "idle");
   }, [
     editorState.category,
     editorState.index,
     editorState.slug,
     editorState.content,
-    editorState.isValid,
+    editorSnapshot,
+    currentArticle,
+    isCreatingNew,
+    saveStatus,
   ]);
 
   // Format last saved time
