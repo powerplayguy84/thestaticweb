@@ -1,5 +1,77 @@
 # The Static Web
 
+# 🟢 Essential Steps: First 5 Things To Do
+
+1. **Clone & Install**
+
+- `git clone https://github.com/powerplayguy84/thestaticweb.git my-website`
+- `cd my-website && npm install && npm run dev`
+
+2. **Customize Homepage**
+
+- Edit `content/homepage.md` (title, subtitle, description, navbar)
+
+3. **Create Your First Article**
+
+- Copy `content/_templates/article-template.md` to your category folder
+- Edit front matter and content
+
+4. **Set Up Categories**
+
+- Create folders in `content/` with numeric prefixes (e.g., `01-guides`)
+- Add or reorder by renaming folders
+
+5. **Deploy**
+
+- Run `vercel` or see [DEPLOYMENT.md](./DEPLOYMENT.md) for options
+
+---
+
+# 🖼️ Visual Guide
+
+![Site Navigation Example](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/example-navigation.png)
+_Navigation bar with categories, search, and theme toggle._
+
+![Content Structure Diagram](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/content-structure-diagram.png)
+_How your markdown files and folders map to site navigation and URLs._
+
+---
+
+# ❓ Common Issues & FAQ
+
+**Q: npm install fails?**
+A: See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) for solutions (clear cache, legacy peer deps, etc).
+
+**Q: My changes don't show up?**
+A: Make sure to save files and refresh your browser. For config changes, restart `npm run dev`.
+
+**Q: How do I hide categories?**
+A: Add the folder name (not the index) to `hiddenCategories` in `content/settings.md`.
+
+**Q: How do I deploy?**
+A: Use Vercel (`vercel` CLI) or see [DEPLOYMENT.md](./DEPLOYMENT.md) for Netlify, GitHub Pages, etc.
+
+**Q: Can I use this commercially?**
+A: Yes! MIT License - use it for anything.
+
+**Q: Do I need to know React?**
+A: No! Just write markdown files. The site handles the rest.
+
+---
+
+# 🤝 Contributing
+
+We welcome issues and pull requests!
+
+1. Fork the repo and create your branch
+2. Make changes and commit with clear messages
+3. Open a pull request describing your changes
+4. For bugs or feature requests, open an issue in GitHub
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) if available, or use the GitHub issue tracker.
+
+---
+
 > **A production-ready starter template for markdown-based websites.** Deploy in minutes, customize with AI assistance, and publish beautiful static content with built-in search, dark mode, and image optimization.
 
 ## 👋 First Time Here?

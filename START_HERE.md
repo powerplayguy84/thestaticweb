@@ -1,5 +1,33 @@
 # 👋 Welcome to The Static Web!
 
+# 🟢 Essential Steps: First 5 Things To Do
+
+1. **Clone & Install**
+   - `git clone https://github.com/powerplayguy84/thestaticweb.git my-website`
+   - `cd my-website && npm install && npm run dev`
+2. **Customize Homepage**
+   - Edit `content/homepage.md` (title, subtitle, description, navbar)
+3. **Create Your First Article**
+   - Copy `content/_templates/article-template.md` to your category folder
+   - Edit front matter and content
+4. **Set Up Categories**
+   - Create folders in `content/` with numeric prefixes (e.g., `01-guides`)
+   - Add or reorder by renaming folders
+5. **Deploy**
+   - Run `vercel` or see [DEPLOYMENT.md](./DEPLOYMENT.md) for options
+
+---
+
+# 🖼️ Visual Guide
+
+![Site Navigation Example](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/example-navigation.png)
+_Navigation bar with categories, search, and theme toggle._
+
+![Content Structure Diagram](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/content-structure-diagram.png)
+_How your markdown files and folders map to site navigation and URLs._
+
+---
+
 **Thanks for using this template!** You're 3 steps away from having your own website.
 
 ---
