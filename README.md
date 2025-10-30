@@ -2,6 +2,10 @@
 
 # 🟢 Essential Steps: First 5 Things To Do
 
+6. **Explore Admin Panel**
+
+- See [ADMIN.md](./ADMIN.md) for admin features and setup
+
 1. **Clone & Install**
 
 - `git clone https://github.com/powerplayguy84/thestaticweb.git my-website`
