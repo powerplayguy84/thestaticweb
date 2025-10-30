@@ -319,9 +319,9 @@ export function ContentLibrary({
                 New Category
               </Button>
             </div>
-
+            <hr className="m-0" />
             {/* Tree View */}
-            <div className="border rounded-lg p-4">
+            <div>
               {treeData.length > 0 ? (
                 <TreeView
                   data={treeData}
