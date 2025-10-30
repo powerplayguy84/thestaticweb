@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,6 +64,7 @@ export function ArticleEditor({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const indexSetRef = useRef(false); // Track if index has been set
 
   // Helper function to convert slug to title format
   const slugToTitle = (slug: string): string => {
@@ -112,12 +113,21 @@ export function ArticleEditor({
 
   // Auto-update index when creating new article and category changes
   useEffect(() => {
-    if (isCreatingNew && category && getNextIndex) {
+    // Only set index once when creating new article and category is selected
+    if (isCreatingNew && category && getNextIndex && !indexSetRef.current) {
+      indexSetRef.current = true; // Mark as set
       getNextIndex(category).then((nextIndex) => {
         setIndex(String(nextIndex).padStart(2, "0"));
       });
     }
   }, [category, isCreatingNew, getNextIndex]);
+
+  // Reset indexSetRef when creating a new article
+  useEffect(() => {
+    if (!isCreatingNew) {
+      indexSetRef.current = false;
+    }
+  }, [isCreatingNew]);
 
   // Show empty state if no content and showEmptyState is true
   if (showEmptyState && !initialContent) {

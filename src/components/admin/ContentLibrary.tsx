@@ -125,13 +125,11 @@ export function ContentLibrary({
   }, [isOpen, refreshTrigger]);
 
   useEffect(() => {
-    // Fetch articles for all categories when they change
+    // Fetch articles for all categories when they change or when refresh is triggered
     categories.forEach((category) => {
-      if (!categoryArticles[category.slug]) {
-        fetchArticlesForCategory(category.slug);
-      }
+      fetchArticlesForCategory(category.slug);
     });
-  }, [categories]);
+  }, [categories, refreshTrigger]);
 
   // Build tree data structure
   const treeData = useMemo<TreeDataItem[]>(() => {
