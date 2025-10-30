@@ -82,6 +82,28 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Restore selected article from localStorage on mount
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const savedArticleData = localStorage.getItem("admin_selected_article");
+    if (savedArticleData) {
+      try {
+        const { category, article } = JSON.parse(savedArticleData);
+        if (category && article) {
+          // Restore the article state
+          setCurrentArticle(article);
+          setCurrentCategory(category);
+          setIsCreatingNew(false);
+          setEditorKey((prev) => prev + 1);
+        }
+      } catch (err) {
+        console.error("Failed to restore selected article:", err);
+        localStorage.removeItem("admin_selected_article");
+      }
+    }
+  }, [isAuthenticated]);
+
   const fetchCategories = async () => {
     try {
       const response = await fetch("/api/admin/categories");
@@ -123,6 +145,7 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("admin_auth");
+    localStorage.removeItem("admin_selected_article"); // Clear selected article on logout
     setIsAuthenticated(false);
     setPassword("");
     router.push("/");
@@ -133,6 +156,12 @@ export default function AdminPage() {
     setCurrentCategory(category);
     setIsCreatingNew(false);
     setEditorKey((prev) => prev + 1);
+
+    // Save to localStorage for persistence
+    localStorage.setItem(
+      "admin_selected_article",
+      JSON.stringify({ category, article })
+    );
   };
 
   const handleCreateNew = () => {
@@ -140,6 +169,9 @@ export default function AdminPage() {
     setCurrentCategory("");
     setIsCreatingNew(true);
     setEditorKey((prev) => prev + 1);
+
+    // Clear localStorage when creating new
+    localStorage.removeItem("admin_selected_article");
   };
 
   const handleSave = () => {
