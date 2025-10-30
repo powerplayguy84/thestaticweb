@@ -44,6 +44,10 @@ interface CategoryInfo {
   folderName: string;
   slug: string;
   index: number;
+  // optional visibility flags returned by the API
+  hidden?: boolean;
+  isHidden?: boolean;
+  visible?: boolean;
 }
 
 interface TreeDataItem {
@@ -94,7 +98,19 @@ export function ContentLibrary({
     try {
       const response = await fetch("/api/admin/categories");
       const data = await response.json();
-      setCategories(data.categories || []);
+      // Some backends mark categories as hidden using different flags
+      // (hidden, isHidden, or visible=false). Filter those out so the
+      // tree view doesn't show hidden categories.
+      const all = data.categories || [];
+      const visibleCategories = all.filter((c: any) => {
+        if (typeof c.hidden === "boolean") return !c.hidden;
+        if (typeof c.isHidden === "boolean") return !c.isHidden;
+        if (typeof c.visible === "boolean") return c.visible;
+        // default to visible when flag not present
+        return true;
+      });
+
+      setCategories(visibleCategories);
     } catch (err) {
       console.error("Failed to fetch categories:", err);
     }

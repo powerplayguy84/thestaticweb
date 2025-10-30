@@ -5,10 +5,21 @@ import {
   deleteCategory,
   renameCategory,
 } from "@/lib/admin";
+import { getCategoriesWithInfo } from "@/lib/markdown";
 
 export async function GET() {
   try {
-    const categories = getAllCategories();
+    // Use the markdown helper which reads `content/settings.md` and
+    // filters out hidden categories configured in `hiddenCategories`.
+    const categoriesInfo = await getCategoriesWithInfo();
+
+    // Map to the admin API shape (folderName, slug, index)
+    const categories = categoriesInfo.map((c) => ({
+      folderName: c.name,
+      slug: c.slug,
+      index: c.index,
+    }));
+
     return NextResponse.json({ categories });
   } catch (error) {
     return NextResponse.json(
