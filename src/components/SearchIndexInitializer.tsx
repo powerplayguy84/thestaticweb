@@ -1,8 +1,8 @@
-import { getAllArticles } from "@/lib/markdown";
+import { getAllArticlesWithContent } from "@/lib/markdown";
 import { initSearchIndex } from "@/components/Search";
 
 export async function SearchIndexInitializer() {
-  const articles = await getAllArticles();
+  const articles = await getAllArticlesWithContent();
 
   const searchData = articles.map((article) => ({
     title: article.title,
@@ -10,6 +10,11 @@ export async function SearchIndexInitializer() {
     category: article.category,
     slug: article.slug,
     tags: article.tags,
+    // Strip HTML tags from content for better search
+    content: article.content
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
   }));
 
   // Initialize the search index on the client

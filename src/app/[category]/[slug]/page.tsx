@@ -12,6 +12,7 @@ import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PrintButton from "@/components/PrintButton";
+import SearchHighlighter from "@/components/SearchHighlighter";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -124,6 +125,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <SearchHighlighter />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

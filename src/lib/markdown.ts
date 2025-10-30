@@ -171,6 +171,44 @@ export async function getAllArticles(): Promise<ArticleMetadata[]> {
 }
 
 /**
+ * Get all articles with full content (for search indexing)
+ */
+export async function getAllArticlesWithContent(): Promise<Article[]> {
+  const categories = getCategories();
+  const allArticles: Article[] = [];
+
+  for (const category of categories) {
+    const categoryPath = path.join(CONTENT_DIR, category);
+    if (!fs.existsSync(categoryPath)) continue;
+
+    const files = fs
+      .readdirSync(categoryPath)
+      .filter((file) => file.endsWith(".md"));
+
+    for (const file of files) {
+      const filePath = path.join(categoryPath, file);
+      const slug = file.replace(/^\d+-/, "").replace(/\.md$/, "");
+      const indexMatch = file.match(/^(\d+)-/);
+      const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
+
+      const { metadata, content } = await parseMarkdownFile(filePath);
+
+      allArticles.push({
+        slug,
+        category,
+        index,
+        ...metadata,
+        content,
+      });
+    }
+  }
+
+  return allArticles.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+/**
  * Get featured articles
  */
 export async function getFeaturedArticles(): Promise<ArticleMetadata[]> {

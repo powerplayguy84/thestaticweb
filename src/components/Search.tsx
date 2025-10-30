@@ -11,6 +11,9 @@ interface SearchResult {
   category: string;
   slug: string;
   tags?: string[];
+  content?: string;
+  excerpt?: string;
+  matchType?: "title" | "description" | "content" | "tag" | "category";
 }
 
 // This will be populated from the global window object
@@ -78,34 +81,119 @@ export default function Search() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const performSearch = useCallback(async (searchQuery: string) => {
-    if (!searchQuery.trim()) {
-      setResults([]);
-      return;
-    }
+  // Extract excerpt around search term
+  const getExcerpt = (
+    text: string,
+    query: string,
+    maxLength: number = 150
+  ): string => {
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const index = lowerText.indexOf(lowerQuery);
 
-    const lowerQuery = searchQuery.toLowerCase();
+    if (index === -1) return "";
 
-    // Client-side search through the index
-    const filteredResults = searchIndex
-      .filter((article) => {
-        const titleMatch = article.title.toLowerCase().includes(lowerQuery);
-        const descMatch = article.description
-          .toLowerCase()
-          .includes(lowerQuery);
-        const tagMatch = article.tags?.some((tag) =>
-          tag.toLowerCase().includes(lowerQuery)
-        );
-        const categoryMatch = article.category
-          .toLowerCase()
-          .includes(lowerQuery);
+    const start = Math.max(0, index - Math.floor(maxLength / 2));
+    const end = Math.min(text.length, start + maxLength);
 
-        return titleMatch || descMatch || tagMatch || categoryMatch;
-      })
-      .slice(0, 10);
+    let excerpt = text.substring(start, end);
 
-    setResults(filteredResults);
-  }, []);
+    if (start > 0) excerpt = "..." + excerpt;
+    if (end < text.length) excerpt = excerpt + "...";
+
+    return excerpt;
+  };
+
+  // Highlight search term in text
+  const highlightText = (text: string, query: string) => {
+    if (!query) return text;
+
+    const parts = text.split(new RegExp(`(${query})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === query.toLowerCase() ? (
+        <mark
+          key={index}
+          className="bg-yellow-200 dark:bg-yellow-900 text-foreground font-medium"
+        >
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
+  const performSearch = useCallback(
+    async (searchQuery: string) => {
+      if (!searchQuery.trim()) {
+        setResults([]);
+        return;
+      }
+
+      const lowerQuery = searchQuery.toLowerCase();
+
+      // Client-side search through the index
+      const filteredResults = searchIndex
+        .map((article) => {
+          const titleMatch = article.title.toLowerCase().includes(lowerQuery);
+          const descMatch = article.description
+            .toLowerCase()
+            .includes(lowerQuery);
+          const tagMatch = article.tags?.some((tag) =>
+            tag.toLowerCase().includes(lowerQuery)
+          );
+          const categoryMatch = article.category
+            .toLowerCase()
+            .includes(lowerQuery);
+          const contentMatch = article.content
+            ?.toLowerCase()
+            .includes(lowerQuery);
+
+          if (
+            !titleMatch &&
+            !descMatch &&
+            !tagMatch &&
+            !categoryMatch &&
+            !contentMatch
+          ) {
+            return null;
+          }
+
+          // Determine match type and create excerpt
+          let matchType:
+            | "title"
+            | "description"
+            | "content"
+            | "tag"
+            | "category" = "content";
+          let excerpt = "";
+
+          if (titleMatch) {
+            matchType = "title";
+          } else if (descMatch) {
+            matchType = "description";
+          } else if (tagMatch) {
+            matchType = "tag";
+          } else if (categoryMatch) {
+            matchType = "category";
+          } else if (contentMatch && article.content) {
+            matchType = "content";
+            excerpt = getExcerpt(article.content, lowerQuery);
+          }
+
+          return {
+            ...article,
+            matchType,
+            excerpt,
+          } as SearchResult;
+        })
+        .filter((result): result is SearchResult => result !== null)
+        .slice(0, 10);
+
+      setResults(filteredResults);
+    },
+    [getExcerpt]
+  );
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -117,8 +205,13 @@ export default function Search() {
 
   const handleResultClick = (category: string, slug: string) => {
     setIsOpen(false);
+    const searchQuery = query;
     setQuery("");
-    router.push(`/${encodeURIComponent(category)}/${slug}`);
+    router.push(
+      `/${encodeURIComponent(category)}/${slug}?highlight=${encodeURIComponent(
+        searchQuery
+      )}`
+    );
   };
 
   if (!isOpen) {
@@ -199,13 +292,31 @@ export default function Search() {
                           <span className="text-xs bg-muted px-2 py-0.5 rounded capitalize text-muted-foreground">
                             {result.category}
                           </span>
+                          {result.matchType === "content" && result.excerpt && (
+                            <span className="text-xs text-muted-foreground italic">
+                              matched in content
+                            </span>
+                          )}
                         </div>
                         <h3 className="font-medium text-foreground truncate">
-                          {result.title}
+                          {result.matchType === "title"
+                            ? highlightText(result.title, query)
+                            : result.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                          {result.description}
-                        </p>
+
+                        {/* Show excerpt if found in content, otherwise show description */}
+                        {result.matchType === "content" && result.excerpt ? (
+                          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                            {highlightText(result.excerpt, query)}
+                          </p>
+                        ) : (
+                          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                            {result.matchType === "description"
+                              ? highlightText(result.description, query)
+                              : result.description}
+                          </p>
+                        )}
+
                         {result.tags && result.tags.length > 0 && (
                           <div className="flex gap-1 mt-2 flex-wrap">
                             {result.tags.slice(0, 3).map((tag) => (
@@ -213,7 +324,11 @@ export default function Search() {
                                 key={tag}
                                 className="text-xs text-muted-foreground"
                               >
-                                #{tag}
+                                #
+                                {result.matchType === "tag" &&
+                                tag.toLowerCase().includes(query.toLowerCase())
+                                  ? highlightText(tag, query)
+                                  : tag}
                               </span>
                             ))}
                           </div>
