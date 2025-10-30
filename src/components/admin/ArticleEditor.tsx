@@ -133,7 +133,7 @@ export function ArticleEditor({
   }, [category, index, slug, content, loading, error, success, onStateChange]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24">
       {/* Article Metadata */}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">

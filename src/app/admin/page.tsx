@@ -208,30 +208,32 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Fixed Header */}
+      {/* Fixed bottom Header */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t z-40">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={handleSaveArticle}
-              variant="outline"
-              disabled={
-                editorState.loading ||
-                !editorState.isValid ||
-                (!currentArticle && !isCreatingNew)
-              }
-            >
-              <Save className="h-4 w-4" />
-              {editorState.loading
-                ? "Saving..."
-                : currentArticle?.filename
-                ? "Update Article"
-                : "Create Article"}
-            </Button>
-            <ContentLibrary
-              onLoadArticle={handleLoadArticle}
-              onCreateNew={handleCreateNew}
-            />
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleSaveArticle}
+                variant="outline"
+                disabled={
+                  editorState.loading ||
+                  !editorState.isValid ||
+                  (!currentArticle && !isCreatingNew)
+                }
+              >
+                <Save className="h-4 w-4" />
+                {editorState.loading
+                  ? "Saving..."
+                  : currentArticle?.filename
+                  ? "Update Article"
+                  : "Create Article"}
+              </Button>
+              <ContentLibrary
+                onLoadArticle={handleLoadArticle}
+                onCreateNew={handleCreateNew}
+              />
+            </div>
 
             <Button variant="outline" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
@@ -242,7 +244,7 @@ export default function AdminPage() {
       </div>
 
       {/* Content with top padding to account for navigation + fixed header */}
-      <div className="px-4 md:p-8 py-12 mb-24">
+      <div className="px-4 md:p-8 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Article Editor */}
           <div>
