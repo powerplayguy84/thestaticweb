@@ -454,7 +454,7 @@ export default function AdminPage() {
                     <Check className="h-4 w-4 text-primary" />
                   )}
                   {saveStatus === "unsaved" && (
-                    <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                    <AlertCircle className="h-4 w-4 text-destructive" />
                   )}
                   {saveStatus === "idle" && <Save className="h-4 w-4" />}
                   <span className="hidden sm:inline">
