@@ -40,7 +40,7 @@ export default function SearchHighlighter() {
 
             const mark = document.createElement("mark");
             mark.className =
-              "bg-yellow-200 dark:bg-yellow-900 text-foreground font-medium scroll-mt-20 animate-pulse";
+              "bg-yellow-200 dark:bg-yellow-900 text-foreground font-medium scroll-mt-20";
             mark.textContent = highlightedText;
             mark.setAttribute("data-search-highlight", "true");
 
@@ -58,12 +58,13 @@ export default function SearchHighlighter() {
               !document.querySelector("[data-search-highlight][data-scrolled]")
             ) {
               mark.setAttribute("data-scrolled", "true");
+              mark.classList.add(
+                "ring-2",
+                "ring-blue-500",
+                "dark:ring-blue-400"
+              );
               setTimeout(() => {
                 mark.scrollIntoView({ behavior: "smooth", block: "center" });
-                // Stop animation after 2 seconds
-                setTimeout(() => {
-                  mark.classList.remove("animate-pulse");
-                }, 2000);
               }, 100);
             }
           }
