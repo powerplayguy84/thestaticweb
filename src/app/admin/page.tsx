@@ -213,22 +213,20 @@ export default function AdminPage() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <Button
-                onClick={handleSaveArticle}
-                variant="outline"
-                disabled={
-                  editorState.loading ||
-                  !editorState.isValid ||
-                  (!currentArticle && !isCreatingNew)
-                }
-              >
-                <Save className="h-4 w-4" />
-                {editorState.loading
-                  ? "Saving..."
-                  : currentArticle?.filename
-                  ? "Update Article"
-                  : "Create Article"}
-              </Button>
+              {(currentArticle || isCreatingNew) && (
+                <Button
+                  onClick={handleSaveArticle}
+                  variant="outline"
+                  disabled={editorState.loading || !editorState.isValid}
+                >
+                  <Save className="h-4 w-4" />
+                  {editorState.loading
+                    ? "Saving..."
+                    : currentArticle?.filename
+                    ? "Update Article"
+                    : "Create Article"}
+                </Button>
+              )}
               <ContentLibrary
                 onLoadArticle={handleLoadArticle}
                 onCreateNew={handleCreateNew}
@@ -237,7 +235,6 @@ export default function AdminPage() {
 
             <Button variant="outline" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
-              Logout
             </Button>
           </div>
         </div>
