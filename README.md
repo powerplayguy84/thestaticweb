@@ -116,6 +116,7 @@ These instructions teach Copilot about your project structure, naming convention
 
 ### 🔍 Reference
 
+- **[CATEGORY_ORDERING.md](./CATEGORY_ORDERING.md)** - Category ordering and organization
 - **[IMAGE_SUPPORT.md](./IMAGE_SUPPORT.md)** - How to add hero images to articles
 - **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** - Content organization reference
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture
@@ -158,16 +159,30 @@ Article content here...
 ```
 content/
 ├── _templates/              # ← Templates for new content
-│   └── article-template.md
-├── tutorials/
+│   ├── article-template.md
+│   └── category-index-template.md
+├── 01-guides/              # ← Categories use numbered prefixes for ordering
+│   ├── index.md           # ← Optional: category title & description
+│   ├── 01-setup.md
+│   └── 02-advanced.md
+├── 02-tutorials/
+│   ├── index.md
 │   ├── 01-getting-started.md
 │   └── 02-routing-basics.md
-└── guides/
-    ├── 01-setup.md
-    └── 02-advanced.md
+└── 03-sample/
+    ├── index.md
+    └── 01-markdown-showcase.md
 ```
 
-→ See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for detailed documentation.
+**Category Ordering:**
+
+- Categories use numbered prefixes (e.g., `01-guides`, `02-tutorials`) to control display order
+- The number determines order in navigation and menus
+- The slug (after the dash) becomes the URL path
+- Optional `index.md` in each category for custom title and description
+
+→ See **[CATEGORY_ORDERING.md](./CATEGORY_ORDERING.md)** for category setup details.  
+→ See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for detailed content documentation.
 
 ## 🏗️ Project Structure
 
@@ -267,11 +282,25 @@ Visit `/theme` or edit `content/theme.md` to customize:
 
 ### Add a New Category
 
+Categories use numbered prefixes for ordering:
+
 ```bash
-mkdir content/my-category
+# Check existing categories (e.g., 01-guides, 02-tutorials, 03-sample)
+# Use next sequential number (04 in this example)
+mkdir content/04-my-category
+
+# Optional: Add category metadata
+cat > content/04-my-category/index.md << 'EOF'
+---
+title: "My Category"
+description: "Category description here"
+---
+EOF
 ```
 
-The category automatically appears in the navigation menu (unless hidden in settings).
+The category automatically appears in the navigation menu in numeric order (unless hidden in settings).
+
+**Category Ordering:** The numeric prefix (01, 02, 03, etc.) determines the display order in navigation. To reorder, rename folders with new numbers.
 
 ### Add an Article
 
@@ -345,10 +374,10 @@ See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for:
 
 Current examples:
 
-- `content/tutorials/01-getting-started.md` (EXAMPLE - Replace me!)
-- `content/tutorials/02-routing-basics.md` (EXAMPLE - Replace me!)
-- `content/guides/01-tailwind-setup.md` (EXAMPLE - Replace me!)
-- `content/guides/02-typescript-best-practices.md` (EXAMPLE - Replace me!)
+- `content/01-guides/01-tailwind-setup.md` (EXAMPLE - Replace me!)
+- `content/01-guides/02-typescript-best-practices.md` (EXAMPLE - Replace me!)
+- `content/02-tutorials/01-getting-started.md` (EXAMPLE - Replace me!)
+- `content/02-tutorials/02-routing-basics.md` (EXAMPLE - Replace me!)
 
 **To customize:** See [CUSTOMIZATION_QUICK_START.md](./CUSTOMIZATION_QUICK_START.md)
 

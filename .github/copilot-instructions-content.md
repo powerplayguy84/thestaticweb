@@ -195,45 +195,93 @@ image: "https://images.unsplash.com/photo-1234567890"
 
 ### Current Categories
 
-- `tutorials` - Step-by-step learning content
-- `guides` - In-depth how-to articles
-- `blog` - General posts and updates
-- `sample` - Example content
-- Create new categories by making new folders in `content/`
+- `01-guides` - In-depth how-to articles
+- `02-tutorials` - Step-by-step learning content
+- `03-sample` - Example content
+
+### ⚠️ CRITICAL: Category Folder Naming
+
+**Categories use numbered prefixes for ordering** (similar to articles):
+
+- Format: `[number]-[category-slug]/`
+- Example: `01-guides/`, `02-tutorials/`, `03-blog/`
+- The number controls display order in navigation
+- The slug (after the dash) becomes the URL path
+
+### Category Index File (Optional but Recommended)
+
+Each category can have an `index.md` file to customize its display:
+
+```markdown
+---
+title: "Guides"
+description: "Comprehensive guides for web development"
+---
+```
 
 ### ⚠️ CRITICAL: Creating New Categories
 
 **BEFORE writing content for a new category:**
 
-1. **Check if the category folder exists** in `content/`
-2. **If it doesn't exist, CREATE IT FIRST**
-3. **Then create the article file inside it**
+1. **Check existing category folders** in `content/`
+2. **Find the highest number** currently used (e.g., if `01-guides`, `02-tutorials` exist)
+3. **Use the next sequential number** for your new category
+4. **CREATE the numbered folder**: `content/[number]-[category-slug]/`
+5. **OPTIONALLY create** `index.md` with title and description
+6. **Then create article files** inside the category folder
 
 **Workflow for new category:**
 
 ```bash
-# Step 1: Create the category folder
-content/[new-category]/
+# Existing categories: 01-guides, 02-tutorials, 03-sample
 
-# Step 2: Create the first article
-content/[new-category]/01-first-article.md
+# Step 1: Create the numbered category folder (next number is 04)
+content/04-blog/
+
+# Step 2: Create optional index.md for category metadata
+content/04-blog/index.md
+
+# Step 3: Create the first article
+content/04-blog/01-first-post.md
 ```
 
 **Example:**
 
 ```
-User requests: "Create an article about web design in the 'design' category"
+User requests: "Create an article about web design in a new 'design' category"
 
-Step 1: Check - does content/design/ exist? NO
-Step 2: CREATE folder: content/design/
-Step 3: CREATE file: content/design/01-web-design-basics.md
+Step 1: Check existing - 01-guides, 02-tutorials, 03-sample exist
+Step 2: Next number is 04
+Step 3: CREATE folder: content/04-design/
+Step 4: CREATE index (optional): content/04-design/index.md
+Step 5: CREATE article: content/04-design/01-web-design-basics.md
+```
+
+**Category index.md template:**
+
+```markdown
+---
+title: "Design"
+description: "Web design principles and best practices"
+---
 ```
 
 ### Category Tone
 
-- **Tutorials:** Beginner-friendly, step-by-step, encouraging
 - **Guides:** Professional, detailed, comprehensive
+- **Tutorials:** Beginner-friendly, step-by-step, encouraging
 - **Blog:** Conversational, personal, engaging
+
+### Category Ordering
+
+Categories are displayed in navigation based on their numeric prefix:
+
+- `01-guides` appears first
+- `02-tutorials` appears second
+- `03-sample` appears third
+- etc.
+
+To reorder categories, rename their folders with new numbers.
 
 ---
 
