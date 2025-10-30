@@ -58,12 +58,9 @@ export default function AdminPage() {
     isValid: false,
   });
 
-  // Auto-save state
+  // Save state
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [autoSaveTimeout, setAutoSaveTimeout] = useState<NodeJS.Timeout | null>(
-    null
-  );
 
   const router = useRouter();
 
@@ -344,47 +341,23 @@ export default function AdminPage() {
     }
   };
 
-  // Auto-save effect: triggers 3 seconds after editor state changes
+  // Track unsaved changes
   useEffect(() => {
-    // Don't auto-save if not editing an article
+    // Don't track if not editing an article
     if (!currentArticle && !isCreatingNew) {
       return;
     }
 
-    // Don't auto-save if form is invalid
-    if (!editorState.isValid) {
-      setSaveStatus("unsaved");
-      return;
-    }
-
-    // Clear existing timeout
-    if (autoSaveTimeout) {
-      clearTimeout(autoSaveTimeout);
-    }
-
-    // Mark as unsaved when content changes
+    // Mark as unsaved when content changes (unless currently saving)
     if (saveStatus !== "saving") {
-      setSaveStatus("unsaved");
+      setSaveStatus(editorState.isValid ? "unsaved" : "idle");
     }
-
-    // Set new timeout for auto-save (3 seconds after last change)
-    const timeout = setTimeout(() => {
-      handleSaveArticle(true);
-    }, 3000);
-
-    setAutoSaveTimeout(timeout);
-
-    // Cleanup timeout on unmount or when dependencies change
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
   }, [
     editorState.category,
     editorState.index,
     editorState.slug,
     editorState.content,
+    editorState.isValid,
   ]);
 
   // Format last saved time
@@ -468,45 +441,34 @@ export default function AdminPage() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3">
               {(currentArticle || isCreatingNew) && (
-                <>
-                  <Button
-                    onClick={() => handleSaveArticle(false)}
-                    variant="outline"
-                    size="sm"
-                    disabled={saveStatus === "saving" || !editorState.isValid}
-                  >
-                    <Save className="h-4 w-4" />
-                    <span className="hidden sm:inline">Save Now</span>
-                  </Button>
-                </>
+                <Button
+                  onClick={() => handleSaveArticle(false)}
+                  variant="outline"
+                  size="sm"
+                  disabled={saveStatus === "saving" || !editorState.isValid}
+                >
+                  {saveStatus === "saving" && (
+                    <div className="h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                  )}
+                  {saveStatus === "saved" && (
+                    <Check className="h-4 w-4 text-primary" />
+                  )}
+                  {saveStatus === "unsaved" && (
+                    <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  {saveStatus === "idle" && <Save className="h-4 w-4" />}
+                  <span className="hidden sm:inline">
+                    {saveStatus === "saving" && "Saving..."}
+                    {saveStatus === "saved" && `Saved ${getLastSavedText()}`}
+                    {saveStatus === "unsaved" && "Save Changes"}
+                    {saveStatus === "idle" && "Save"}
+                  </span>
+                </Button>
               )}
               <ContentLibrary
                 onLoadArticle={handleLoadArticle}
                 onCreateNew={handleCreateNew}
               />
-              {/* Save Status Indicator */}
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                {saveStatus === "saving" && (
-                  <>
-                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                    <span className="hidden sm:inline">Saving...</span>
-                  </>
-                )}
-                {saveStatus === "saved" && (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-primary" />
-                    <span className="hidden sm:inline">
-                      Saved {getLastSavedText()}
-                    </span>
-                  </>
-                )}
-                {saveStatus === "unsaved" && (
-                  <>
-                    <AlertCircle className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="hidden sm:inline">Pending save</span>
-                  </>
-                )}
-              </div>
             </div>
 
             <Button variant="outline" size="sm" onClick={handleLogout}>
