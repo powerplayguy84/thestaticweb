@@ -27,16 +27,6 @@
 
 ---
 
-# 🖼️ Visual Guide
-
-![Site Navigation Example](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/example-navigation.png)
-_Navigation bar with categories, search, and theme toggle._
-
-![Content Structure Diagram](https://raw.githubusercontent.com/powerplayguy84/thestaticweb/main/public/content-structure-diagram.png)
-_How your markdown files and folders map to site navigation and URLs._
-
----
-
 # ❓ Common Issues & FAQ
 
 **Q: npm install fails?**
