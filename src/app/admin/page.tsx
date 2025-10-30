@@ -61,6 +61,7 @@ export default function AdminPage() {
   // Save state
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const router = useRouter();
 
@@ -330,6 +331,7 @@ export default function AdminPage() {
       fetchCategories();
       setSaveStatus("saved");
       setLastSaved(new Date());
+      setRefreshTrigger((prev) => prev + 1); // Trigger content library refresh
 
       // Reset to idle after 3 seconds
       setTimeout(() => {
@@ -468,6 +470,7 @@ export default function AdminPage() {
               <ContentLibrary
                 onLoadArticle={handleLoadArticle}
                 onCreateNew={handleCreateNew}
+                refreshTrigger={refreshTrigger}
               />
             </div>
 

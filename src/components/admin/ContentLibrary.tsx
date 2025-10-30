@@ -58,11 +58,13 @@ interface TreeDataItem {
 interface ContentLibraryProps {
   onLoadArticle: (category: string, article: Article) => void;
   onCreateNew: () => void;
+  refreshTrigger?: number;
 }
 
 export function ContentLibrary({
   onLoadArticle,
   onCreateNew,
+  refreshTrigger,
 }: ContentLibraryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
@@ -120,7 +122,7 @@ export function ContentLibrary({
     if (isOpen) {
       fetchCategories();
     }
-  }, [isOpen]);
+  }, [isOpen, refreshTrigger]);
 
   useEffect(() => {
     // Fetch articles for all categories when they change
