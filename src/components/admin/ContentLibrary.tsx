@@ -135,8 +135,13 @@ export function ContentLibrary({
 
   // Build tree data structure
   const treeData = useMemo<TreeDataItem[]>(() => {
-    return categories.map((category) => {
+    // Sort categories by index
+    const sortedCategories = [...categories].sort((a, b) => a.index - b.index);
+
+    return sortedCategories.map((category) => {
       const articles = categoryArticles[category.slug] || [];
+      // Sort articles by index
+      const sortedArticles = [...articles].sort((a, b) => a.index - b.index);
       const displayName =
         category.slug.charAt(0).toUpperCase() + category.slug.slice(1);
 
@@ -184,7 +189,7 @@ export function ContentLibrary({
             </div>
           </div>
         ),
-        children: articles.map((article: Article) => ({
+        children: sortedArticles.map((article: Article) => ({
           id: `article-${category.slug}-${article.filename}`,
           name: article.title,
           icon: FileText,

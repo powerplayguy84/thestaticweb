@@ -187,6 +187,28 @@ export default function AdminPage() {
     localStorage.removeItem("admin_selected_article");
   };
 
+  // Get next available index for a category
+  const getNextIndex = async (categorySlug: string): Promise<number> => {
+    try {
+      const response = await fetch(
+        `/api/admin/articles?category=${encodeURIComponent(categorySlug)}`
+      );
+      const data = await response.json();
+
+      if (response.ok && data.articles && data.articles.length > 0) {
+        // Find the highest index and add 1
+        const maxIndex = Math.max(
+          ...data.articles.map((a: Article) => a.index)
+        );
+        return maxIndex + 1;
+      }
+      return 1; // First article in category
+    } catch (err) {
+      console.error("Failed to get next index:", err);
+      return 1;
+    }
+  };
+
   const handleSave = () => {
     fetchCategories();
   };
@@ -516,6 +538,8 @@ Your content here...
               initialFilename={currentArticle?.filename || ""}
               onSave={handleSave}
               showEmptyState={!currentArticle && !isCreatingNew}
+              isCreatingNew={isCreatingNew}
+              getNextIndex={getNextIndex}
               onStateChange={setEditorState}
             />
           </div>

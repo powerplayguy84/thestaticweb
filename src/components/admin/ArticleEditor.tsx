@@ -30,6 +30,8 @@ interface ArticleEditorProps {
   initialFilename?: string;
   onSave?: () => void;
   showEmptyState?: boolean;
+  isCreatingNew?: boolean;
+  getNextIndex?: (category: string) => Promise<number>;
   onStateChange?: (state: {
     category: string;
     index: string;
@@ -51,6 +53,8 @@ export function ArticleEditor({
   initialFilename = "",
   onSave,
   showEmptyState = false,
+  isCreatingNew = false,
+  getNextIndex,
   onStateChange,
 }: ArticleEditorProps) {
   const [content, setContent] = useState(initialContent);
@@ -105,6 +109,15 @@ export function ArticleEditor({
       setContent(updatedContent);
     }
   };
+
+  // Auto-update index when creating new article and category changes
+  useEffect(() => {
+    if (isCreatingNew && category && getNextIndex) {
+      getNextIndex(category).then((nextIndex) => {
+        setIndex(String(nextIndex).padStart(2, "0"));
+      });
+    }
+  }, [category, isCreatingNew, getNextIndex]);
 
   // Show empty state if no content and showEmptyState is true
   if (showEmptyState && !initialContent) {
@@ -205,13 +218,14 @@ export function ArticleEditor({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="index">Index</Label>
+          <Label htmlFor="index">Index (auto-assigned)</Label>
           <Input
             id="index"
             value={index}
             onChange={(e) => setIndex(e.target.value)}
             placeholder="01"
-            disabled={loading}
+            disabled={true}
+            className="bg-muted cursor-not-allowed"
           />
         </div>
 
