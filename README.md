@@ -176,10 +176,21 @@ content/
 
 **Category Ordering:**
 
-- Categories use numbered prefixes (e.g., `01-guides`, `02-tutorials`) to control display order
-- The number determines order in navigation and menus
-- The slug (after the dash) becomes the URL path
-- Optional `index.md` in each category for custom title and description
+- Categories are ordered by their numeric prefix (e.g., `01-guides`, `02-tutorials`). The prefix determines display order in navigation and menus.
+- To add or reorder categories, rename folders with the desired numeric prefix.
+- The slug (after the dash) becomes the URL path.
+- Optional `index.md` in each category for custom title and description.
+
+**Hidden Categories:**
+
+- To hide categories from navigation, add the category folder name (not the index) to the `hiddenCategories` list in `content/settings.md`.
+- Example:
+  ```yaml
+  hiddenCategories:
+    - "sample"
+    - "_templates"
+  ```
+- Do not include the numeric index in `hiddenCategories`—just use the folder name.
 
 → See **[CATEGORY_ORDERING.md](./CATEGORY_ORDERING.md)** for category setup details.  
 → See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for detailed content documentation.

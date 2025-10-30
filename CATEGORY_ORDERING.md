@@ -15,34 +15,41 @@ content/
   01-guides/
   02-tutorials/
   03-sample/
-```
+## Category Ordering
 
-### How It Works
+Categories are ordered by their folder name prefix (e.g., `01-guides`, `02-tutorials`). The numeric prefix determines the order in navigation and menus. To reorder, rename folders with the desired number.
 
-- **Numeric Prefix**: The number (e.g., `01`, `02`, `03`) determines the display order
+Example:
 - **Category Slug**: The part after the dash becomes the URL slug (e.g., `/guides`, `/tutorials`)
-- **Sorting**: Categories are sorted by their numeric index, then alphabetically by slug
+```
 
 ### Examples
 
 ```
-01-getting-started/    → /getting-started (displays first)
-02-tutorials/          → /tutorials (displays second)
-03-advanced-topics/    → /advanced-topics (displays third)
-99-miscellaneous/      → /miscellaneous (displays last)
+
 ```
 
-## Category Metadata (index.md)
+02-tutorials/ → /tutorials (displays second)
+Optional: Add an `index.md` file in each category folder for custom title and description.
+99-miscellaneous/ → /miscellaneous (displays last)
 
-Each category folder can optionally include an `index.md` file to customize how the category is displayed.
+## Hidden Categories
 
-### Example index.md
+To hide categories from navigation, add the category folder name (not the index) to the `hiddenCategories` list in `content/settings.md`.
 
-```markdown
----
-title: Guides
+Example:
+
+```yaml
+hiddenCategories:
+  - "sample"
+  - "_templates"
+```
+
+Do not include the numeric index in `hiddenCategories`—just use the folder name.
 description: Comprehensive guides for web development best practices and setup
+
 ---
+
 ```
 
 ### Frontmatter Fields
@@ -69,19 +76,21 @@ Use `index.md` when you want to:
 ### Folder Structure
 
 ```
+
 content/
-  01-guides/
-    index.md
-    01-tailwind-setup.md
-    02-typescript-best-practices.md
-  02-tutorials/
-    index.md
-    01-getting-started.md
-    02-routing-basics.md
-  03-sample/
-    index.md
-    01-markdown-showcase.md
-```
+01-guides/
+index.md
+01-tailwind-setup.md
+02-typescript-best-practices.md
+02-tutorials/
+index.md
+01-getting-started.md
+02-routing-basics.md
+03-sample/
+index.md
+01-markdown-showcase.md
+
+````
 
 ### Category index.md Examples
 
@@ -92,7 +101,7 @@ content/
 title: Guides
 description: Comprehensive guides for web development best practices and setup
 ---
-```
+````
 
 **content/02-tutorials/index.md:**
 
