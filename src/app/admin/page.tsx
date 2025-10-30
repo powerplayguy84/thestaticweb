@@ -129,7 +129,10 @@ export default function AdminPage() {
   }, [isAuthenticated]);
 
   // Helper to produce the default content for a new article (keeps in sync with JSX below)
-  const buildNewArticleTemplate = () => `---\ntitle: "New Article"\ndescription: "Article description"\ndate: "${new Date().toISOString().split("T")[0]}"\nfeatured: false\ntags: []\n---\n\n# New Article\n\nYour content here...\n`;
+  const buildNewArticleTemplate = () =>
+    `---\ntitle: "New Article"\ndescription: "Article description"\ndate: "${
+      new Date().toISOString().split("T")[0]
+    }"\nfeatured: false\ntags: []\n---\n\n# New Article\n\nYour content here...\n`;
 
   const fetchCategories = async () => {
     try {
