@@ -20,6 +20,11 @@ organizationName: "The Static Web"
 hiddenCategories:
   - "sample"
   - "_templates"
+
+# Admin Panel Password Protection
+# Set a password to protect the /admin route
+# Change this to a secure password in production
+adminPassword: "admin123"
 ---
 
 # Settings
