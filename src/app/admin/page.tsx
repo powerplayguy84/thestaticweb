@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { ArticleEditor } from "@/components/admin/ArticleEditor";
 import { ContentLibrary } from "@/components/admin/ContentLibrary";
-import { Lock, LogOut, Save } from "lucide-react";
+import { Lock, LogOut, Save, Check, AlertCircle } from "lucide-react";
 
 interface Article {
   filename: string;
@@ -23,6 +23,8 @@ interface Article {
   title: string;
   rawContent: string;
 }
+
+type SaveStatus = "saved" | "saving" | "unsaved" | "idle";
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,6 +51,13 @@ export default function AdminPage() {
     success: "",
     isValid: false,
   });
+
+  // Auto-save state
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [autoSaveTimeout, setAutoSaveTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
   const router = useRouter();
 
@@ -178,7 +187,7 @@ export default function AdminPage() {
     fetchCategories();
   };
 
-  const handleSaveArticle = async () => {
+  const handleSaveArticle = async (isAutoSave = false) => {
     if (
       !editorState.category ||
       !editorState.slug.trim() ||
@@ -186,6 +195,8 @@ export default function AdminPage() {
     ) {
       return;
     }
+
+    setSaveStatus("saving");
 
     try {
       const isEdit =
@@ -314,9 +325,75 @@ export default function AdminPage() {
       }
 
       fetchCategories();
+      setSaveStatus("saved");
+      setLastSaved(new Date());
+
+      // Reset to idle after 3 seconds
+      setTimeout(() => {
+        setSaveStatus("idle");
+      }, 3000);
     } catch (err) {
       console.error("Failed to save article:", err);
+      setSaveStatus("unsaved");
     }
+  };
+
+  // Auto-save effect: triggers 3 seconds after editor state changes
+  useEffect(() => {
+    // Don't auto-save if not editing an article
+    if (!currentArticle && !isCreatingNew) {
+      return;
+    }
+
+    // Don't auto-save if form is invalid
+    if (!editorState.isValid) {
+      setSaveStatus("unsaved");
+      return;
+    }
+
+    // Clear existing timeout
+    if (autoSaveTimeout) {
+      clearTimeout(autoSaveTimeout);
+    }
+
+    // Mark as unsaved when content changes
+    if (saveStatus !== "saving") {
+      setSaveStatus("unsaved");
+    }
+
+    // Set new timeout for auto-save (3 seconds after last change)
+    const timeout = setTimeout(() => {
+      handleSaveArticle(true);
+    }, 3000);
+
+    setAutoSaveTimeout(timeout);
+
+    // Cleanup timeout on unmount or when dependencies change
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [
+    editorState.category,
+    editorState.index,
+    editorState.slug,
+    editorState.content,
+  ]);
+
+  // Format last saved time
+  const getLastSavedText = () => {
+    if (!lastSaved) return "";
+
+    const now = new Date();
+    const diffMs = now.getTime() - lastSaved.getTime();
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
+
+    if (diffSecs < 10) return "just now";
+    if (diffSecs < 60) return `${diffSecs}s ago`;
+    if (diffMins < 60) return `${diffMins}m ago`;
+    return lastSaved.toLocaleTimeString();
   };
 
   if (!isAuthenticated) {
@@ -383,28 +460,50 @@ export default function AdminPage() {
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t z-40">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3">
               {(currentArticle || isCreatingNew) && (
-                <Button
-                  onClick={handleSaveArticle}
-                  variant="outline"
-                  disabled={editorState.loading || !editorState.isValid}
-                >
-                  <Save className="h-4 w-4" />
-                  {editorState.loading
-                    ? "Saving..."
-                    : currentArticle?.filename
-                    ? "Update Article"
-                    : "Create Article"}
-                </Button>
+                <>
+                  <Button
+                    onClick={() => handleSaveArticle(false)}
+                    variant="outline"
+                    size="sm"
+                    disabled={saveStatus === "saving" || !editorState.isValid}
+                  >
+                    <Save className="h-4 w-4" />
+                    <span className="hidden sm:inline">Save Now</span>
+                  </Button>
+                </>
               )}
               <ContentLibrary
                 onLoadArticle={handleLoadArticle}
                 onCreateNew={handleCreateNew}
               />
+              {/* Save Status Indicator */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                {saveStatus === "saving" && (
+                  <>
+                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                    <span className="hidden sm:inline">Saving...</span>
+                  </>
+                )}
+                {saveStatus === "saved" && (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-primary" />
+                    <span className="hidden sm:inline">
+                      Saved {getLastSavedText()}
+                    </span>
+                  </>
+                )}
+                {saveStatus === "unsaved" && (
+                  <>
+                    <AlertCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="hidden sm:inline">Pending save</span>
+                  </>
+                )}
+              </div>
             </div>
 
-            <Button variant="outline" onClick={handleLogout}>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
@@ -412,8 +511,8 @@ export default function AdminPage() {
       </div>
 
       {/* Content with top padding to account for navigation + fixed header */}
-      <div className="px-4 md:p-8 py-12">
-        <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto pb-12 sm:pb-16 px-6 py-12">
+        <div>
           {/* Article Editor */}
           <div>
             <ArticleEditor
