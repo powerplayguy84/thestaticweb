@@ -30,6 +30,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
+  const [isProduction, setIsProduction] = useState(false);
 
   // Editor state
   const [currentArticle, setCurrentArticle] = useState<Article | null>(null);
@@ -50,6 +51,27 @@ export default function AdminPage() {
   });
 
   const router = useRouter();
+
+  // Check if running in production (not localhost)
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    const isProd = hostname !== "localhost" && hostname !== "127.0.0.1";
+    setIsProduction(isProd);
+
+    if (isProd) {
+      alert(
+        "⚠️ Admin Panel - Development Only\n\n" +
+          "This admin panel only works in local development environment.\n\n" +
+          "File system operations (saving/editing articles) are not supported on Vercel's serverless platform.\n\n" +
+          "To edit content:\n" +
+          "1. Clone the repository locally\n" +
+          "2. Run 'npm run dev'\n" +
+          "3. Access /admin on localhost\n" +
+          "4. Make changes and commit to Git\n" +
+          "5. Push to trigger automatic deployment"
+      );
+    }
+  }, []);
 
   // Check if already authenticated (session storage)
   useEffect(() => {
@@ -176,6 +198,12 @@ export default function AdminPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {isProduction && (
+              <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">
+                ⚠️ <strong>Development Only:</strong> This admin panel does not
+                work in production. File operations are disabled on Vercel.
+              </div>
+            )}
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -208,6 +236,14 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Production Warning Banner */}
+      {isProduction && (
+        <div className="bg-destructive text-destructive-foreground px-4 py-3 text-center text-sm font-medium">
+          ⚠️ Admin panel is for local development only. Changes cannot be saved
+          in production. Edit files locally and push to Git.
+        </div>
+      )}
+
       {/* Fixed bottom Header */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t z-40">
         <div className="max-w-6xl mx-auto px-4 py-4">
