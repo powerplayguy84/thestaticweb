@@ -191,23 +191,126 @@ export default function AdminPage() {
       const isEdit =
         currentArticle?.filename !== undefined &&
         currentArticle?.filename !== "";
-      const response = await fetch("/api/admin/articles", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: isEdit ? "update" : "create",
-          category: editorState.category,
-          index: parseInt(editorState.index, 10),
+
+      // Check if category has changed (moving article to different category)
+      const isCategoryChange =
+        isEdit && currentCategory !== editorState.category;
+
+      if (isCategoryChange) {
+        // Move operation: delete from old category, create in new category
+        // First, delete from old category
+        const deleteResponse = await fetch("/api/admin/articles", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "delete",
+            category: currentCategory,
+            oldFilename: currentArticle?.filename,
+          }),
+        });
+
+        if (!deleteResponse.ok) {
+          const deleteData = await deleteResponse.json();
+          throw new Error(
+            deleteData.error || "Failed to delete from old category"
+          );
+        }
+
+        // Then, create in new category
+        const createResponse = await fetch("/api/admin/articles", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "create",
+            category: editorState.category,
+            index: parseInt(editorState.index, 10),
+            slug: editorState.slug.trim(),
+            content: editorState.content,
+          }),
+        });
+
+        const createData = await createResponse.json();
+
+        if (!createResponse.ok) {
+          throw new Error(
+            createData.error || "Failed to create in new category"
+          );
+        }
+
+        // Update current category after successful move
+        setCurrentCategory(editorState.category);
+
+        // Update the article object with new info
+        const newFilename = `${String(parseInt(editorState.index, 10)).padStart(
+          2,
+          "0"
+        )}-${editorState.slug.trim()}.md`;
+        setCurrentArticle({
+          ...currentArticle!,
+          filename: newFilename,
           slug: editorState.slug.trim(),
-          content: editorState.content,
-          oldFilename: currentArticle?.filename || undefined,
-        }),
-      });
+          index: parseInt(editorState.index, 10),
+        });
 
-      const data = await response.json();
+        // Update localStorage
+        localStorage.setItem(
+          "admin_selected_article",
+          JSON.stringify({
+            category: editorState.category,
+            article: {
+              ...currentArticle!,
+              filename: newFilename,
+              slug: editorState.slug.trim(),
+              index: parseInt(editorState.index, 10),
+            },
+          })
+        );
+      } else {
+        // Normal update or create
+        const response = await fetch("/api/admin/articles", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: isEdit ? "update" : "create",
+            category: editorState.category,
+            index: parseInt(editorState.index, 10),
+            slug: editorState.slug.trim(),
+            content: editorState.content,
+            oldFilename: currentArticle?.filename || undefined,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to save article");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to save article");
+        }
+
+        // Update localStorage after successful save if editing
+        if (isEdit) {
+          const newFilename = `${String(
+            parseInt(editorState.index, 10)
+          ).padStart(2, "0")}-${editorState.slug.trim()}.md`;
+          setCurrentArticle({
+            ...currentArticle!,
+            filename: newFilename,
+            slug: editorState.slug.trim(),
+            index: parseInt(editorState.index, 10),
+          });
+
+          localStorage.setItem(
+            "admin_selected_article",
+            JSON.stringify({
+              category: editorState.category,
+              article: {
+                ...currentArticle!,
+                filename: newFilename,
+                slug: editorState.slug.trim(),
+                index: parseInt(editorState.index, 10),
+              },
+            })
+          );
+        }
       }
 
       fetchCategories();
