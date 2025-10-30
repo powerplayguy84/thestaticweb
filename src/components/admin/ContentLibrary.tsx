@@ -57,7 +57,7 @@ interface TreeDataItem {
 
 interface ContentLibraryProps {
   onLoadArticle: (category: string, article: Article) => void;
-  onCreateNew: () => void;
+  onCreateNew: (preselectedCategory?: string) => void;
   refreshTrigger?: number;
 }
 
@@ -150,12 +150,12 @@ export function ContentLibrary({
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
-                onCreateNew();
+                onCreateNew(category.slug);
                 setIsOpen(false);
               }}
               title="New Article"
             >
-              <FilePlus className="h-3 w-3" />
+              <FilePlus className="h-4 w-4" />
             </div>
             <div
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
@@ -168,7 +168,7 @@ export function ContentLibrary({
               }}
               title="Rename Category"
             >
-              <FolderEdit className="h-3 w-3" />
+              <FolderEdit className="h-4 w-4" />
             </div>
             <div
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
@@ -180,7 +180,7 @@ export function ContentLibrary({
               }}
               title="Delete Category"
             >
-              <Trash2 className="h-3 w-3" />
+              <Trash2 className="h-4 w-4" />
             </div>
           </div>
         ),
@@ -198,7 +198,7 @@ export function ContentLibrary({
                   setIsOpen(false);
                 }}
               >
-                <FileEdit className="h-3 w-3" />
+                <FileEdit className="h-4 w-4" />
               </div>
               <div
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 cursor-pointer"
@@ -208,7 +208,7 @@ export function ContentLibrary({
                   setShowDeleteDialog(true);
                 }}
               >
-                <Trash2 className="h-3 w-3" />
+                <Trash2 className="h-4 w-4" />
               </div>
             </div>
           ),

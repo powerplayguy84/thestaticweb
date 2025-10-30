@@ -61,6 +61,51 @@ export function ArticleEditor({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Helper function to convert slug to title format
+  const slugToTitle = (slug: string): string => {
+    return slug
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  // Helper function to update title in frontmatter
+  const updateTitleInContent = (
+    currentContent: string,
+    newTitle: string
+  ): string => {
+    // Match frontmatter and update title
+    const frontmatterRegex = /^---\n([\s\S]*?)\n---/;
+    const match = currentContent.match(frontmatterRegex);
+
+    if (match) {
+      const frontmatter = match[1];
+      // Replace title line
+      const updatedFrontmatter = frontmatter.replace(
+        /title:\s*"[^"]*"/,
+        `title: "${newTitle}"`
+      );
+      return currentContent.replace(
+        frontmatterRegex,
+        `---\n${updatedFrontmatter}\n---`
+      );
+    }
+
+    return currentContent;
+  };
+
+  // Update title when slug changes
+  const handleSlugChange = (newSlug: string) => {
+    setSlug(newSlug);
+
+    // Only update title if content has frontmatter
+    if (content.startsWith("---")) {
+      const newTitle = slugToTitle(newSlug);
+      const updatedContent = updateTitleInContent(content, newTitle);
+      setContent(updatedContent);
+    }
+  };
+
   // Show empty state if no content and showEmptyState is true
   if (showEmptyState && !initialContent) {
     return (
@@ -175,7 +220,7 @@ export function ArticleEditor({
           <Input
             id="slug"
             value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            onChange={(e) => handleSlugChange(e.target.value)}
             placeholder="article-slug"
             disabled={loading}
           />

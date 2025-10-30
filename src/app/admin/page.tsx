@@ -177,9 +177,9 @@ export default function AdminPage() {
     );
   };
 
-  const handleCreateNew = () => {
+  const handleCreateNew = (preselectedCategory?: string) => {
     setCurrentArticle(null);
-    setCurrentCategory("");
+    setCurrentCategory(preselectedCategory || "");
     setIsCreatingNew(true);
     setEditorKey((prev) => prev + 1);
 
