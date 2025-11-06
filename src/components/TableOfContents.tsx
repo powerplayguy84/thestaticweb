@@ -109,11 +109,13 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           href={`#${heading.id}`}
           className={`flex items-start gap-2 text-sm transition-all duration-200 rounded-md px-3 py-2 ${
             activeId === heading.id
-              ? "text-primary font-semibold bg-primary/10"
+              ? heading.level === 3
+                ? "text-primary font-normal bg-primary/10"
+                : "text-primary font-semibold bg-primary/10"
               : heading.level === 2
                 ? "text-foreground font-medium hover:bg-muted/50 hover:text-primary"
-                : "text-muted-foreground pl-6 hover:bg-muted/30 hover:text-foreground"
-          }`}
+                : "text-muted-foreground hover:bg-muted/30 hover:text-foreground"
+          } ${heading.level === 3 ? "pl-6 font-normal" : ""}`}
           onClick={() => setOpen(false)}
         >
           <span className="flex-1 line-clamp-2">{heading.text}</span>
