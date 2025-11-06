@@ -82,10 +82,12 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
         <Link
           key={heading.id}
           href={`#${heading.id}`}
-          className={`block text-sm transition-colors hover:text-foreground ${
-            heading.level === 2
-              ? "text-foreground font-medium"
-              : "text-muted-foreground pl-4"
+          className={`block text-sm transition-colors ${
+            activeId === heading.id
+              ? "text-primary font-semibold bg-primary/10 px-2 py-1 rounded"
+              : heading.level === 2
+                ? "text-foreground font-medium hover:text-primary"
+                : "text-muted-foreground pl-4 hover:text-foreground"
           }`}
           onClick={() => setOpen(false)}
         >
