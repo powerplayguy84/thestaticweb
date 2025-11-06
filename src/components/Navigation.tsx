@@ -18,7 +18,7 @@ export default async function Navigation() {
 
   return (
     <nav className="py-4 border-b border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 print:hidden">
-      <div className="flex items-center justify-between max-w-6xl mx-auto px-6">
+      <div className="flex items-center justify-between mx-auto px-6">
         <Link href="/" className="flex items-center gap-3">
           {navbarLogo ? (
             <>

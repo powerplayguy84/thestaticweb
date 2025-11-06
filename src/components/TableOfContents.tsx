@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -21,6 +21,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
+  const activeRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,49 +50,73 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     });
 
     setHeadings(extractedHeadings);
+    // Set first heading as active initially
+    if (extractedHeadings.length > 0) {
+      setActiveId(extractedHeadings[0].id);
+    }
   }, [content]);
 
-  // Track active heading on scroll
+  // Track active heading on scroll with debouncing
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted || headings.length === 0) return;
+
+    let timeoutId: NodeJS.Timeout;
 
     const handleScroll = () => {
-      let current = "";
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        let current = "";
+        let closestDistance = Infinity;
 
-      headings.forEach((heading) => {
-        const element = document.getElementById(heading.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Check if heading is in viewport (with some offset for header)
-          if (rect.top <= 100) {
-            current = heading.id;
+        headings.forEach((heading) => {
+          const element = document.getElementById(heading.id);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // Find the heading closest to top of viewport
+            if (rect.top >= -100 && rect.top < closestDistance) {
+              closestDistance = rect.top;
+              current = heading.id;
+            }
           }
-        }
-      });
+        });
 
-      setActiveId(current);
+        if (current) {
+          setActiveId(current);
+        }
+      }, 50);
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, [headings, isMounted]);
 
+  // Scroll active item into view in TOC
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [activeId]);
+
   const tocContent = (
-    <nav className="space-y-2">
-      {headings.map((heading) => (
+    <nav className="space-y-1">
+      {headings.map((heading, index) => (
         <Link
           key={heading.id}
+          ref={activeId === heading.id ? activeRef : null}
           href={`#${heading.id}`}
-          className={`block text-sm transition-colors ${
+          className={`flex items-start gap-2 text-sm transition-all duration-200 rounded-md px-3 py-2 ${
             activeId === heading.id
-              ? "text-primary font-semibold bg-primary/10 px-2 py-1 rounded"
+              ? "text-primary font-semibold bg-primary/10"
               : heading.level === 2
-                ? "text-foreground font-medium hover:text-primary"
-                : "text-muted-foreground pl-4 hover:text-foreground"
+                ? "text-foreground font-medium hover:bg-muted/50 hover:text-primary"
+                : "text-muted-foreground pl-6 hover:bg-muted/30 hover:text-foreground"
           }`}
           onClick={() => setOpen(false)}
         >
-          {heading.text}
+          <span className="flex-1 line-clamp-2">{heading.text}</span>
         </Link>
       ))}
     </nav>
@@ -104,11 +129,13 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   return (
     <>
       {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-24 w-48 max-h-[calc(100vh-6rem)] overflow-y-auto px-6 py-8">
-        <h2 className="text-sm font-semibold mb-4 text-foreground">
+      <aside className="hidden lg:block fixed left-0 top-24 w-56 max-h-[calc(100vh-6rem)] overflow-y-auto px-4 py-6 border-r border-border">
+        <h2 className="text-xs font-semibold mb-4 text-muted-foreground uppercase tracking-widest">
           On this page
         </h2>
-        {tocContent}
+        <div className="space-y-0.5">
+          {tocContent}
+        </div>
       </aside>
 
       {/* Mobile Sheet */}
@@ -118,16 +145,18 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
             <Button
               variant="outline"
               size="sm"
-              className="fixed bottom-6 left-6 z-40"
+              className="fixed bottom-6 left-6 z-40 gap-2"
               aria-label="Open table of contents"
             >
-              <Menu className="w-4 h-4 mr-2" />
-              Contents
+              <Menu className="w-4 h-4" />
+              <span>Contents</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-64">
-            <SheetTitle>On this page</SheetTitle>
-            {tocContent}
+          <SheetContent side="left" className="w-64 overflow-y-auto">
+            <SheetTitle className="mb-4">On this page</SheetTitle>
+            <div className="space-y-0.5">
+              {tocContent}
+            </div>
           </SheetContent>
         </Sheet>
       </div>
