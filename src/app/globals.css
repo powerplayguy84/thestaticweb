@@ -188,6 +188,10 @@ small {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem; /* Account for fixed header */
+  }
   body {
     @apply bg-background text-foreground;
   }

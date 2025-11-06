@@ -14,6 +14,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import PrintButton from "@/components/PrintButton";
 import SearchHighlighter from "@/components/SearchHighlighter";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
+import TableOfContents from "@/components/TableOfContents";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -124,10 +125,43 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     },
   };
 
+  // Add IDs to headings for TOC anchors
+  const idCounter: Record<string, number> = {};
+  const contentWithHeadingIds = article.content.replace(
+    /<(h[2-3])([^>]*)>([^<]*)<\/\1>/g,
+    (match, tag, attrs, text) => {
+      const cleanText = text.trim();
+      
+      // Skip if no text or ID already exists
+      if (!cleanText || attrs.includes('id=')) {
+        return match;
+      }
+      
+      let id = cleanText
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-");
+      
+      // Make IDs unique by appending a counter if we've seen this ID before
+      if (id) {
+        if (idCounter[id] !== undefined) {
+          idCounter[id]++;
+          id = `${id}-${idCounter[id]}`;
+        } else {
+          idCounter[id] = 0;
+        }
+        return `<${tag}${attrs} id="${id}">${text}</${tag}>`;
+      }
+      
+      return match;
+    }
+  );
+
   return (
     <>
       <SearchHighlighter />
       <SearchNavigationFab />
+      <TableOfContents content={article.content} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -193,7 +227,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Content */}
           <div
             className="prose print:prose-sm"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: contentWithHeadingIds }}
           />
 
           {/* Navigation */}
