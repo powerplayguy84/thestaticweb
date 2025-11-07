@@ -15,16 +15,32 @@ const CONTENT_DIR = path.join(process.cwd(), "content");
 // Custom rehype plugin to convert mermaid code blocks to divs before syntax highlighting
 function rehypeMermaidToDiv() {
   return (tree: any) => {
-    visit(tree, "element", (node: Element) => {
+    visit(tree, "element", (node: Element, index, parent) => {
       if (
-        node.tagName === "code" &&
-        node.properties &&
-        Array.isArray(node.properties.className) &&
-        node.properties.className.includes("language-mermaid")
+        node.tagName === "pre" &&
+        node.children &&
+        node.children.length > 0
       ) {
-        // Get the parent <pre> node and replace it with a div
-        node.tagName = "div";
-        node.properties.className = ["mermaid"];
+        const codeNode = node.children[0] as Element;
+        if (
+          codeNode.tagName === "code" &&
+          codeNode.properties &&
+          Array.isArray(codeNode.properties.className) &&
+          codeNode.properties.className.includes("language-mermaid")
+        ) {
+          // Replace the <pre><code> structure with a simple <div class="mermaid">
+          const mermaidDiv: Element = {
+            type: "element",
+            tagName: "div",
+            properties: { className: ["mermaid"] },
+            children: codeNode.children,
+          };
+          
+          // Replace the pre node with the div in the parent
+          if (parent && typeof index === "number") {
+            parent.children[index] = mermaidDiv;
+          }
+        }
       }
     });
   };
