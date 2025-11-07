@@ -22,7 +22,7 @@ export default function RelatedArticles({
   }
 
   return (
-    <aside className="mt-12 pt-8 border-t border-border">
+    <aside className="mt-12 pt-8 border-t border-border" data-no-search-highlight>
       <h3 className="text-lg font-semibold text-foreground mb-4">
         More in {formatCategoryName(category)}
       </h3>

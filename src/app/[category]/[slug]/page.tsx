@@ -213,7 +213,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden">
+            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden" data-tags-container>
               {article.tags.map((tag) => (
                 <Link
                   key={tag}

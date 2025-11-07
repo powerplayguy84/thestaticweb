@@ -14,7 +14,7 @@ export default function ArticleNavigation({
   category,
 }: ArticleNavigationProps) {
   return (
-    <div className="flex gap-4 mt-12 pt-8 border-t border-border">
+    <div className="flex gap-4 mt-12 pt-8 border-t border-border" data-no-search-highlight>
       {previous ? (
         <Link
           href={`/${encodeURIComponent(category)}/${previous.slug}`}

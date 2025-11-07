@@ -299,9 +299,7 @@ export default function Search() {
                           )}
                         </div>
                         <h3 className="font-medium text-foreground truncate">
-                          {result.matchType === "title"
-                            ? highlightText(result.title, query)
-                            : result.title}
+                          {highlightText(result.title, query)}
                         </h3>
 
                         {/* Show excerpt if found in content, otherwise show description */}

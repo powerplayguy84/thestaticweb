@@ -10,90 +10,103 @@ export default function SearchHighlighter() {
   useEffect(() => {
     if (!highlight) return;
 
-    // Wait for the content to be rendered
-    setTimeout(() => {
-      const contentDiv = document.querySelector(".prose");
-      if (!contentDiv) return;
+    const lowerHighlight = highlight.toLowerCase();
 
-      // Find all text nodes in the content
-      const findAndHighlight = (node: Node) => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          const text = node.textContent || "";
-          const lowerText = text.toLowerCase();
-          const lowerHighlight = highlight.toLowerCase();
-          const index = lowerText.indexOf(lowerHighlight);
-
-          if (index !== -1) {
-            const parent = node.parentElement;
-            if (!parent) return;
-
-            // Don't highlight if already in a mark element
-            if (parent.tagName === "MARK") return;
-
-            // Create new nodes with highlighted text
-            const beforeText = text.substring(0, index);
-            const highlightedText = text.substring(
-              index,
-              index + highlight.length
-            );
-            const afterText = text.substring(index + highlight.length);
-
-            const mark = document.createElement("mark");
-            mark.className =
-              "bg-yellow-200 dark:bg-yellow-900 text-foreground font-medium scroll-mt-20";
-            mark.textContent = highlightedText;
-            mark.setAttribute("data-search-highlight", "true");
-
-            const fragment = document.createDocumentFragment();
-            if (beforeText)
-              fragment.appendChild(document.createTextNode(beforeText));
-            fragment.appendChild(mark);
-            if (afterText)
-              fragment.appendChild(document.createTextNode(afterText));
-
-            parent.replaceChild(fragment, node);
-
-            // Scroll to the first highlighted element
-            if (
-              !document.querySelector("[data-search-highlight][data-scrolled]")
-            ) {
-              mark.setAttribute("data-scrolled", "true");
-              mark.classList.add(
-                "ring-2",
-                "ring-blue-500",
-                "dark:ring-blue-400"
-              );
-              setTimeout(() => {
-                mark.scrollIntoView({ behavior: "smooth", block: "center" });
-              }, 100);
-            }
-          }
-        } else if (
-          node.nodeType === Node.ELEMENT_NODE &&
-          (node as Element).tagName !== "SCRIPT" &&
-          (node as Element).tagName !== "STYLE"
+    // Function to perform the highlighting on a given node
+    const findAndHighlight = (node: Node) => {
+      // 1. If it's an element, check if it should be skipped
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as Element;
+        if (
+          el.hasAttribute("data-no-search-highlight") ||
+          el.tagName === "SCRIPT" ||
+          el.tagName === "STYLE"
         ) {
-          // Recursively process child nodes
-          Array.from(node.childNodes).forEach(findAndHighlight);
+          return; // Stop traversing this branch
         }
-      };
+      }
 
-      findAndHighlight(contentDiv);
+      // 2. If it's a text node, perform the replacement
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent || "";
+        const index = text.toLowerCase().indexOf(lowerHighlight);
 
-      // Cleanup function to remove highlights when component unmounts
-      return () => {
-        const marks = contentDiv.querySelectorAll("[data-search-highlight]");
-        marks.forEach((mark) => {
-          const parent = mark.parentNode;
-          if (parent) {
-            parent.replaceChild(
-              document.createTextNode(mark.textContent || ""),
-              mark
-            );
+        if (index !== -1) {
+          const parent = node.parentElement;
+          if (!parent || parent.tagName === "MARK") {
+            return;
           }
-        });
-      };
+
+          const beforeText = text.substring(0, index);
+          const highlightedText = text.substring(
+            index,
+            index + highlight.length
+          );
+          const afterText = text.substring(index + highlight.length);
+
+          const mark = document.createElement("mark");
+          mark.className =
+            "bg-yellow-200 dark:bg-yellow-900 text-foreground font-medium scroll-mt-20";
+          mark.textContent = highlightedText;
+          mark.setAttribute("data-search-highlight", "true");
+
+          const fragment = document.createDocumentFragment();
+          if (beforeText) {
+            fragment.appendChild(document.createTextNode(beforeText));
+          }
+          fragment.appendChild(mark);
+          if (afterText) {
+            fragment.appendChild(document.createTextNode(afterText));
+          }
+
+          parent.replaceChild(fragment, node);
+
+          // Scroll to the first highlighted element found
+          if (
+            !document.querySelector("[data-search-highlight][data-scrolled]")
+          ) {
+            mark.setAttribute("data-scrolled", "true");
+            mark.classList.add(
+              "ring-2",
+              "ring-blue-500",
+              "dark:ring-blue-400"
+            );
+            setTimeout(() => {
+              mark.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }
+        }
+      }
+
+      // 3. Recursively call on child nodes
+      Array.from(node.childNodes).forEach(findAndHighlight);
+    };
+
+    // Delay to ensure content is rendered
+    const timeoutId = setTimeout(() => {
+      const mainContent = document.getElementById("main-content");
+      if (mainContent) {
+        findAndHighlight(mainContent);
+      }
     }, 100);
+
+    // Cleanup function to remove highlights and timeout
+    return () => {
+      clearTimeout(timeoutId);
+      const marks = document.querySelectorAll("[data-search-highlight]");
+      marks.forEach((mark) => {
+        const parent = mark.parentNode;
+        if (parent) {
+          // Replace the mark with its text content
+          parent.replaceChild(
+            document.createTextNode(mark.textContent || ""),
+            mark
+          );
+          // Normalize to merge adjacent text nodes
+          parent.normalize();
+        }
+      });
+    };
   }, [highlight]);
 
   return null;
