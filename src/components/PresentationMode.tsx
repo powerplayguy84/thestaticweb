@@ -106,7 +106,7 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
   }, [htmlContent, description, title]);
 
   return (
-    <div className="w-full h-full overflow-hidden flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center">
       <Carousel ref={carouselRef} className="w-full h-full flex items-center justify-center">
         <CarouselContent className="h-full w-full flex items-center">
           {slides.map((slide) => (

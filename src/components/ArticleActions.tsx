@@ -21,6 +21,17 @@ export function ArticleActions({ htmlContent, description, title }: ArticleActio
     setIsMounted(true);
   }, []);
 
+  React.useEffect(() => {
+    if (isPresentationOpen) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [isPresentationOpen]);
+
   return (
     <>
       <div className="flex items-center gap-2">
