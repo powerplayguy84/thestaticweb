@@ -28,6 +28,11 @@ export function MermaidInitializer() {
             const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
             const code = element.textContent || "";
             
+            // Store original code before rendering
+            if (!element.hasAttribute("data-mermaid-code")) {
+              element.setAttribute("data-mermaid-code", code);
+            }
+            
             const { svg } = await mermaid.render(id, code);
             element.innerHTML = svg;
             element.setAttribute("data-processed", "true");
@@ -54,7 +59,14 @@ export function MermaidInitializer() {
         ) {
           // Re-render mermaid diagrams when theme changes
           const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid[data-processed]");
-          mermaidElements.forEach((el) => el.removeAttribute("data-processed"));
+          mermaidElements.forEach((el) => {
+            // Restore original code from stored attribute
+            const originalCode = el.getAttribute("data-mermaid-code");
+            if (originalCode) {
+              el.textContent = originalCode;
+            }
+            el.removeAttribute("data-processed");
+          });
           initMermaid();
         }
       });
