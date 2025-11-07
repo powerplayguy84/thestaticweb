@@ -570,6 +570,129 @@ gitGraph
     commit
 ```
 
+### Pie Chart
+
+```mermaid
+pie title Project Time Distribution
+    "Development" : 45
+    "Testing" : 20
+    "Documentation" : 15
+    "Meetings" : 12
+    "Code Review" : 8
+```
+
+### State Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Loading: fetch()
+    Loading --> Success: data received
+    Loading --> Error: request failed
+    Success --> Idle: reset()
+    Error --> Idle: retry()
+    Error --> [*]: abort()
+```
+
+### Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    USER ||--o{ POST : creates
+    USER ||--o{ COMMENT : writes
+    POST ||--o{ COMMENT : has
+    USER {
+        int id PK
+        string username
+        string email
+        date created_at
+    }
+    POST {
+        int id PK
+        int user_id FK
+        string title
+        text content
+        date published_at
+    }
+    COMMENT {
+        int id PK
+        int user_id FK
+        int post_id FK
+        text content
+        date created_at
+    }
+```
+
+### Gantt Chart
+
+```mermaid
+gantt
+    title Project Development Timeline
+    dateFormat YYYY-MM-DD
+    section Planning
+    Requirements gathering    :a1, 2025-01-01, 7d
+    Design mockups           :a2, after a1, 5d
+    section Development
+    Frontend setup           :b1, after a2, 3d
+    Backend API              :b2, after b1, 10d
+    Database design          :b3, after b1, 5d
+    Integration              :b4, after b2, 7d
+    section Testing
+    Unit tests               :c1, after b4, 5d
+    Integration tests        :c2, after c1, 5d
+    section Deployment
+    Production deploy        :d1, after c2, 2d
+```
+
+### Journey Diagram
+
+```mermaid
+journey
+    title User Experience Journey
+    section Discovery
+      Search for solution: 5: User
+      Find website: 4: User
+      Read homepage: 3: User
+    section Engagement
+      Browse articles: 5: User
+      Read tutorial: 5: User
+      Try example code: 4: User
+    section Conversion
+      Sign up: 3: User
+      Download resource: 5: User
+      Share with team: 5: User
+```
+
+### Mindmap
+
+```mermaid
+mindmap
+  root((Web Development))
+    Frontend
+      HTML
+      CSS
+        Tailwind
+        Sass
+      JavaScript
+        React
+        Vue
+        Angular
+    Backend
+      Node.js
+        Express
+        Fastify
+      Python
+        Django
+        Flask
+      Database
+        PostgreSQL
+        MongoDB
+    DevOps
+      CI/CD
+      Docker
+      Kubernetes
+```
+
 ---
 
 ## Horizontal Rules

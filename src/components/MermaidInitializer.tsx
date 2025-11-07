@@ -1,33 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-
-// Helper function to convert CSS color variables to HEX
-const toHex = (color: string) => {
-  if (color.startsWith("#")) return color; // Already hex
-
-  const temp = document.createElement("div");
-  temp.style.color = color;
-  document.body.appendChild(temp);
-
-  const computedColor = getComputedStyle(temp).color;
-  document.body.removeChild(temp);
-
-  // This handles rgb(r, g, b) and rgba(r, g, b, a)
-  const rgbValues = computedColor.match(/(\d+(\.\d+)?)/g);
-
-  if (rgbValues && rgbValues.length >= 3) {
-    return ("#" +
-      parseInt(rgbValues[0]).toString(16).padStart(2, "0") +
-      parseInt(rgbValues[1]).toString(16).padStart(2, "0") +
-      parseInt(rgbValues[2]).toString(16).padStart(2, "0")
-    );
-  }
-
-  return "#000000"; // Fallback for invalid color
-};
+import { useEffect, useState } from "react";
 
 export function MermaidInitializer() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     const initMermaid = async () => {
       try {
@@ -36,46 +13,11 @@ export function MermaidInitializer() {
         
         const isDark = document.documentElement.classList.contains("dark");
         
-        // Get computed colors from CSS variables and convert to HEX
-        const primaryColor = toHex("hsl(var(--primary))");
-        
         mermaid.initialize({
           startOnLoad: false,
           theme: isDark ? "dark" : "default",
           securityLevel: "loose",
           fontFamily: "var(--font-geist-sans)",
-          themeVariables: {
-            primaryColor: primaryColor,
-            primaryBorderColor: primaryColor,
-            lineColor: isDark ? "#94a3b8" : "#64748b",
-            secondBkgColor: isDark ? "#334155" : "#f3f4f6",
-            tertiaryColor: isDark ? "#1e293b" : "#fafafa",
-            tertiaryTextColor: isDark ? "#e2e8f0" : "#1f2937",
-            fontSize: "14px",
-            fontFamily: "var(--font-geist-sans)",
-          },
-          flowchart: {
-            useMaxWidth: true,
-            htmlLabels: true,
-            curve: "linear",
-            padding: 15,
-          },
-          sequence: {
-            useMaxWidth: true,
-            mirrorActors: false,
-            messageAlign: "center",
-          },
-          class: {
-            useMaxWidth: true,
-            htmlLabels: true,
-          },
-          gitGraph: {
-            useMaxWidth: true,
-            mainBranchOrder: 2,
-          },
-          state: {
-            useMaxWidth: true,
-          },
         });
 
         // Find all mermaid elements and render them
@@ -100,6 +42,7 @@ export function MermaidInitializer() {
           }
         }
         
+        setIsLoaded(true);
       } catch (error) {
         console.error("Failed to load mermaid:", error);
       }
