@@ -4,6 +4,13 @@ import * as React from "react";
 import { ChevronLeft, ChevronRight, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface Slide {
   id: string;
@@ -24,7 +31,6 @@ interface PresentationModeProps {
 export function PresentationMode({ htmlContent, description, title, image }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  const [showTOC, setShowTOC] = React.useState(false);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -80,7 +86,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
       });
     }
 
-    // Collect all headings (h1-h6) in order
+    // Collect all headings (h1-h2) in order
     const allHeadings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
     
     allHeadings.forEach((heading, index) => {
@@ -177,46 +183,47 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
         </div>
       )}
 
-      {/* TOC Button - Bottom Left */}
-      <Button
-        onClick={() => setShowTOC(!showTOC)}
-          variant="outline"
-         className="fixed bottom-6 left-6 z-40 gap-2 shadow-lg"
-        aria-label="Toggle Table of Contents"
-      >
-        <List className="w-4 h-4" />
-      </Button>
-
-      {/* Table of Contents Sidebar */}
-      {showTOC && (
-        <div className="absolute inset-0 z-30 bg-background/95 backdrop-blur-sm flex flex-col p-6 max-w-xs border-r border-border">
-          <h3 className="font-bold mb-4 text-lg">Slides</h3>
-          <div className="flex-1 overflow-y-auto space-y-2">
+      {/* TOC Button and Sheet - Bottom Left */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            className="absolute bottom-0 left-0 z-40 shadow-lg"
+            aria-label="Toggle Table of Contents"
+          >
+            <List/>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="flex flex-col">
+          <SheetHeader>
+            <SheetTitle>Slides</SheetTitle>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto space-y-2 p-4">
             {slides.map((s, index) => (
-              <button
-                key={s.id}
-                onClick={() => {
-                  setCurrentSlide(index);
-                  setShowTOC(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
-                  currentSlide === index
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted text-foreground"
-                }`}
-              >
-                <div className="text-sm font-medium truncate">{s.title || `Slide ${index + 1}`}</div>
-                {s.description && (
-                  <div className="text-xs text-muted-foreground truncate">{s.description}</div>
-                )}
-              </button>
+              <SheetTrigger asChild key={s.id}>
+                <button
+                  onClick={() => {
+                    setCurrentSlide(index);
+                  }}
+                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                    currentSlide === index
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-muted text-foreground"
+                  }`}
+                >
+                  <div className="text-sm font-medium truncate">{s.title || `Slide ${index + 1}`}</div>
+                  {s.description && (
+                    <div className="text-xs text-muted-foreground truncate">{s.description}</div>
+                  )}
+                </button>
+              </SheetTrigger>
             ))}
           </div>
-        </div>
-      )}
+        </SheetContent>
+      </Sheet>
 
       {/* Navigation FAB - Bottom Right */}
-      <div className="absolute bottom-4 right-4 z-40">
+      <div className="absolute bottom-0 right-0 z-40">
         <ButtonGroup className="shadow-lg">
           <Button
             variant="outline"
