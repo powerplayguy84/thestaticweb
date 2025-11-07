@@ -11,9 +11,10 @@ interface ArticleActionsProps {
   htmlContent: string;
   description?: string;
   title?: string;
+  image?: string;
 }
 
-export function ArticleActions({ htmlContent, description, title }: ArticleActionsProps): React.ReactNode {
+export function ArticleActions({ htmlContent, description, title, image }: ArticleActionsProps): React.ReactNode {
   const [isPresentationOpen, setIsPresentationOpen] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -58,7 +59,7 @@ export function ArticleActions({ htmlContent, description, title }: ArticleActio
               <span className="sr-only">Close Presentation Mode</span>
             </Button>
             <div className="w-full max-w-6xl h-full">
-              <PresentationMode htmlContent={htmlContent} description={description} title={title} />
+              <PresentationMode htmlContent={htmlContent} description={description} title={title} image={image} />
             </div>
           </div>,
           document.body

@@ -14,15 +14,17 @@ interface Slide {
   title: string;
   content: string;
   description?: string;
+  image?: string;
 }
 
 interface PresentationModeProps {
   htmlContent: string;
   description?: string;
   title?: string;
+  image?: string;
 }
 
-export function PresentationMode({ htmlContent, description, title }: PresentationModeProps): React.ReactNode {
+export function PresentationMode({ htmlContent, description, title, image }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const carouselRef = React.useRef<HTMLDivElement>(null);
 
@@ -52,6 +54,7 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
       title: title || "",
       content: "",
       description: description,
+      image: image || undefined,
     });
 
     // Get the first heading
@@ -85,10 +88,20 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
     
     allHeadings.forEach((heading, index) => {
       let content = "";
+      let image = "";
       let nextElement = heading.nextElementSibling;
       
       // Collect all content until the next heading
       while (nextElement && !["H1", "H2", "H3", "H4", "H5", "H6"].includes(nextElement.tagName)) {
+        // Extract first image if found
+        if (nextElement.tagName === "IMG" && !image) {
+          image = (nextElement as HTMLImageElement).src;
+        } else if (nextElement.tagName === "P") {
+          const img = nextElement.querySelector("img");
+          if (img && !image) {
+            image = img.src;
+          }
+        }
         content += nextElement.outerHTML;
         nextElement = nextElement.nextElementSibling;
       }
@@ -98,11 +111,12 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
         id: `slide-${index}`,
         title: heading.textContent || "",
         content: content,
+        image: image || undefined,
       });
     });
 
     setSlides(newSlides);
-  }, [htmlContent, description, title]);
+  }, [htmlContent, description, title, image]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -122,6 +136,13 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
                           {slide.description}
                         </p>
                       )}
+                      {slide.image && (
+                        <img
+                          src={slide.image}
+                          alt={slide.title}
+                          className="max-w-full max-h-64 object-contain rounded-lg mt-2 sm:mt-4"
+                        />
+                      )}
                     </div>
                   )}
                   {!slide.title && slide.description && (
@@ -129,6 +150,13 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
                       <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">
                         {slide.description}
                       </p>
+                      {slide.image && (
+                        <img
+                          src={slide.image}
+                          alt="Slide image"
+                          className="max-w-full max-h-64 object-contain rounded-lg mt-2 sm:mt-4"
+                        />
+                      )}
                     </div>
                   )}
                   {slide.content.trim() && (
