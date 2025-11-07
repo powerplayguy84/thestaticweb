@@ -39,7 +39,7 @@ export function ArticleActions({ htmlContent }: ArticleActionsProps): React.Reac
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-4 right-4"
+              className="absolute top-4 right-4 z-50"
               onClick={() => setIsPresentationOpen(false)}
             >
               <X className="h-4 w-4" />

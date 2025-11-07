@@ -23,6 +23,22 @@ interface PresentationModeProps {
 
 export function PresentationMode({ htmlContent }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
+  const carouselRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        const prevButton = carouselRef.current?.querySelector("[data-slot='carousel-previous']") as HTMLButtonElement;
+        prevButton?.click();
+      } else if (e.key === "ArrowRight") {
+        const nextButton = carouselRef.current?.querySelector("[data-slot='carousel-next']") as HTMLButtonElement;
+        nextButton?.click();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   React.useEffect(() => {
     const parser = new DOMParser();
@@ -92,22 +108,24 @@ export function PresentationMode({ htmlContent }: PresentationModeProps): React.
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <Carousel className="w-full h-full flex items-center justify-center">
+      <Carousel ref={carouselRef} className="w-full h-full flex items-center justify-center">
         <CarouselContent className="h-full w-full flex items-center">
           {slides.map((slide) => (
-            <CarouselItem key={slide.id} className="h-full flex items-center justify-center basis-full">
-              <Card className="w-full aspect-video">
-                <CardContent className="w-full h-full flex flex-col items-center justify-center p-6">
-                  <div className="w-full flex flex-col items-center">
-                    <h2 className={`font-bold mb-4 w-full text-center ${!slide.content.trim() ? "text-5xl" : "text-2xl"}`}>{slide.title}</h2>
+            <CarouselItem key={slide.id} className="h-full flex items-center justify-center basis-full px-4 sm:px-6 md:px-8">
+              <Card className="w-full max-w-sm sm:max-w-2xl md:max-w-4xl aspect-square sm:aspect-video">
+                <CardContent className={`w-full h-full flex flex-col p-4 sm:p-6 gap-4 ${!slide.content.trim() ? "items-center justify-center" : "items-center justify-start overflow-y-auto"}`}>
+                  <div className="w-full flex flex-col items-center flex-shrink-0">
+                    <h2 className={`font-bold mb-2 sm:mb-4 w-full text-center ${!slide.content.trim() ? "text-3xl sm:text-4xl md:text-5xl" : "text-lg sm:text-xl md:text-2xl"}`}>{slide.title}</h2>
                     {slide.description && (
-                      <p className="text-lg text-muted-foreground w-full text-center mb-6">{slide.description}</p>
+                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">{slide.description}</p>
                     )}
                   </div>
-                  <div
-                    className="prose prose-sm w-full"
-                    dangerouslySetInnerHTML={{ __html: slide.content }}
-                  />
+                  {slide.content.trim() && (
+                    <div
+                      className="prose prose-sm sm:prose-base w-full overflow-y-auto flex-1"
+                      dangerouslySetInnerHTML={{ __html: slide.content }}
+                    />
+                  )}
                 </CardContent>
               </Card>
             </CarouselItem>
