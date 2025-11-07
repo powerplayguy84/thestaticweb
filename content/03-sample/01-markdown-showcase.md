@@ -148,6 +148,8 @@ Use `const` for variables that won't be reassigned, `let` for variables that wil
 
 The `useState` hook is fundamental in React, and `useEffect` handles side effects. You can import them like this: `import { useState, useEffect } from 'react'`.
 
+Testing very long inline code: `const veryLongVariableNameThatMightCauseHorizontalScrollingIssuesInInlineCodeElements = "This is a test to see how inline code behaves with extremely long content that might overflow"`.
+
 ### Code Blocks with Syntax Highlighting
 
 #### JavaScript/TypeScript
@@ -226,6 +228,24 @@ export default Counter;
     @apply shadow-sm hover:shadow-md transition-shadow;
   }
 }
+```
+
+#### Long Code Example (Tests Horizontal Scrolling)
+
+```javascript
+// This is a very long line of code that should trigger horizontal scrolling when it exceeds the container width
+const veryLongFunctionWithManyParametersAndAVeryDescriptiveName = (firstParameterWithALongName, secondParameterWithAnotherLongName, thirdParameterWithYetAnotherLongName, fourthParameterWithAnEvenLongerName) => {
+  const anotherVeryLongVariableNameThatShouldMakeThisLineVeryWideAndTriggerHorizontalScrolling = firstParameterWithALongName + secondParameterWithAnotherLongName;
+  
+  return {
+    veryLongPropertyName: anotherVeryLongVariableNameThatShouldMakeThisLineVeryWideAndTriggerHorizontalScrolling,
+    anotherVeryLongPropertyNameThatExceedsTheContainerWidth: thirdParameterWithYetAnotherLongName,
+    yetAnotherPropertyWithAnExtremelLongNameThatDefinitelyExceedsAnyReasonableContainerWidth: fourthParameterWithAnEvenLongerName
+  };
+};
+
+// Another long line with multiple method calls chained together
+const result = veryLongFunctionWithManyParametersAndAVeryDescriptiveName("first", "second", "third", "fourth").veryLongPropertyName.toString().toUpperCase().split('').reverse().join('').toLowerCase();
 ```
 
 #### HTML
@@ -411,6 +431,14 @@ ORDER BY post_count DESC;
 | Rust       | Systems         | Performance Critical | Hard       | ⭐⭐⭐     |
 | Go         | Compiled        | Backend Services     | Medium     | ⭐⭐⭐⭐   |
 | TypeScript | Typed Scripting | Large Applications   | Medium     | ⭐⭐⭐⭐⭐ |
+
+### Wide Table (Tests Horizontal Scrolling)
+
+| Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 |
+|----------|----------|----------|----------|----------|----------|----------|----------|----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| This is a very long content item 1 | This is a very long content item 2 | This is a very long content item 3 | This is a very long content item 4 | This is a very long content item 5 | This is a very long content item 6 | This is a very long content item 7 | This is a very long content item 8 | This is a very long content item 9 | This is a very long content item 10 | This is a very long content item 11 | This is a very long content item 12 | This is a very long content item 13 | This is a very long content item 14 | This is a very long content item 15 |
+| Data A1 | Data A2 | Data A3 | Data A4 | Data A5 | Data A6 | Data A7 | Data A8 | Data A9 | Data A10 | Data A11 | Data A12 | Data A13 | Data A14 | Data A15 |
+| Data B1 | Data B2 | Data B3 | Data B4 | Data B5 | Data B6 | Data B7 | Data B8 | Data B9 | Data B10 | Data B11 | Data B12 | Data B13 | Data B14 | Data B15 |
 
 ---
 
@@ -707,6 +735,6 @@ This showcase demonstrates all the markdown and HTML elements styled in our glob
 
 ---
 
-**Last Updated:** October 29, 2025  
+**Last Updated:** November 7, 2025  
 **Status:** Complete  
 **Version:** 1.0.0

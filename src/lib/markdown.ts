@@ -138,7 +138,17 @@ async function parseMarkdownFile(filePath: string): Promise<{
     .use(rehypeStringify) // Convert to HTML string
     .process(content);
 
-  const htmlContent = processedContent.toString();
+  let htmlContent = processedContent.toString();
+
+  // Wrap tables in scrollable containers
+  htmlContent = htmlContent.replace(
+    /<table([^>]*)>/g,
+    '<div class="table-wrapper"><table$1>'
+  );
+  htmlContent = htmlContent.replace(
+    /<\/table>/g,
+    '</table></div>'
+  );
 
   return {
     metadata: {
