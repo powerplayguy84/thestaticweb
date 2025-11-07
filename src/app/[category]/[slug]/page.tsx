@@ -11,7 +11,7 @@ import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import PrintButton from "@/components/PrintButton";
+import { ArticleActions } from "@/components/ArticleActions";
 import SearchHighlighter from "@/components/SearchHighlighter";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
 import TableOfContents from "@/components/TableOfContents";
@@ -196,7 +196,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   {formatDate(article.date)}
                 </time>
               </div>
-              <PrintButton />
+              <ArticleActions htmlContent={contentWithHeadingIds} />
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 print:text-3xl">
               {article.title}
