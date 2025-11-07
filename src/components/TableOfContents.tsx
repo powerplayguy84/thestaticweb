@@ -130,6 +130,15 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     }
   }, [activeId]);
 
+  // Scroll active item into view when mobile sheet opens
+  useEffect(() => {
+    if (open && activeRef.current) {
+      setTimeout(() => {
+        activeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+    }
+  }, [open]);
+
   const tocContent = (
     <nav className="space-y-1">
       {headings.map((heading, index) => (
