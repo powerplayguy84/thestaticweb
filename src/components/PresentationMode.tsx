@@ -111,8 +111,8 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
         <CarouselContent className="h-full w-full flex items-center">
           {slides.map((slide) => (
             <CarouselItem key={slide.id} className="h-full flex items-center justify-center basis-full px-4 sm:px-6 md:px-8">
-              <Card className="w-full max-w-sm sm:max-w-2xl md:max-w-4xl aspect-square sm:aspect-video">
-                <CardContent className={`w-full h-full flex flex-col p-4 sm:p-6 gap-4 ${!slide.content.trim() ? "items-center justify-center" : "items-center justify-start overflow-y-auto"}`}>
+              <div className="w-full sm:max-w-2xl md:max-w-4xl ">
+                <div className={`w-full h-full flex flex-col p-4 sm:p-6 gap-4 ${!slide.content.trim() ? "items-center justify-center" : "items-center justify-start overflow-y-auto"}`}>
                   {slide.title && (
                     <div className="w-full flex flex-col items-center flex-shrink-0">
                       <h2 className={`font-bold mb-2 sm:mb-4 w-full text-center ${!slide.content.trim() ? "text-3xl sm:text-4xl md:text-5xl" : "text-lg sm:text-xl md:text-2xl"}`}>{slide.title}</h2>
@@ -132,8 +132,8 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
                       dangerouslySetInnerHTML={{ __html: slide.content }}
                     />
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
