@@ -15,7 +15,13 @@ interface ArticleActionsProps {
 }
 
 export function ArticleActions({ htmlContent, description, title, image }: ArticleActionsProps): React.ReactNode {
-  const [isPresentationOpen, setIsPresentationOpen] = React.useState(false);
+  const [isPresentationOpen, setIsPresentationOpen] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.has("slide");
+    }
+    return false;
+  });
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -32,6 +38,19 @@ export function ArticleActions({ htmlContent, description, title, image }: Artic
       document.documentElement.style.overflow = "";
     };
   }, [isPresentationOpen]);
+
+  const handleClosePresentationMode = () => {
+    setIsPresentationOpen(false);
+    // Clear the slide parameter from URL
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      params.delete("slide");
+      const newUrl = params.toString()
+        ? `${window.location.pathname}?${params.toString()}`
+        : window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
+    }
+  };
 
   return (
     <>
@@ -53,7 +72,7 @@ export function ArticleActions({ htmlContent, description, title, image }: Artic
               variant="outline"
               size="icon"
               className="absolute top-4 right-4 z-50"
-              onClick={() => setIsPresentationOpen(false)}
+              onClick={handleClosePresentationMode}
             >
               <X className="h-4 w-4" />
               <span className="sr-only">Close Presentation Mode</span>

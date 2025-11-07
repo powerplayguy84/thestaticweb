@@ -31,6 +31,30 @@ interface PresentationModeProps {
 export function PresentationMode({ htmlContent, description, title, image }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [hasReadUrl, setHasReadUrl] = React.useState(false);
+
+  // Read slide from URL parameter once on mount
+  React.useEffect(() => {
+    if (typeof window === "undefined" || hasReadUrl) return;
+    const params = new URLSearchParams(window.location.search);
+    const slideParam = params.get("slide");
+    if (slideParam) {
+      const slideNum = parseInt(slideParam, 10);
+      if (!isNaN(slideNum) && slideNum >= 0) {
+        setCurrentSlide(slideNum);
+      }
+    }
+    setHasReadUrl(true);
+  }, [hasReadUrl]);
+
+  // Update URL when slide changes (after URL has been read)
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !hasReadUrl) return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("slide", currentSlide.toString());
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [currentSlide, hasReadUrl]);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -186,6 +210,19 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
 
     setSlides(newSlides);
   }, [htmlContent, description, title, image]);
+
+  // Restore slide position from URL after slides are loaded
+  React.useEffect(() => {
+    if (slides.length === 0 || !hasReadUrl) return;
+    const params = new URLSearchParams(window.location.search);
+    const slideParam = params.get("slide");
+    if (slideParam) {
+      const slideNum = parseInt(slideParam, 10);
+      if (!isNaN(slideNum) && slideNum >= 0 && slideNum < slides.length) {
+        setCurrentSlide(slideNum);
+      }
+    }
+  }, [slides, hasReadUrl]);
 
   const slide = slides[currentSlide];
 
