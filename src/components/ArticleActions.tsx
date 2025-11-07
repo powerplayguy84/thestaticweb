@@ -36,21 +36,20 @@ export function ArticleActions({ htmlContent, description, title }: ArticleActio
     <>
       <div className="flex items-center gap-2">
         <PrintButton />
-        <Button
-          variant="outline"
-          size="icon"
+        <button
           onClick={() => setIsPresentationOpen(true)}
+          className="inline-flex items-center justify-center p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors"
+          aria-label="Open Presentation Mode"
         >
-          <Presentation className="h-4 w-4" />
-          <span className="sr-only">Open Presentation Mode</span>
-        </Button>
+          <Presentation className="w-4 h-4" />
+        </button>
       </div>
       {isMounted &&
         isPresentationOpen &&
         createPortal(
           <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4">
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
               className="absolute top-4 right-4 z-50"
               onClick={() => setIsPresentationOpen(false)}
