@@ -45,6 +45,71 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [slides.length]);
 
+  // Initialize Mermaid diagrams when slide changes or theme changes
+  React.useEffect(() => {
+    const initMermaid = async () => {
+      try {
+        const mermaid = (await import("mermaid")).default;
+        
+        const isDark = document.documentElement.classList.contains("dark");
+        
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark ? "dark" : "default",
+          securityLevel: "loose",
+          fontFamily: "var(--font-geist-sans)",
+        });
+
+        // Find all mermaid elements in current slide that haven't been processed
+        const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid:not([data-processed])");
+        
+        for (const element of Array.from(mermaidElements)) {
+          try {
+            const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+            const code = element.textContent || "";
+            
+            const { svg } = await mermaid.render(id, code);
+            element.innerHTML = svg;
+            element.setAttribute("data-processed", "true");
+          } catch (error) {
+            console.error("Failed to render mermaid diagram:", error);
+            element.innerHTML = `<pre>Error rendering diagram</pre>`;
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load mermaid:", error);
+      }
+    };
+
+    // Small delay to ensure DOM is updated
+    const timer = setTimeout(initMermaid, 100);
+
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.attributeName === "class" &&
+          mutation.target === document.documentElement
+        ) {
+          // Re-render mermaid diagrams when theme changes
+          const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid[data-processed]");
+          mermaidElements.forEach((el) => el.removeAttribute("data-processed"));
+          initMermaid();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [currentSlide]);
+
   React.useEffect(() => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
@@ -129,7 +194,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
       {slide && (
         <div className="w-full h-full overflow-y-auto px-4 sm:px-6 md:px-8">
           <div className="w-full sm:max-w-2xl md:max-w-4xl mx-auto h-full flex flex-col py-8">
-            <div className="w-full flex flex-col flex-1 gap-4 justify-center pb-16">
+            <div className="w-full flex flex-col flex-1 gap-4 justify-center">
               {/* Header Section */}
               <div className={`flex-shrink-0 prose prose-sm sm:prose-base max-w-none ${!slide.content.trim() ? "flex flex-col items-center justify-center text-center" : ""}`}>
                 {slide.title && (
@@ -171,7 +236,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
 
               {/* Content Section */}
               {slide.content.trim() && (
-                <div className="w-full min-h-0 p-4 sm:p-6 rounded-lg border border-border bg-card">
+                <div className="w-full min-h-0">
                   <div
                     className="prose prose-sm sm:prose-base max-w-none"
                     dangerouslySetInnerHTML={{ __html: slide.content }}
