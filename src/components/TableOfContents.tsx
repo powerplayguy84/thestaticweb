@@ -126,7 +126,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   // Scroll active item into view in TOC
   useEffect(() => {
     if (activeRef.current) {
-      activeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      activeRef.current.scrollIntoView({ block: "center" });
     }
   }, [activeId]);
 
@@ -134,7 +134,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   useEffect(() => {
     if (open && activeRef.current) {
       setTimeout(() => {
-        activeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeRef.current?.scrollIntoView({block: "center" });
       }, 100);
     }
   }, [open]);
