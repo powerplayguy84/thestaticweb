@@ -55,6 +55,32 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
       description: description,
     });
 
+    // Get the first heading
+    const firstHeading = doc.querySelector("h1, h2, h3, h4, h5, h6");
+    
+    // Collect content before the first heading
+    let preContent = "";
+    if (firstHeading) {
+      let element = firstHeading.previousElementSibling;
+      const contentElements: Element[] = [];
+      while (element) {
+        contentElements.unshift(element);
+        element = element.previousElementSibling;
+      }
+      contentElements.forEach((el) => {
+        preContent += el.outerHTML;
+      });
+    }
+
+    // Add pre-heading slide if content exists
+    if (preContent.trim()) {
+      newSlides.push({
+        id: "slide-pre",
+        title: "",
+        content: preContent,
+      });
+    }
+
     // Collect all headings (h1-h6) in order
     const allHeadings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
     
@@ -77,7 +103,7 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
     });
 
     setSlides(newSlides);
-  }, [htmlContent, description]);
+  }, [htmlContent, description, title]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">
