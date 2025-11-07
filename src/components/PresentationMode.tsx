@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -111,19 +110,25 @@ export function PresentationMode({ htmlContent, description, title }: Presentati
         <CarouselContent className="h-full w-full flex items-center">
           {slides.map((slide) => (
             <CarouselItem key={slide.id} className="h-full flex items-center justify-center basis-full px-4 sm:px-6 md:px-8">
-              <div className="w-full sm:max-w-2xl md:max-w-4xl ">
+              <div className="w-full sm:max-w-2xl md:max-w-4xl">
                 <div className={`w-full h-full flex flex-col p-4 sm:p-6 gap-4 ${!slide.content.trim() ? "items-center justify-center" : "items-center justify-start overflow-y-auto"}`}>
                   {slide.title && (
                     <div className="w-full flex flex-col items-center flex-shrink-0">
-                      <h2 className={`font-bold mb-2 sm:mb-4 w-full text-center ${!slide.content.trim() ? "text-3xl sm:text-4xl md:text-5xl" : "text-lg sm:text-xl md:text-2xl"}`}>{slide.title}</h2>
+                      <h2 className={`font-bold w-full text-center mb-2 sm:mb-4 ${!slide.content.trim() ? "text-3xl sm:text-4xl md:text-5xl" : "text-lg sm:text-xl md:text-2xl"}`}>
+                        {slide.title}
+                      </h2>
                       {slide.description && (
-                        <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">{slide.description}</p>
+                        <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">
+                          {slide.description}
+                        </p>
                       )}
                     </div>
                   )}
                   {!slide.title && slide.description && (
                     <div className="w-full flex flex-col items-center flex-shrink-0">
-                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">{slide.description}</p>
+                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground w-full text-center mb-4 sm:mb-6">
+                        {slide.description}
+                      </p>
                     </div>
                   )}
                   {slide.content.trim() && (
