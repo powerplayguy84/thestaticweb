@@ -46,24 +46,55 @@ export function MermaidInitializer() {
     initMermaid();
 
     // Watch for theme changes
-    const observer = new MutationObserver((mutations) => {
+    const themeObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
           mutation.attributeName === "class" &&
           mutation.target === document.documentElement
         ) {
-          // Re-initialize when theme changes
+          // Re-render mermaid diagrams when theme changes
+          const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid[data-processed]");
+          mermaidElements.forEach((el) => el.removeAttribute("data-processed"));
           initMermaid();
         }
       });
     });
 
-    observer.observe(document.documentElement, {
+    themeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
 
-    return () => observer.disconnect();
+    // Watch for new mermaid elements being added to the DOM (for client-side navigation)
+    const contentObserver = new MutationObserver((mutations) => {
+      let hasNewMermaid = false;
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof HTMLElement) {
+            // Check if the added node is a mermaid element or contains mermaid elements
+            if (node.classList.contains("mermaid") || node.querySelector(".mermaid")) {
+              hasNewMermaid = true;
+            }
+          }
+        });
+      });
+      
+      if (hasNewMermaid) {
+        // Small delay to ensure DOM is fully updated
+        setTimeout(() => initMermaid(), 100);
+      }
+    });
+
+    // Observe the entire document body for changes
+    contentObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      themeObserver.disconnect();
+      contentObserver.disconnect();
+    };
   }, []);
 
   return null;

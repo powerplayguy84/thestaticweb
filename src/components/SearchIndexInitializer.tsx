@@ -4,18 +4,25 @@ import { initSearchIndex } from "@/components/Search";
 export async function SearchIndexInitializer() {
   const articles = await getAllArticlesWithContent();
 
-  const searchData = articles.map((article) => ({
-    title: article.title,
-    description: article.description,
-    category: article.category,
-    slug: article.slug,
-    tags: article.tags,
-    // Strip HTML tags from content for better search
-    content: article.content
+  const searchData = articles.map((article) => {
+    // Remove mermaid diagrams (they appear as <div class="mermaid">...</div>)
+    let content = article.content.replace(/<div[^>]*class="[^"]*mermaid[^"]*"[^>]*>[\s\S]*?<\/div>/gi, " ");
+    
+    // Strip remaining HTML tags from content for better search
+    content = content
       .replace(/<[^>]*>/g, " ")
       .replace(/\s+/g, " ")
-      .trim(),
-  }));
+      .trim();
+
+    return {
+      title: article.title,
+      description: article.description,
+      category: article.category,
+      slug: article.slug,
+      tags: article.tags,
+      content,
+    };
+  });
 
   // Initialize the search index on the client
   if (typeof window !== "undefined") {
