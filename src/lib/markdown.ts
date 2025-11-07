@@ -187,10 +187,15 @@ async function parseMarkdownFile(filePath: string): Promise<{
     '</table></div>'
   );
 
-  // Wrap code blocks with copy button container
+  // Wrap code blocks with copy button container (but NOT mermaid divs)
   htmlContent = htmlContent.replace(
     /<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/g,
     (match, codeAttrs, codeContent) => {
+      // Skip if this is a mermaid block (shouldn't happen, but safety check)
+      if (codeAttrs.includes('language-mermaid')) {
+        return match;
+      }
+      
       // Extract the actual code text and escape it for JSON
       const plainText = codeContent
         .replace(/<[^>]*>/g, '') // Remove HTML tags
