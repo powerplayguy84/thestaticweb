@@ -50,9 +50,32 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     });
 
     setHeadings(extractedHeadings);
-    // Set first heading as active initially
+    
+    // Detect active heading on page load
     if (extractedHeadings.length > 0) {
-      setActiveId(extractedHeadings[0].id);
+      let firstVisibleId = "";
+      for (const heading of extractedHeadings) {
+        const element = document.getElementById(heading.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top >= 80 && rect.top < window.innerHeight) {
+            firstVisibleId = heading.id;
+            break;
+          }
+        }
+      }
+
+      if (!firstVisibleId) {
+        for (let i = extractedHeadings.length - 1; i >= 0; i--) {
+          const element = document.getElementById(extractedHeadings[i].id);
+          if (element && element.getBoundingClientRect().top <= 80) {
+            firstVisibleId = extractedHeadings[i].id;
+            break;
+          }
+        }
+      }
+
+      setActiveId(firstVisibleId || extractedHeadings[0].id);
     }
   }, [content]);
 
