@@ -176,7 +176,6 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           <SheetTrigger asChild>
             <Button
               variant="outline"
-              size="sm"
               className="fixed bottom-6 right-6 z-40 gap-2 shadow-lg"
               aria-label="Open table of contents"
             >
