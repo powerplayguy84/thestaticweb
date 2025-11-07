@@ -196,7 +196,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   {formatDate(article.date)}
                 </time>
               </div>
-              <ArticleActions htmlContent={contentWithHeadingIds} />
+              <ArticleActions htmlContent={contentWithHeadingIds} description={article.description} title={article.title} />
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 print:text-3xl">
               {article.title}

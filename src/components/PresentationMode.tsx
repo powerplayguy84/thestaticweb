@@ -19,9 +19,11 @@ interface Slide {
 
 interface PresentationModeProps {
   htmlContent: string;
+  description?: string;
+  title?: string;
 }
 
-export function PresentationMode({ htmlContent }: PresentationModeProps): React.ReactNode {
+export function PresentationMode({ htmlContent, description, title }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const carouselRef = React.useRef<HTMLDivElement>(null);
 
@@ -45,57 +47,28 @@ export function PresentationMode({ htmlContent }: PresentationModeProps): React.
     const doc = parser.parseFromString(htmlContent, "text/html");
     const newSlides: Slide[] = [];
 
-    // Add title slide first if h1 exists
-    const h1 = doc.querySelector("h1");
-    if (h1) {
-      // Get the first paragraph as description
-      let description = "";
-      let nextElement = h1.nextElementSibling;
-      if (nextElement && nextElement.tagName === "P") {
-        description = nextElement.textContent || "";
-      }
+    // First slide: title and description from frontmatter only
+    newSlides.push({
+      id: "slide-frontmatter",
+      title: title || "",
+      content: "",
+      description: description,
+    });
 
-      newSlides.push({
-        id: "slide-title",
-        title: h1.textContent || "",
-        content: "",
-        description: description,
-      });
-    }
-
-    // Collect content before the first heading
-    let introContent = "";
-    let firstHeading = doc.querySelector("h1, h2, h3, h4, h5, h6");
-    if (firstHeading) {
-      let element = firstHeading.previousElementSibling;
-      const contentElements: Element[] = [];
-      while (element) {
-        contentElements.unshift(element);
-        element = element.previousElementSibling;
-      }
-      contentElements.forEach((el) => {
-        introContent += el.outerHTML;
-      });
-    }
-
-    // Add intro slide if there's content before first heading
-    if (introContent.trim()) {
-      newSlides.push({
-        id: "slide-intro",
-        title: "Introduction",
-        content: introContent,
-      });
-    }
-
-    // Add content slides for h2, h3, h4, h5, h6
-    const headings = doc.querySelectorAll("h2, h3, h4, h5, h6");
-    headings.forEach((heading, index) => {
+    // Collect all headings (h1-h6) in order
+    const allHeadings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    
+    allHeadings.forEach((heading, index) => {
       let content = "";
       let nextElement = heading.nextElementSibling;
+      
+      // Collect all content until the next heading
       while (nextElement && !["H1", "H2", "H3", "H4", "H5", "H6"].includes(nextElement.tagName)) {
         content += nextElement.outerHTML;
         nextElement = nextElement.nextElementSibling;
       }
+      
+      // Add slide with heading as title and collected content
       newSlides.push({
         id: `slide-${index}`,
         title: heading.textContent || "",
@@ -104,7 +77,7 @@ export function PresentationMode({ htmlContent }: PresentationModeProps): React.
     });
 
     setSlides(newSlides);
-  }, [htmlContent]);
+  }, [htmlContent, description]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">

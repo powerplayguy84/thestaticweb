@@ -9,9 +9,11 @@ import { PresentationMode } from "@/components/PresentationMode";
 
 interface ArticleActionsProps {
   htmlContent: string;
+  description?: string;
+  title?: string;
 }
 
-export function ArticleActions({ htmlContent }: ArticleActionsProps): React.ReactNode {
+export function ArticleActions({ htmlContent, description, title }: ArticleActionsProps): React.ReactNode {
   const [isPresentationOpen, setIsPresentationOpen] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -46,7 +48,7 @@ export function ArticleActions({ htmlContent }: ArticleActionsProps): React.Reac
               <span className="sr-only">Close Presentation Mode</span>
             </Button>
             <div className="w-full max-w-6xl h-full">
-              <PresentationMode htmlContent={htmlContent} />
+              <PresentationMode htmlContent={htmlContent} description={description} title={title} />
             </div>
           </div>,
           document.body
