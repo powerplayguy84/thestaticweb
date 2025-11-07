@@ -344,6 +344,64 @@ small {
     @apply font-bold;
   }
 
+  /* Code block container with copy button */
+  article .code-block-wrapper,
+  .prose .code-block-wrapper,
+  .markdown .code-block-wrapper {
+    @apply relative my-6;
+    position: relative;
+  }
+
+  article .code-block-wrapper pre,
+  .prose .code-block-wrapper pre,
+  .markdown .code-block-wrapper pre {
+    @apply bg-muted border border-border rounded-md p-0 overflow-hidden m-0;
+  }
+
+  /* Copy button styling */
+  article .copy-code-btn,
+  .prose .copy-code-btn,
+  .markdown .copy-code-btn {
+    @apply absolute top-2 right-2 p-2 rounded-md bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground border border-border;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    outline: none;
+  }
+
+  article .copy-code-btn:focus,
+  .prose .copy-code-btn:focus,
+  .markdown .copy-code-btn:focus {
+    @apply outline-none ring-2 ring-ring;
+  }
+
+  article .copy-code-btn svg,
+  .prose .copy-code-btn svg,
+  .markdown .copy-code-btn svg {
+    @apply w-4 h-4;
+  }
+
+  article .copy-code-btn .hidden,
+  .prose .copy-code-btn .hidden,
+  .markdown .copy-code-btn .hidden {
+    display: none;
+  }
+
+  article .copy-code-btn.copied .copy-icon,
+  .prose .copy-code-btn.copied .copy-icon,
+  .markdown .copy-code-btn.copied .copy-icon {
+    display: none;
+  }
+
+  article .copy-code-btn.copied .check-icon,
+  .prose .copy-code-btn.copied .check-icon,
+  .markdown .copy-code-btn.copied .check-icon {
+    display: inline-block;
+    @apply text-chart-2;
+  }
+
   /* Code block container */
   article pre,
   .prose pre,

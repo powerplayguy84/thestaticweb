@@ -150,6 +150,30 @@ async function parseMarkdownFile(filePath: string): Promise<{
     '</table></div>'
   );
 
+  // Wrap code blocks with copy button container
+  htmlContent = htmlContent.replace(
+    /<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/g,
+    (match, codeAttrs, codeContent) => {
+      // Extract the actual code text and escape it for JSON
+      const plainText = codeContent
+        .replace(/<[^>]*>/g, '') // Remove HTML tags
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+      
+      const escapedCode = plainText
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      
+      return `<div class="code-block-wrapper" data-code="${escapedCode}"><pre><code${codeAttrs}>${codeContent}</code></pre><button class="copy-code-btn" aria-label="Copy code" title="Copy code"><svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg><svg class="check-icon hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></button></div>`;
+    }
+  );
+
   return {
     metadata: {
       title: data.title || "Untitled",

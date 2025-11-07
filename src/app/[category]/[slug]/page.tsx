@@ -15,6 +15,7 @@ import PrintButton from "@/components/PrintButton";
 import SearchHighlighter from "@/components/SearchHighlighter";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
 import TableOfContents from "@/components/TableOfContents";
+import CodeCopyInitializer from "@/components/CodeCopyInitializer";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -162,6 +163,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <SearchHighlighter />
       <SearchNavigationFab />
       <TableOfContents content={article.content} />
+      <CodeCopyInitializer />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -225,10 +227,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           )}
 
           {/* Content */}
-          <div
-            className="prose print:prose-sm"
-            dangerouslySetInnerHTML={{ __html: contentWithHeadingIds }}
-          />
+          <div className="overflow-x-hidden">
+            <div
+              className="prose print:prose-sm"
+              dangerouslySetInnerHTML={{ __html: contentWithHeadingIds }}
+            />
+          </div>
 
           {/* Navigation */}
           <div className="print:hidden">
