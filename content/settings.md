@@ -15,15 +15,22 @@ organizationName: "The Static Web"
 # Logo URL (optional - used in structured data)
 # logoUrl: "/logo.png"
 
+# Icon URL - Source image for PWA icons
+# Provide a URL to a PNG image (minimum 512x512px recommended)
+# Icons will be auto-generated during build/dev if this is set
+iconUrl: "./public/example-icon.svg"
+
 # Hidden categories (won't appear in navigation)
 # Add category folder names you want to hide from the navbar
 hiddenCategories:
+  - "sample"
   - "_templates"
 
 # Admin Panel Password Protection
 # Set a password to protect the /admin route
 # Change this to a secure password in production
 adminPassword: "admin123"
+
 ---
 
 # Settings

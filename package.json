@@ -20,8 +20,8 @@
     "url": "https://github.com/powerplayguy84/thestaticweb"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/generate-icons.js && next dev",
+    "build": "node scripts/generate-icons.js && next build",
     "start": "next start",
     "lint": "eslint"
   },
