@@ -65,24 +65,31 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     const handleScroll = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        let current = "";
-        let closestDistance = Infinity;
-
-        headings.forEach((heading) => {
+        let firstVisibleId = "";
+        for (const heading of headings) {
           const element = document.getElementById(heading.id);
           if (element) {
             const rect = element.getBoundingClientRect();
-            // Find the heading closest to top of viewport
-            if (rect.top >= -100 && rect.top < closestDistance) {
-              closestDistance = rect.top;
-              current = heading.id;
+            // Find the first heading that is visible below the header
+            if (rect.top >= 80 && rect.top < window.innerHeight) {
+              firstVisibleId = heading.id;
+              break; // Found the first one, stop looking
             }
           }
-        });
-
-        if (current) {
-          setActiveId(current);
         }
+
+        // If no heading is in the main viewport, find the last one scrolled past
+        if (!firstVisibleId) {
+          for (let i = headings.length - 1; i >= 0; i--) {
+            const element = document.getElementById(headings[i].id);
+            if (element && element.getBoundingClientRect().top <= 80) {
+              firstVisibleId = headings[i].id;
+              break;
+            }
+          }
+        }
+
+        setActiveId(firstVisibleId || (headings.length > 0 ? headings[0].id : ""));
       }, 50);
     };
 
@@ -96,7 +103,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   // Scroll active item into view in TOC
   useEffect(() => {
     if (activeRef.current) {
-      activeRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      activeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [activeId]);
 
