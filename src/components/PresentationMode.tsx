@@ -123,7 +123,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
       {slide && (
         <div className="w-full h-full overflow-y-auto px-4 sm:px-6 md:px-8">
           <div className="w-full sm:max-w-2xl md:max-w-4xl mx-auto h-full flex flex-col py-8">
-            <div className="w-full flex flex-col flex-1 gap-4">
+            <div className="w-full flex flex-col flex-1 gap-4 justify-center">
               {/* Header Section */}
               <div className={`flex-shrink-0 prose prose-sm sm:prose-base max-w-none ${!slide.content.trim() ? "flex flex-col items-center justify-center text-center" : ""}`}>
                 {slide.title && (
