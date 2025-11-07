@@ -67,15 +67,15 @@ function getIconUrlFromSettings() {
 }
 
 async function prepareSourceImage(iconPathOrUrl, outputPath) {
-  // If it looks like a URL, download it
-  const isUrl = /^https?:\/\//i.test(iconPathOrUrl);
-
-  if (isUrl) {
-    return fetchImageFromUrl(iconPathOrUrl, outputPath);
+  // The generator now requires a local filesystem path only.
+  // Reject HTTP/HTTPS URLs explicitly to avoid network dependency during builds.
+  if (/^https?:\/\//i.test(iconPathOrUrl)) {
+    console.log("❌ Remote URLs are not supported by the generator anymore. Use a local path (e.g. ./public/icon.png)");
+    return Promise.reject(new Error("Remote icon URLs are not supported. Use a local filesystem path."));
   }
 
-  // Otherwise treat as a local filesystem path (relative or absolute)
-  // Resolve relative paths against repo root (one level up from scripts/)
+  // Treat as a local filesystem path (relative or absolute).
+  // Resolve relative paths against repo root (one level up from scripts/).
   const candidate = path.isAbsolute(iconPathOrUrl)
     ? iconPathOrUrl
     : path.join(__dirname, "..", iconPathOrUrl);
