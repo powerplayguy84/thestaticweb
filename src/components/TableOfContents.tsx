@@ -139,6 +139,26 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     }
   }, [open]);
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, headingId: string) => {
+    e.preventDefault();
+    setOpen(false);
+    
+    const element = document.getElementById(headingId);
+    if (element) {
+      // Check if viewport is md or larger (768px+)
+      const isMdOrLarger = window.matchMedia("(min-width: 768px)").matches;
+      
+      if (isMdOrLarger) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        element.scrollIntoView({ block: "start" });
+      }
+      
+      // Update URL hash
+      window.history.pushState(null, "", `#${headingId}`);
+    }
+  };
+
   const tocContent = (
     <nav className="space-y-1">
       {headings.map((heading, index) => (
@@ -155,7 +175,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
                 ? "text-foreground font-medium hover:bg-muted/50 hover:text-primary"
                 : "text-muted-foreground hover:bg-muted/30 hover:text-foreground"
           } ${heading.level === 3 ? "pl-6 font-normal" : ""}`}
-          onClick={() => setOpen(false)}
+          onClick={(e) => handleLinkClick(e, heading.id)}
         >
           <span className="flex-1 line-clamp-2">{heading.text}</span>
         </Link>
