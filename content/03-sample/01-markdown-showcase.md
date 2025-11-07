@@ -501,6 +501,77 @@ Use the `open` attribute on the `<details>` element to make it expanded by defau
 
 ---
 
+## Diagrams with Mermaid
+
+### Flowchart Example
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> E[Fix issues]
+    E --> B
+    C --> F[Deploy]
+    F --> G[End]
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Database
+    
+    User->>Browser: Enter URL
+    Browser->>Server: HTTP Request
+    Server->>Database: Query Data
+    Database-->>Server: Return Data
+    Server-->>Browser: HTTP Response
+    Browser-->>User: Render Page
+```
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class Article {
+        +string title
+        +string description
+        +string content
+        +Date date
+        +boolean featured
+        +render()
+    }
+    class Category {
+        +string name
+        +string slug
+        +Article[] articles
+        +getArticles()
+    }
+    Category "1" --> "*" Article: contains
+```
+
+### Git Graph
+
+```mermaid
+gitGraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit
+    commit
+```
+
+---
+
 ## Horizontal Rules
 
 Use three or more hyphens, asterisks, or underscores:

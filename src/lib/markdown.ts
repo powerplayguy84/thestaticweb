@@ -7,8 +7,28 @@ import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
+import { visit } from "unist-util-visit";
+import type { Element } from "hast";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+
+// Custom rehype plugin to convert mermaid code blocks to divs before syntax highlighting
+function rehypeMermaidToDiv() {
+  return (tree: any) => {
+    visit(tree, "element", (node: Element) => {
+      if (
+        node.tagName === "code" &&
+        node.properties &&
+        Array.isArray(node.properties.className) &&
+        node.properties.className.includes("language-mermaid")
+      ) {
+        // Get the parent <pre> node and replace it with a div
+        node.tagName = "div";
+        node.properties.className = ["mermaid"];
+      }
+    });
+  };
+}
 
 export interface Article {
   slug: string;
@@ -134,6 +154,7 @@ async function parseMarkdownFile(filePath: string): Promise<{
     .use(remarkGfm) // GitHub Flavored Markdown (tables, task lists, strikethrough)
     .use(remarkRehype, { allowDangerousHtml: true }) // Convert to rehype (HTML)
     .use(rehypeRaw) // Parse raw HTML in markdown
+    .use(rehypeMermaidToDiv) // Convert mermaid blocks to divs BEFORE syntax highlighting
     .use(rehypeHighlight) // Syntax highlighting for code blocks
     .use(rehypeStringify) // Convert to HTML string
     .process(content);
@@ -464,6 +485,7 @@ export async function getHomepageHero(): Promise<{
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeMermaidToDiv) // Convert mermaid blocks to divs BEFORE syntax highlighting
     .use(rehypeHighlight)
     .use(rehypeStringify)
     .process(content);

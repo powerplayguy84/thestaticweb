@@ -16,6 +16,7 @@ import SearchHighlighter from "@/components/SearchHighlighter";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
 import TableOfContents from "@/components/TableOfContents";
 import CodeCopyInitializer from "@/components/CodeCopyInitializer";
+import { MermaidInitializer } from "@/components/MermaidInitializer";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -164,6 +165,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <SearchNavigationFab />
       <TableOfContents content={article.content} />
       <CodeCopyInitializer />
+      <MermaidInitializer />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

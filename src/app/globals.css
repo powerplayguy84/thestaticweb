@@ -928,6 +928,44 @@ small {
     @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg;
   }
 
+  /* Mermaid diagram styles */
+  .prose .mermaid,
+  article .mermaid,
+  .markdown .mermaid {
+    @apply my-6 flex justify-center items-center bg-muted/30 rounded-md p-4 overflow-x-auto;
+    min-height: 200px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* Show mermaid after it's been processed */
+  .prose .mermaid[data-processed],
+  article .mermaid[data-processed],
+  .markdown .mermaid[data-processed] {
+    opacity: 1;
+  }
+
+  /* Hide the raw text content before processing */
+  .prose .mermaid:not([data-processed])::before,
+  article .mermaid:not([data-processed])::before,
+  .markdown .mermaid:not([data-processed])::before {
+    content: 'Loading diagram...';
+    @apply text-muted-foreground text-sm;
+  }
+
+  .prose .mermaid:not([data-processed]),
+  article .mermaid:not([data-processed]),
+  .markdown .mermaid:not([data-processed]) {
+    font-size: 0;
+    opacity: 0.6;
+  }
+
+  .prose .mermaid svg,
+  article .mermaid svg,
+  .markdown .mermaid svg {
+    @apply max-w-full h-auto;
+  }
+
   /* Print styles - only show markdown content */
   @media print {
     /* Hide header, footer, navigation */
