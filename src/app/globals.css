@@ -1022,5 +1022,16 @@ small {
       max-width: 100% !important;
       page-break-inside: avoid;
     }
+
+    /* Maintain highlight backgrounds for print using box-shadow */
+    mark,
+    .prose mark,
+    article mark,
+    mark[data-search-highlight] {
+      color: black !important;
+      background-color: transparent !important; /* Remove background */
+      box-shadow: inset 0 -1.5em 0 #fcd34d !important; /* Simulate highlight */
+      page-break-inside: avoid;
+    }
   }
 }

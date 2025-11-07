@@ -69,7 +69,8 @@ export default function SearchHighlighter() {
             mark.classList.add(
               "ring-2",
               "ring-blue-500",
-              "dark:ring-blue-400"
+              "dark:ring-blue-400",
+              "print:ring-0"
             );
             setTimeout(() => {
               mark.scrollIntoView({ behavior: "smooth", block: "center" });

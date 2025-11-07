@@ -107,7 +107,7 @@ export default function SearchNavigationFab() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-background border border-border shadow-lg p-2">
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-background border border-border shadow-lg p-2 print:hidden">
       <div className="flex items-center gap-2 px-3">
         <span className="text-sm font-medium text-muted-foreground">
           {currentIndex} / {totalCount}

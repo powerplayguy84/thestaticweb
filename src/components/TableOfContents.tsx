@@ -170,7 +170,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   return (
     <>
       {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-24 w-56 max-h-[calc(100vh-6rem)] overflow-y-auto px-4 py-6 border-r border-border">
+      <aside className="hidden lg:block fixed left-0 top-24 w-56 max-h-[calc(100vh-6rem)] overflow-y-auto px-4 py-6 border-r border-border print:hidden">
         <h2 className="text-xs font-semibold mb-4 text-muted-foreground uppercase tracking-widest">
           On this page
         </h2>
