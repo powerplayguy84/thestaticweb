@@ -14,6 +14,8 @@ interface SearchResult {
   content?: string;
   excerpt?: string;
   matchType?: "title" | "description" | "content" | "tag" | "category";
+  matchTypes?: ("title" | "description" | "content" | "tag" | "category")[];
+  occurrences?: number;
 }
 
 // This will be populated from the global window object
@@ -123,6 +125,14 @@ export default function Search() {
     );
   };
 
+  // Count occurrences of search term in text
+  const countOccurrences = (text: string, query: string): number => {
+    if (!text || !query) return 0;
+    const regex = new RegExp(query, "gi");
+    const matches = text.match(regex);
+    return matches ? matches.length : 0;
+  };
+
   const performSearch = useCallback(
     async (searchQuery: string) => {
       if (!searchQuery.trim()) {
@@ -159,32 +169,60 @@ export default function Search() {
             return null;
           }
 
-          // Determine match type and create excerpt
+          // Determine match types and create excerpt
           let matchType:
             | "title"
             | "description"
             | "content"
             | "tag"
             | "category" = "content";
+          let matchTypes: (
+            | "title"
+            | "description"
+            | "content"
+            | "tag"
+            | "category"
+          )[] = [];
           let excerpt = "";
+          let occurrences = 0;
 
           if (titleMatch) {
             matchType = "title";
-          } else if (descMatch) {
-            matchType = "description";
-          } else if (tagMatch) {
-            matchType = "tag";
-          } else if (categoryMatch) {
-            matchType = "category";
-          } else if (contentMatch && article.content) {
-            matchType = "content";
+            matchTypes.push("title");
+            occurrences += countOccurrences(article.title, lowerQuery);
+          }
+          if (descMatch) {
+            if (matchType === "content") matchType = "description";
+            matchTypes.push("description");
+            occurrences += countOccurrences(article.description, lowerQuery);
+          }
+          if (tagMatch) {
+            if (matchType === "content") matchType = "tag";
+            matchTypes.push("tag");
+            occurrences += article.tags?.filter((tag) =>
+              tag.toLowerCase().includes(lowerQuery)
+            ).length ?? 0;
+          }
+          if (categoryMatch) {
+            if (matchType === "content") matchType = "category";
+            matchTypes.push("category");
+            occurrences += countOccurrences(article.category, lowerQuery);
+          }
+          if (contentMatch && article.content) {
+            matchType = contentMatch ? "content" : matchType;
+            if (!matchTypes.includes("content")) {
+              matchTypes.push("content");
+            }
             excerpt = getExcerpt(article.content, lowerQuery);
+            occurrences += countOccurrences(article.content, lowerQuery);
           }
 
           return {
             ...article,
             matchType,
+            matchTypes,
             excerpt,
+            occurrences,
           } as SearchResult;
         })
         .filter((result): result is SearchResult => result !== null)
@@ -288,15 +326,26 @@ export default function Search() {
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className="text-xs bg-muted px-2 py-0.5 rounded capitalize text-muted-foreground">
-                            {result.category}
+                            {result.matchTypes?.includes("category")
+                              ? highlightText(result.category, query)
+                              : result.category}
                           </span>
-                          {result.matchType === "content" && result.excerpt && (
+                          {result.matchTypes && result.matchTypes.length > 0 && (
                             <span className="text-xs text-muted-foreground italic">
-                              matched in content
+                              matched in {result.matchTypes.join(" , ")}
                             </span>
                           )}
+                          {result.occurrences !== undefined &&
+                            result.occurrences > 0 && (
+                              <span className="text-xs text-muted-foreground italic underline">
+                                {result.occurrences}{" "}
+                                {result.occurrences === 1
+                                  ? "match"
+                                  : "matches"}
+                              </span>
+                            )}
                         </div>
                         <h3 className="font-medium text-foreground truncate">
                           {highlightText(result.title, query)}
