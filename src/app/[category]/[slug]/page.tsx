@@ -171,7 +171,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <main id="main-content" className="min-h-screen bg-background lg:pl-56">
-        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto print:px-0 print:py-0">
+        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
           <div className="print:hidden">
             <Breadcrumbs
               items={[
