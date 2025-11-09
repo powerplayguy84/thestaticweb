@@ -19,6 +19,76 @@ interface Slide {
   description?: string;
   image?: string;
   headingLevel?: string;
+  contentType?: "supershort" | "short" | "medium" | "long";
+}
+
+type ContentType = "supershort" | "short" | "medium" | "long";
+
+/**
+ * Derive content type based on longest line width AND total character count
+ * Parse HTML to find the longest single line of text and total content size
+ * Uses the NARROWER (more restrictive) of the two metrics
+ * This ensures content never gets a wider container than needed
+ * supershort: < 50 chars per line AND < 300 total chars
+ * short: < 100 chars per line AND < 1000 total chars
+ * medium: < 200 chars per line AND < 3000 total chars
+ * long: >= 200 chars per line OR >= 3000 total chars
+ */
+function getContentType(htmlContent: string): ContentType {
+  // Remove HTML tags to get plain text
+  const temp = document.createElement("div");
+  temp.innerHTML = htmlContent;
+  const text = temp.textContent || temp.innerText || "";
+
+  // Calculate metrics
+  const totalChars = text.length;
+  const lines = text.split("\n");
+  const longestLine = Math.max(...lines.map((line) => line.trim().length), 0);
+
+  // Determine type based on BOTH metrics (take the narrower classification)
+  let lineWidthType: ContentType;
+  if (longestLine < 50) lineWidthType = "supershort";
+  else if (longestLine < 100) lineWidthType = "short";
+  else if (longestLine < 200) lineWidthType = "medium";
+  else lineWidthType = "long";
+
+  let totalCharsType: ContentType;
+  if (totalChars < 300) totalCharsType = "supershort";
+  else if (totalChars < 1000) totalCharsType = "short";
+  else if (totalChars < 3000) totalCharsType = "medium";
+  else totalCharsType = "long";
+
+  // Use the narrower (more restrictive) classification
+  const typeOrder: Record<ContentType, number> = {
+    supershort: 0,
+    short: 1,
+    medium: 2,
+    long: 3,
+  };
+  return typeOrder[lineWidthType] < typeOrder[totalCharsType]
+    ? lineWidthType
+    : totalCharsType;
+}
+
+/**
+ * Get container width classes based on content type
+ * supershort: very narrow width (for minimal content)
+ * short: narrower width
+ * medium: default width
+ * long: wider width
+ */
+function getContainerWidthClasses(contentType?: ContentType): string {
+  switch (contentType) {
+    case "supershort":
+      return "sm:max-w-sm md:max-w-md";
+    case "short":
+      return "sm:max-w-xl md:max-w-2xl";
+    case "long":
+      return "sm:max-w-4xl md:max-w-6xl";
+    case "medium":
+    default:
+      return "sm:max-w-2xl md:max-w-4xl";
+  }
 }
 
 interface PresentationModeProps {
@@ -28,7 +98,12 @@ interface PresentationModeProps {
   image?: string;
 }
 
-export function PresentationMode({ htmlContent, description, title, image }: PresentationModeProps): React.ReactNode {
+export function PresentationMode({
+  htmlContent,
+  description,
+  title,
+  image,
+}: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [hasReadUrl, setHasReadUrl] = React.useState(false);
@@ -74,9 +149,9 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
     const initMermaid = async () => {
       try {
         const mermaid = (await import("mermaid")).default;
-        
+
         const isDark = document.documentElement.classList.contains("dark");
-        
+
         mermaid.initialize({
           startOnLoad: false,
           theme: isDark ? "dark" : "default",
@@ -85,13 +160,15 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
         });
 
         // Find all mermaid elements in current slide that haven't been processed
-        const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid:not([data-processed])");
-        
+        const mermaidElements = document.querySelectorAll<HTMLElement>(
+          ".mermaid:not([data-processed])"
+        );
+
         for (const element of Array.from(mermaidElements)) {
           try {
             const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
             const code = element.textContent || "";
-            
+
             const { svg } = await mermaid.render(id, code);
             element.innerHTML = svg;
             element.setAttribute("data-processed", "true");
@@ -116,7 +193,9 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
           mutation.target === document.documentElement
         ) {
           // Re-render mermaid diagrams when theme changes
-          const mermaidElements = document.querySelectorAll<HTMLElement>(".mermaid[data-processed]");
+          const mermaidElements = document.querySelectorAll<HTMLElement>(
+            ".mermaid[data-processed]"
+          );
           mermaidElements.forEach((el) => el.removeAttribute("data-processed"));
           initMermaid();
         }
@@ -147,11 +226,12 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
       description: description,
       image: image || undefined,
       headingLevel: "H1",
+      contentType: "short",
     });
 
     // Get the first heading
     const firstHeading = doc.querySelector("h1, h2, h3, h4, h5, h6");
-    
+
     // Collect content before the first heading
     let preContent = "";
     if (firstHeading) {
@@ -172,19 +252,23 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
         id: "slide-pre",
         title: "",
         content: preContent,
+        contentType: getContentType(preContent),
       });
     }
 
     // Collect all headings (h1-h2) in order
     const allHeadings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
-    
+
     allHeadings.forEach((heading, index) => {
       let content = "";
       let image = "";
       let nextElement = heading.nextElementSibling;
-      
+
       // Collect all content until the next heading
-      while (nextElement && !["H1", "H2", "H3", "H4", "H5", "H6"].includes(nextElement.tagName)) {
+      while (
+        nextElement &&
+        !["H1", "H2", "H3", "H4", "H5", "H6"].includes(nextElement.tagName)
+      ) {
         // Extract first image if found
         if (nextElement.tagName === "IMG" && !image) {
           image = (nextElement as HTMLImageElement).src;
@@ -197,7 +281,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
         content += nextElement.outerHTML;
         nextElement = nextElement.nextElementSibling;
       }
-      
+
       // Add slide with heading as title and collected content
       newSlides.push({
         id: `slide-${index}`,
@@ -205,6 +289,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
         content: content,
         image: image || undefined,
         headingLevel: heading.tagName,
+        contentType: getContentType(content),
       });
     });
 
@@ -225,19 +310,28 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
   }, [slides, hasReadUrl]);
 
   const slide = slides[currentSlide];
+  const containerWidthClasses = getContainerWidthClasses(slide?.contentType);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">
       {slide && (
         <div className="w-full h-full overflow-y-auto px-4 sm:px-6 md:px-8">
-          <div className="w-full sm:max-w-2xl md:max-w-4xl mx-auto h-full flex flex-col py-8">
+          <div
+            className={`w-full ${containerWidthClasses} mx-auto h-full flex flex-col py-8`}
+          >
             <div className="w-full flex flex-col flex-1 justify-center">
               {/* Header Section */}
-              <div className={`flex-shrink-0 prose prose-sm sm:prose-base max-w-none ${!slide.content.trim() ? "flex flex-col items-center justify-center text-center" : ""}`}>
+              <div
+                className={`flex-shrink-0 prose prose-sm sm:prose-base max-w-none ${
+                  !slide.content.trim()
+                    ? "flex flex-col items-center justify-center text-center"
+                    : ""
+                }`}
+              >
                 {slide.title && (
                   <div className="w-full">
                     {React.createElement(
-                      slide.headingLevel?.toLowerCase() || 'h2',
+                      slide.headingLevel?.toLowerCase() || "h2",
                       {},
                       slide.title
                     )}
@@ -257,9 +351,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
                 )}
                 {!slide.title && slide.description && (
                   <div className="w-full">
-                    <p className="text-muted-foreground">
-                      {slide.description}
-                    </p>
+                    <p className="text-muted-foreground">{slide.description}</p>
                     {slide.image && (
                       <img
                         src={slide.image}
@@ -293,7 +385,7 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
             className="absolute bottom-0 left-0 z-40 shadow-lg"
             aria-label="Toggle Table of Contents"
           >
-            <List/>
+            <List />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
@@ -313,9 +405,13 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
                       : "hover:bg-muted text-foreground"
                   }`}
                 >
-                  <div className="text-sm font-medium truncate">{s.title || `Slide ${index + 1}`}</div>
+                  <div className="text-sm font-medium truncate">
+                    {s.title || `Slide ${index + 1}`}
+                  </div>
                   {s.description && (
-                    <div className="text-xs text-muted-foreground truncate">{s.description}</div>
+                    <div className="text-xs text-muted-foreground truncate">
+                      {s.description}
+                    </div>
                   )}
                 </button>
               </SheetTrigger>
@@ -342,7 +438,9 @@ export function PresentationMode({ htmlContent, description, title, image }: Pre
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setCurrentSlide((prev) => Math.min(slides.length - 1, prev + 1))}
+            onClick={() =>
+              setCurrentSlide((prev) => Math.min(slides.length - 1, prev + 1))
+            }
             disabled={currentSlide === slides.length - 1}
             aria-label="Next slide"
           >
