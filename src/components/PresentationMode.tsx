@@ -393,9 +393,7 @@ export function PresentationMode({
               {slide.content.trim() && (
                 <div
                   className={`w-full min-h-0 pb-20 ${
-                    hasMermaidDiagram
-                      ? "bg-muted/50 border border-border rounded-lg p-6"
-                      : ""
+                    hasMermaidDiagram ? "" : ""
                   }`}
                 >
                   <div
