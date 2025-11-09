@@ -4,6 +4,8 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SearchIndexInitializer } from "@/components/SearchIndexInitializer";
 import { NavbarWrapper } from "@/components/NavbarWrapper";
+import { getSiteSettings } from "@/lib/markdown";
+import { generateOrganizationSchema, cleanSchema } from "@/lib/schema";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +28,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { siteUrl, organizationName, logoUrl } = getSiteSettings();
+
+  // Generate organization schema for global SEO
+  const organizationSchema = cleanSchema(
+    generateOrganizationSchema(organizationName, siteUrl, logoUrl)
+  );
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
       >
+        {/* Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
         <SearchIndexInitializer />
         <NavbarWrapper>
           <a

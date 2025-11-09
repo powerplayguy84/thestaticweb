@@ -7,6 +7,11 @@ import {
 } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
 import { formatCategoryName } from "@/lib/utils";
+import {
+  generateArticleSchema,
+  generateBreadcrumbSchema,
+  cleanSchema,
+} from "@/lib/schema";
 import ArticleNavigation from "@/components/ArticleNavigation";
 import RelatedArticles from "@/components/RelatedArticles";
 import ArticleImage from "@/components/ArticleImage";
@@ -98,34 +103,30 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const { siteUrl, organizationName, logoUrl } = getSiteSettings();
 
-  // Structured data for SEO
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.description,
-    image: article.image || undefined,
-    datePublished: article.date,
-    dateModified: article.date,
-    author: {
-      "@type": "Organization",
-      name: organizationName,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: organizationName,
-      logo: logoUrl
-        ? {
-            "@type": "ImageObject",
-            url: `${siteUrl}${logoUrl}`,
-          }
-        : undefined,
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${siteUrl}/${category}/${slug}`,
-    },
-  };
+  // Generate structured data for SEO
+  const articleSchema = cleanSchema(
+    generateArticleSchema({
+      title: article.title,
+      description: article.description,
+      content: article.content,
+      date: article.date,
+      image: article.image,
+      category,
+      slug,
+      siteUrl,
+      organizationName,
+      logoUrl,
+    })
+  );
+
+  // Generate breadcrumb schema
+  const breadcrumbItems = [
+    { label: displayCategory, path: `/${encodeURIComponent(category)}` },
+    { label: article.title, path: `/${category}/${slug}` },
+  ];
+  const breadcrumbSchema = cleanSchema(
+    generateBreadcrumbSchema(breadcrumbItems, siteUrl)
+  );
 
   // Add IDs to headings for TOC anchors
   const idCounter: Record<string, number> = {};
@@ -166,9 +167,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <TableOfContents content={article.content} />
       <CodeCopyInitializer />
       <MermaidInitializer />
+      {/* Article Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main id="main-content" className="min-h-screen bg-background lg:pl-56">
         <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
