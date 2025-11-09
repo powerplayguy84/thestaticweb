@@ -6,8 +6,9 @@ import { type ReactNode } from "react";
 export function NavbarWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isDiagramPage = pathname.startsWith("/diagram");
+  const isPresentationPage = pathname.startsWith("/presentation");
 
-  if (isDiagramPage) {
+  if (isDiagramPage || isPresentationPage) {
     return null;
   }
 

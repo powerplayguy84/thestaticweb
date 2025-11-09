@@ -258,6 +258,19 @@ content/
   ```
 - Do not include the numeric index in `hiddenCategories`—just use the folder name.
 
+**⚠️ Reserved Route Names (Do Not Use as Category Folders):**
+
+The following folder names are **reserved** and will conflict with internal application routes. Do **not** create content folders with these names:
+
+- `admin` - Admin panel and management interface
+- `diagram` - Full-screen diagram viewer
+- `presentation` - Full-screen presentation mode
+- `tag` - Tag-based article filtering
+- `theme` - Theme customization page
+- `api` - API routes
+
+If you try to create a content folder with any of these names, it will not display in navigation and may cause routing conflicts. Use alternative names for your categories (e.g., use `01-my-diagrams` instead of `diagram`, or `01-presentations` instead of `presentation`).
+
 → See **[CATEGORY_ORDERING.md](./CATEGORY_ORDERING.md)** for category setup details.  
 → See **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** for detailed content documentation.
 

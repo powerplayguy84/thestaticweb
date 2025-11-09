@@ -208,6 +208,20 @@ image: "https://images.unsplash.com/photo-1234567890"
 - The number controls display order in navigation
 - The slug (after the dash) becomes the URL path
 
+### ⚠️ CRITICAL: Reserved Folder Names (Do NOT Create)
+
+**NEVER create category folders with these reserved names** - they conflict with internal application routes:
+
+- `admin` - Admin panel and management interface
+- `diagram` - Full-screen diagram viewer
+- `presentation` - Full-screen presentation mode
+- `tag` - Tag-based article filtering
+- `theme` - Theme customization page
+- `api` - API routes
+- `_templates` - Reserved for content templates
+
+**Instead, use alternative names** (e.g., `04-diagrams` instead of `diagram`, `05-presentations` instead of `presentation`)
+
 ### Category Index File (Optional but Recommended)
 
 Each category can have an `index.md` file to customize its display:
@@ -225,10 +239,11 @@ description: "Comprehensive guides for web development"
 
 1. **Check existing category folders** in `content/`
 2. **Find the highest number** currently used (e.g., if `01-guides`, `02-tutorials` exist)
-3. **Use the next sequential number** for your new category
-4. **CREATE the numbered folder**: `content/[number]-[category-slug]/`
-5. **OPTIONALLY create** `index.md` with title and description
-6. **Then create article files** inside the category folder
+3. **⚠️ VERIFY the slug is NOT reserved** - Check against the reserved list above
+4. **Use the next sequential number** for your new category
+5. **CREATE the numbered folder**: `content/[number]-[category-slug]/`
+6. **OPTIONALLY create** `index.md` with title and description
+7. **Then create article files** inside the category folder
 
 **Workflow for new category:**
 
@@ -294,8 +309,9 @@ To reorder categories, rename their folders with new numbers.
 1. **List existing files** in the target category using file search
 2. **Identify the highest number** currently used
 3. **Check if category folder exists** - create if needed
-4. **Plan the numbering** for new articles (next sequential number)
-5. **Show me the plan** before generating content
+4. **⚠️ VERIFY the category name is NOT reserved** (admin, diagram, presentation, tag, theme, api, \_templates)
+5. **Plan the numbering** for new articles (next sequential number)
+6. **Show me the plan** before generating content
 
 ### Single Article Request
 
@@ -421,6 +437,60 @@ image: "https://images.unsplash.com/photo-[id]?w=1200&h=630&fit=crop"
 | Data 1   | Data 2   | Data 3   |
 ```
 
+### Mermaid Diagrams
+
+**Use mermaid to create visual diagrams** - supported in code blocks with language identifier `mermaid`
+
+**Common diagram types:**
+
+```markdown
+\`\`\`mermaid
+graph TD
+A[Start] --> B{Decision}
+B -->|Yes| C[Action 1]
+B -->|No| D[Action 2]
+C --> E[End]
+D --> E
+\`\`\`
+```
+
+**Flowchart Example:**
+
+```markdown
+\`\`\`mermaid
+flowchart LR
+A[Input] --> B[Process] --> C[Output]
+\`\`\`
+```
+
+**Sequence Diagram Example:**
+
+```markdown
+\`\`\`mermaid
+sequenceDiagram
+Client->>Server: Request
+Server->>Database: Query
+Database-->>Server: Result
+Server-->>Client: Response
+\`\`\`
+```
+
+**Use mermaid diagrams for:**
+
+- Architecture and system design
+- Process flows and workflows
+- Sequence diagrams for interactions
+- Organizational structures
+- Timeline visualizations
+- State machines
+
+**Tips:**
+
+- Keep diagrams simple and readable
+- Use descriptive labels
+- Mermaid automatically renders with light/dark theme support
+- Perfect for tutorials and guides that explain complex concepts
+
 ---
 
 ## Common Patterns
@@ -514,6 +584,7 @@ Before providing content, ensure:
 
 - [ ] **CHECKED existing files** for numbering (NO duplicates!)
 - [ ] **VERIFIED category folder exists** (create if needed)
+- [ ] **VERIFIED category name is NOT reserved** (admin, diagram, presentation, tag, theme, api, \_templates)
 - [ ] **PLANNED sequential numbering** (next available number)
 - [ ] Front matter is complete and properly formatted
 - [ ] Date is in DD-MM-YYYY format with quotes
@@ -522,7 +593,8 @@ Before providing content, ensure:
 - [ ] Title is under 60 characters
 - [ ] Description is 120-160 characters
 - [ ] Code examples have language identifiers
-- [ ] Headings are properly nested (no skipped levels)
+- [ ] **Mermaid diagrams use correct syntax** (if used for complex concepts)
+- [ ] Blockquotes and emphasis are used appropriately
 - [ ] Images have descriptive URLs or placeholders
 - [ ] Content matches the requested category tone
 - [ ] Article provides real value (not filler)
@@ -595,14 +667,15 @@ Target: developers new to Tailwind. 1200 words."
 ✅ Specify code languages  
 ✅ Nest headings properly  
 ✅ Use full image URLs  
-✅ Use markdown features  
+✅ Use markdown features (code, blockquotes, mermaid)  
 ✅ Provide real, valuable content  
 ✅ **CHECK existing files FIRST**  
 ✅ **Use next sequential number** (if last is 03, use 04)  
 ✅ **Use boolean without quotes:** `featured: true`  
 ✅ **Create category folder if needed**  
 ✅ **Use array syntax for tags:** `["tag1", "tag2"]`  
-✅ **Use clean CTA links:** `/category/slug` (no numbers, no index)
+✅ **Use clean CTA links:** `/category/slug` (no numbers, no index)  
+✅ **Use mermaid for complex diagrams** (flows, architecture, sequences)
 
 ---
 

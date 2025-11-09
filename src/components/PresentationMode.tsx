@@ -332,7 +332,10 @@ export function PresentationMode({
     : getContainerWidthClasses(slide?.contentType);
 
   return (
-    <div className="w-full h-full flex items-center justify-center relative">
+    <div
+      className="w-full h-full flex items-center justify-center relative"
+      data-presentation-mode="true"
+    >
       {slide && (
         <div
           className={`w-full h-full overflow-y-auto ${
@@ -388,7 +391,13 @@ export function PresentationMode({
 
               {/* Content Section */}
               {slide.content.trim() && (
-                <div className="w-full min-h-0 pb-20">
+                <div
+                  className={`w-full min-h-0 pb-20 ${
+                    hasMermaidDiagram
+                      ? "bg-muted/50 border border-border rounded-lg p-6"
+                      : ""
+                  }`}
+                >
                   <div
                     className="prose prose-sm sm:prose-base max-w-none"
                     dangerouslySetInnerHTML={{ __html: slide.content }}

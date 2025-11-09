@@ -23,11 +23,17 @@ export function MermaidInitializer() {
         });
 
         // Find all mermaid elements and render them
+        // Skip mermaid elements inside presentation mode
         const mermaidElements = document.querySelectorAll<HTMLElement>(
           ".mermaid:not([data-processed])"
         );
 
         for (const element of Array.from(mermaidElements)) {
+          // Skip if inside presentation mode
+          if (element.closest("[data-presentation-mode]")) {
+            continue;
+          }
+
           try {
             const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
             const code = element.textContent || "";
