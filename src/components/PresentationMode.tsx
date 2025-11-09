@@ -224,7 +224,7 @@ export function PresentationMode({
       title: title || "",
       content: "",
       description: description,
-      image: image || undefined,
+      image: image && image.trim() ? image : undefined,
       headingLevel: "H1",
       contentType: "short",
     });
@@ -295,7 +295,7 @@ export function PresentationMode({
         id: `slide-${index}`,
         title: heading.textContent || "",
         content: content.trim(),
-        image: image || undefined,
+        image: image && image.trim() ? image : undefined,
         headingLevel: heading.tagName,
         contentType: getContentType(content),
       });
