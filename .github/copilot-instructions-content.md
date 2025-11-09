@@ -97,6 +97,34 @@ More content...
 Summary and next steps...
 ```
 
+### ⚠️ CRITICAL: Do NOT Repeat Front Matter Title
+
+**NEVER use the exact same title text again in the markdown content.**
+
+❌ **WRONG:**
+
+```markdown
+---
+title: "TypeScript Best Practices in Next.js"
+---
+
+# TypeScript Best Practices in Next.js
+
+Content starts here...
+```
+
+✅ **CORRECT:**
+
+```markdown
+---
+title: "TypeScript Best Practices in Next.js"
+---
+
+This guide explores how to write type-safe Next.js applications...
+```
+
+The h1 heading (`#`) should use the title, but the following content should begin naturally without needlessly repeating it. The first section of body text should flow directly into the topic, not restate the title.
+
 ### Front Matter Rules
 
 **Required fields (NEVER omit any):**
