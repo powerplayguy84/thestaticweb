@@ -932,7 +932,7 @@ small {
   .prose .mermaid-wrapper,
   article .mermaid-wrapper,
   .markdown .mermaid-wrapper {
-    @apply my-6 bg-muted/50 border border-border rounded-lg p-6 overflow-x-auto;
+    @apply my-6 bg-muted/50 border border-border rounded-lg p-6 overflow-x-auto flex justify-center;
   }
 
   .prose .mermaid,
