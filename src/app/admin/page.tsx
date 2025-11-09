@@ -510,6 +510,18 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Top Header */}
+      <div className="fixed top-0 left-0 right-0 bg-background border-b z-50">
+        <div className="max-w-full mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-semibold">The Static Web</h1>
+            <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">
+              Admin Mode
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Production Warning Banner */}
       {isProduction && (
         <div className="bg-destructive text-destructive-foreground px-4 py-3 text-center text-sm font-medium">
@@ -562,8 +574,8 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* Content with top padding to account for navigation + fixed header */}
-      <div className="max-w-full mx-auto pb-12 sm:pb-16 px-6 py-12">
+      {/* Content with top padding to account for fixed header */}
+      <div className="max-w-full mx-auto pb-12 sm:pb-16 px-6 py-12 pt-20">
         <div>
           {/* Article Editor */}
           <div>
