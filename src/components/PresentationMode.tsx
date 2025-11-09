@@ -325,7 +325,7 @@ export function PresentationMode({
       {slide && (
         <div className="w-full h-full overflow-y-auto px-4 sm:px-6 md:px-8">
           <div
-            className={`w-full ${containerWidthClasses} mx-auto h-full flex flex-col py-8`}
+            className={`w-full ${containerWidthClasses} mx-auto h-full flex flex-col`}
           >
             <div className="w-full flex flex-col flex-1 justify-center">
               {/* Header Section */}
@@ -373,7 +373,7 @@ export function PresentationMode({
 
               {/* Content Section */}
               {slide.content.trim() && (
-                <div className="w-full min-h-0">
+                <div className="w-full min-h-0 pb-20">
                   <div
                     className="prose prose-sm sm:prose-base max-w-none"
                     dangerouslySetInnerHTML={{ __html: slide.content }}
