@@ -929,10 +929,16 @@ small {
   }
 
   /* Mermaid diagram styles */
+  .prose .mermaid-wrapper,
+  article .mermaid-wrapper,
+  .markdown .mermaid-wrapper {
+    @apply my-6 bg-muted/50 border border-border rounded-lg p-6 overflow-x-auto;
+  }
+
   .prose .mermaid,
   article .mermaid,
   .markdown .mermaid {
-    @apply my-6 flex justify-center items-center bg-muted/30 rounded-md p-4 overflow-x-auto;
+    @apply flex justify-center items-center rounded-md overflow-x-auto;
     min-height: 200px;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -949,7 +955,7 @@ small {
   .prose .mermaid:not([data-processed])::before,
   article .mermaid:not([data-processed])::before,
   .markdown .mermaid:not([data-processed])::before {
-    content: 'Loading diagram...';
+    content: "Loading diagram...";
     @apply text-muted-foreground text-sm;
   }
 

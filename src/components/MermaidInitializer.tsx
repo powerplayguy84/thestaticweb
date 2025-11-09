@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Maximize } from "lucide-react";
 
 export function MermaidInitializer() {
   const router = useRouter();
@@ -46,10 +47,36 @@ export function MermaidInitializer() {
             // Create fullscreen button
             const button = document.createElement("button");
             button.className =
-              "absolute top-2 right-2 p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center";
+              "absolute top-2 right-2 p-2 rounded-md bg-none  text-muted-foreground hover:text-foreground border border-border z-10 flex items-center justify-center";
             button.setAttribute("aria-label", "View diagram fullscreen");
-            button.innerHTML =
-              '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6v4m12 0h4v-4m0 12h-4v4m-12-4H6v4"></path></svg>';
+            button.style.cursor = "pointer";
+            button.style.outline = "none";
+
+            // Create Lucide Maximize icon
+            const icon = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "svg"
+            );
+            icon.setAttribute("class", "w-4 h-4");
+            icon.setAttribute("fill", "none");
+            icon.setAttribute("stroke", "currentColor");
+            icon.setAttribute("viewBox", "0 0 24 24");
+            icon.setAttribute("stroke-width", "2");
+            icon.setAttribute("stroke-linecap", "round");
+            icon.setAttribute("stroke-linejoin", "round");
+
+            const path = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "path"
+            );
+            path.setAttribute(
+              "d",
+              "M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+            );
+
+            icon.appendChild(path);
+            button.appendChild(icon);
+
             button.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
