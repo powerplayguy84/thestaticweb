@@ -1079,3 +1079,39 @@ small {
     }
   }
 }
+
+/* Presentation mode code wrapping */
+.presentation-mode-content .code-block-wrapper pre {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  overflow: visible !important;
+}
+
+.presentation-mode-content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.presentation-mode-content code {
+  word-break: break-word;
+}
+
+/* Content page code wrapping */
+.content-with-wrapped-code .code-block-wrapper pre {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  overflow: visible !important;
+}
+
+.content-with-wrapped-code pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.content-with-wrapped-code code {
+  word-break: break-word;
+}

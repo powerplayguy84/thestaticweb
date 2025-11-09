@@ -133,17 +133,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     /<(h[2-3])([^>]*)>([^<]*)<\/\1>/g,
     (match, tag, attrs, text) => {
       const cleanText = text.trim();
-      
+
       // Skip if no text or ID already exists
-      if (!cleanText || attrs.includes('id=')) {
+      if (!cleanText || attrs.includes("id=")) {
         return match;
       }
-      
+
       let id = cleanText
         .toLowerCase()
         .replace(/[^\w\s-]/g, "")
         .replace(/\s+/g, "-");
-      
+
       // Make IDs unique by appending a counter if we've seen this ID before
       if (id) {
         if (idCounter[id] !== undefined) {
@@ -154,7 +154,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         }
         return `<${tag}${attrs} id="${id}">${text}</${tag}>`;
       }
-      
+
       return match;
     }
   );
@@ -198,7 +198,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   {formatDate(article.date)}
                 </time>
               </div>
-              <ArticleActions htmlContent={contentWithHeadingIds} description={article.description} title={article.title} image={article.image} />
+              <ArticleActions
+                htmlContent={contentWithHeadingIds}
+                description={article.description}
+                title={article.title}
+                image={article.image}
+              />
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 print:text-3xl">
               {article.title}
@@ -215,7 +220,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden" data-tags-container>
+            <div
+              className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden"
+              data-tags-container
+            >
               {article.tags.map((tag) => (
                 <Link
                   key={tag}
@@ -231,7 +239,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Content */}
           <div className="overflow-x-hidden">
             <div
-              className="prose print:prose-sm"
+              className="prose print:prose-sm content-with-wrapped-code"
               dangerouslySetInnerHTML={{ __html: contentWithHeadingIds }}
             />
           </div>

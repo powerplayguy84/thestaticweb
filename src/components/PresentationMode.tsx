@@ -399,7 +399,7 @@ export function PresentationMode({
                   }`}
                 >
                   <div
-                    className="prose prose-sm sm:prose-base max-w-none"
+                    className="prose prose-sm sm:prose-base max-w-none presentation-mode-content"
                     dangerouslySetInnerHTML={{ __html: slide.content }}
                   />
                 </div>
