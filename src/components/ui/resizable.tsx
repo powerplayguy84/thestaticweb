@@ -1,7 +1,7 @@
-import * as React from "react"
-import * as ResizablePrimitive from "react-resizable-panels"
+import * as React from "react";
+import * as ResizablePrimitive from "react-resizable-panels";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const ResizablePanelGroup = React.forwardRef<
   React.ElementRef<typeof ResizablePrimitive.PanelGroup>,
@@ -15,23 +15,25 @@ const ResizablePanelGroup = React.forwardRef<
     )}
     {...props}
   />
-))
-ResizablePanelGroup.displayName = "ResizablePanelGroup"
+));
+ResizablePanelGroup.displayName = "ResizablePanelGroup";
 
 const ResizablePanel = React.forwardRef<
   React.ElementRef<typeof ResizablePrimitive.Panel>,
   React.ComponentPropsWithoutRef<typeof ResizablePrimitive.Panel>
 >(({ className, ...props }, ref) => (
   <ResizablePrimitive.Panel ref={ref} className={cn(className)} {...props} />
-))
-ResizablePanel.displayName = "ResizablePanel"
+));
+ResizablePanel.displayName = "ResizablePanel";
 
 const ResizableHandle = ({
   withHandle,
   className,
   ...props
-}: React.ComponentPropsWithoutRef<typeof ResizablePrimitive.PanelResizeHandle> & {
-  withHandle?: boolean
+}: React.ComponentPropsWithoutRef<
+  typeof ResizablePrimitive.PanelResizeHandle
+> & {
+  withHandle?: boolean;
 }) => (
   <ResizablePrimitive.PanelResizeHandle
     className={cn(
@@ -40,7 +42,7 @@ const ResizableHandle = ({
     )}
     {...props}
   />
-)
-ResizableHandle.displayName = "ResizableHandle"
+);
+ResizableHandle.displayName = "ResizableHandle";
 
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle }
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle };

@@ -369,7 +369,7 @@ export function ArticleEditor({
             {/* Preview Panel */}
             <ResizablePanel defaultSize={50} minSize={30}>
               <div className="flex flex-col h-full">
-                <div className="px-3 py-2 border-l bg-muted/30 text-sm font-medium flex items-center justify-between">
+                <div className="px-3 py-2 border-b bg-muted/30 text-sm font-medium flex items-center justify-between">
                   Preview
                   {previewLoading && (
                     <div className="h-3 w-3 rounded-full border-2 border-primary border-t-transparent animate-spin" />
