@@ -1,55 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
-import panzoom from "panzoom";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export function MermaidInitializer() {
-  const [fullscreenDiagram, setFullscreenDiagram] = useState<string | null>(
-    null
-  );
-  const diagramContainerRef = useRef<HTMLDivElement>(null);
-  const panzoomInstanceRef = useRef<ReturnType<typeof panzoom> | null>(null);
-
-  // Initialize panzoom when diagram is opened
-  useEffect(() => {
-    if (fullscreenDiagram && diagramContainerRef.current) {
-      // Clean up previous instance
-      if (panzoomInstanceRef.current) {
-        panzoomInstanceRef.current.dispose();
-      }
-
-      // Wait for SVG to render in DOM
-      setTimeout(() => {
-        const svgElement = diagramContainerRef.current?.querySelector("svg");
-        if (svgElement && diagramContainerRef.current) {
-          // Set SVG to have proper dimensions
-          svgElement.style.width = "100%";
-          svgElement.style.height = "100%";
-          svgElement.style.display = "block";
-
-          panzoomInstanceRef.current = panzoom(svgElement, {
-            maxZoom: 10,
-            minZoom: 0.5,
-            smoothScroll: false,
-            zoomDoubleClickSpeed: 1.5,
-          });
-        }
-      }, 0);
-    }
-
-    return () => {
-      if (panzoomInstanceRef.current) {
-        panzoomInstanceRef.current.dispose();
-        panzoomInstanceRef.current = null;
-      }
-    };
-  }, [fullscreenDiagram]);
-
-  // Close modal handler
-  const handleCloseModal = () => {
-    setFullscreenDiagram(null);
-  };
+  const router = useRouter();
 
   useEffect(() => {
     const initMermaid = async () => {
@@ -98,7 +53,14 @@ export function MermaidInitializer() {
             button.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              setFullscreenDiagram(svg);
+              // Generate unique ID for this diagram
+              const diagramId = `diagram-${Math.random()
+                .toString(36)
+                .substr(2, 9)}`;
+              // Store the SVG with the ID as key
+              sessionStorage.setItem(diagramId, svg);
+              // Navigate with the ID in URL so it persists on reload
+              router.push(`/diagram/${diagramId}`);
             });
 
             wrapper.appendChild(button);
@@ -180,39 +142,7 @@ export function MermaidInitializer() {
       themeObserver.disconnect();
       contentObserver.disconnect();
     };
-  }, []);
+  }, [router]);
 
-  return (
-    <>
-      {/* Fullscreen Modal for Mermaid Diagrams */}
-      {fullscreenDiagram && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-          onClick={handleCloseModal}
-        >
-          <div
-            className="relative w-full h-full max-h-screen bg-white dark:bg-slate-950 rounded-lg shadow-xl overflow-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={handleCloseModal}
-              className="sticky top-4 right-4 z-10 float-right p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 transition-colors"
-              aria-label="Close fullscreen view"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            {/* Diagram Container - With panzoom for zoom, pan, pinch */}
-            <div
-              ref={diagramContainerRef}
-              className="w-full h-full flex items-center justify-center p-8 select-none bg-gray-50 dark:bg-slate-900"
-              style={{ overflow: "hidden" }}
-              dangerouslySetInnerHTML={{ __html: fullscreenDiagram }}
-            />
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return null;
 }
