@@ -520,7 +520,7 @@ export default function AdminPage() {
 
       {/* Fixed bottom Header */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-full mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3">
               {(currentArticle || isCreatingNew) && (
@@ -563,7 +563,7 @@ export default function AdminPage() {
       </div>
 
       {/* Content with top padding to account for navigation + fixed header */}
-      <div className="max-w-6xl mx-auto pb-12 sm:pb-16 px-6 py-12">
+      <div className="max-w-full mx-auto pb-12 sm:pb-16 px-6 py-12">
         <div>
           {/* Article Editor */}
           <div>
