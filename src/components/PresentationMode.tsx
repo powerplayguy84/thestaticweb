@@ -270,15 +270,23 @@ export function PresentationMode({
         !["H1", "H2", "H3", "H4", "H5", "H6"].includes(nextElement.tagName)
       ) {
         // Extract first image if found
+        let elementHTML = nextElement.outerHTML;
         if (nextElement.tagName === "IMG" && !image) {
           image = (nextElement as HTMLImageElement).src;
+          elementHTML = ""; // Don't include standalone images in content
         } else if (nextElement.tagName === "P") {
           const img = nextElement.querySelector("img");
           if (img && !image) {
             image = img.src;
+            // Remove image from paragraph content
+            const clonedP = (nextElement as HTMLElement).cloneNode(
+              true
+            ) as HTMLElement;
+            clonedP.querySelectorAll("img").forEach((i) => i.remove());
+            elementHTML = clonedP.outerHTML;
           }
         }
-        content += nextElement.outerHTML;
+        content += elementHTML;
         nextElement = nextElement.nextElementSibling;
       }
 
@@ -286,7 +294,7 @@ export function PresentationMode({
       newSlides.push({
         id: `slide-${index}`,
         title: heading.textContent || "",
-        content: content,
+        content: content.trim(),
         image: image || undefined,
         headingLevel: heading.tagName,
         contentType: getContentType(content),
