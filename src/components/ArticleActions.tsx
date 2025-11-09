@@ -14,7 +14,12 @@ interface ArticleActionsProps {
   image?: string;
 }
 
-export function ArticleActions({ htmlContent, description, title, image }: ArticleActionsProps): React.ReactNode {
+export function ArticleActions({
+  htmlContent,
+  description,
+  title,
+  image,
+}: ArticleActionsProps): React.ReactNode {
   const [isPresentationOpen, setIsPresentationOpen] = React.useState(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -78,7 +83,12 @@ export function ArticleActions({ htmlContent, description, title, image }: Artic
               <span className="sr-only">Close Presentation Mode</span>
             </Button>
             <div className="w-full max-w-6xl h-full">
-              <PresentationMode htmlContent={htmlContent} description={description} title={title} image={image} />
+              <PresentationMode
+                htmlContent={htmlContent}
+                description={description}
+                title={title}
+                image={image}
+              />
             </div>
           </div>,
           document.body

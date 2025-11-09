@@ -318,12 +318,27 @@ export function PresentationMode({
   }, [slides, hasReadUrl]);
 
   const slide = slides[currentSlide];
-  const containerWidthClasses = getContainerWidthClasses(slide?.contentType);
+
+  // Check if slide contains Mermaid diagram
+  const hasMermaidDiagram = React.useMemo(() => {
+    if (!slide?.content) return false;
+    const temp = document.createElement("div");
+    temp.innerHTML = slide.content;
+    return temp.querySelector(".mermaid") !== null;
+  }, [slide?.content]);
+
+  const containerWidthClasses = hasMermaidDiagram
+    ? "w-full"
+    : getContainerWidthClasses(slide?.contentType);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">
       {slide && (
-        <div className="w-full h-full overflow-y-auto px-4 sm:px-6 md:px-8">
+        <div
+          className={`w-full h-full overflow-y-auto ${
+            hasMermaidDiagram ? "" : "px-4 sm:px-6 md:px-8"
+          }`}
+        >
           <div
             className={`w-full ${containerWidthClasses} mx-auto h-full flex flex-col`}
           >
