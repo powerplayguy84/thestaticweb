@@ -107,6 +107,9 @@ export function PresentationMode({
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [hasReadUrl, setHasReadUrl] = React.useState(false);
+  const [failedImages, setFailedImages] = React.useState<Set<string>>(
+    new Set()
+  );
 
   // Read slide from URL parameter once on mount
   React.useEffect(() => {
@@ -366,11 +369,17 @@ export function PresentationMode({
                         {slide.description}
                       </p>
                     )}
-                    {slide.image && (
+                    {slide.image && !failedImages.has(slide.image) && (
                       <img
                         src={slide.image}
                         alt={slide.title}
                         className="rounded-lg"
+                        onError={() => {
+                          // Mark image as failed to avoid repeatedly rendering a broken image
+                          setFailedImages((prev) =>
+                            new Set(prev).add(slide.image!)
+                          );
+                        }}
                       />
                     )}
                   </div>
@@ -378,11 +387,16 @@ export function PresentationMode({
                 {!slide.title && slide.description && (
                   <div className="w-full">
                     <p className="text-muted-foreground">{slide.description}</p>
-                    {slide.image && (
+                    {slide.image && !failedImages.has(slide.image) && (
                       <img
                         src={slide.image}
                         alt="Slide image"
                         className="rounded-lg"
+                        onError={() => {
+                          setFailedImages((prev) =>
+                            new Set(prev).add(slide.image!)
+                          );
+                        }}
                       />
                     )}
                   </div>
