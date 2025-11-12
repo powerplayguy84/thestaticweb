@@ -82,29 +82,21 @@ export default async function Home() {
         )}
 
         {/* Featured Articles Section */}
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 mt-0">
-            Featured
-          </h2>
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-            {featuredArticles.map((article) => (
-              <ArticleCard
-                key={`${article.category}-${article.slug}`}
-                article={article}
-              />
-            ))}
-          </div>
-          {featuredArticles.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">
-                No featured articles yet.
-              </p>
-              <p className="text-muted-foreground text-sm">
-                Check back soon for new content!
-              </p>
+        {featuredArticles.length > 0 && (
+          <section>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 mt-0">
+              Featured
+            </h2>
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+              {featuredArticles.map((article) => (
+                <ArticleCard
+                  key={`${article.category}-${article.slug}`}
+                  article={article}
+                />
+              ))}
             </div>
-          )}
-        </section>
+          </section>
+        )}
       </div>
     </main>
   );
