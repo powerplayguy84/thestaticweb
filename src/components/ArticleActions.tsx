@@ -21,24 +21,13 @@ export function ArticleActions({
   const router = useRouter();
 
   const handleOpenPresentation = () => {
-    // Generate unique ID for this presentation
-    const presentationId = `presentation-${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
+    // Get current path and encode it for the URL
+    const currentPath = window.location.pathname;
+    const encodedPath = encodeURIComponent(currentPath);
 
-    // Store the content with the ID as key
-    const contentData = {
-      htmlContent,
-      title,
-      description,
-      image,
-    };
-    sessionStorage.setItem(presentationId, JSON.stringify(contentData));
-
-    // Navigate to presentation page
-    router.push(`/presentation/${presentationId}`);
+    // Navigate to presentation page with encoded path
+    router.push(`/presentation/${encodedPath}`);
   };
-
   return (
     <div className="flex items-center gap-2">
       <PrintButton />

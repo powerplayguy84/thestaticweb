@@ -1,65 +1,42 @@
-"use client";
+import { getArticle } from "@/lib/markdown";
+import { notFound } from "next/navigation";
+import PresentationClient from "./PresentationClient";
 
-import { useRouter, useParams } from "next/navigation";
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { PresentationMode } from "@/components/PresentationMode";
+interface PresentationPageProps {
+  params: Promise<{
+    encoded: string;
+  }>;
+}
 
-export default function PresentationPage() {
-  const router = useRouter();
-  const params = useParams();
-  const [contentData, setContentData] = useState<{
-    htmlContent: string;
-    title?: string;
-    description?: string;
-    image?: string;
-  } | null>(null);
+export default async function PresentationPage({
+  params,
+}: PresentationPageProps) {
+  const { encoded } = await params;
 
-  // Retrieve content from sessionStorage only on client side
-  useEffect(() => {
-    if (params.encoded) {
-      const stored = sessionStorage.getItem(params.encoded as string);
-      if (stored) {
-        try {
-          const data = JSON.parse(stored);
-          setContentData(data);
-        } catch (error) {
-          console.error("Failed to parse presentation data:", error);
-        }
-      }
-    }
-  }, [params.encoded]);
+  // Decode the path (e.g., "/guides/tailwind-setup")
+  const sourcePath = decodeURIComponent(encoded);
 
-  const handleClose = () => {
-    router.back();
-  };
+  // Extract category and slug from path
+  const pathParts = sourcePath.split("/").filter(Boolean);
+  if (pathParts.length !== 2) {
+    notFound();
+  }
 
-  if (!contentData) {
-    return (
-      <div className="fixed inset-0 w-screen h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading presentation...</p>
-      </div>
-    );
+  const [category, slug] = pathParts;
+
+  // Fetch the article from filesystem
+  const article = await getArticle(category, slug);
+
+  if (!article) {
+    notFound();
   }
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-background p-6">
-      {/* Close Button */}
-      <button
-        onClick={handleClose}
-        className="fixed top-4 right-4 z-50 p-2 rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground border border-border transition-colors"
-        aria-label="Close presentation"
-      >
-        <X className="w-5 h-5" />
-      </button>
-
-      {/* Presentation Mode Component */}
-      <PresentationMode
-        htmlContent={contentData.htmlContent}
-        title={contentData.title}
-        description={contentData.description}
-        image={contentData.image}
-      />
-    </div>
+    <PresentationClient
+      htmlContent={article.content}
+      title={article.title}
+      description={article.description}
+      image={article.image}
+    />
   );
 }

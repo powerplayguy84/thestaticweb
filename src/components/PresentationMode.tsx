@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeft, ChevronRight, List } from "lucide-react";
+import { ChevronLeft, ChevronRight, List, Share2, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -414,6 +414,78 @@ export function PresentationMode({
                     className="prose prose-sm sm:prose-base max-w-none presentation-mode-content"
                     dangerouslySetInnerHTML={{ __html: slide.content }}
                   />
+                  {/* Share and Print Buttons at End of Content */}
+                  <div className="mt-8 flex justify-end gap-2">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={async () => {
+                        if (navigator.share) {
+                          try {
+                            await navigator.share({
+                              title: slide?.title || "Presentation",
+                              text: slide?.description || "",
+                              url: window.location.href,
+                            });
+                          } catch (error) {
+                            // Handle AbortError (user canceled) and other errors gracefully
+                            if (
+                              error instanceof Error &&
+                              error.name === "AbortError"
+                            ) {
+                              // User canceled the share dialog - this is normal
+                              return;
+                            }
+                            // For other errors, fall back to copying URL
+                            navigator.clipboard.writeText(window.location.href);
+                          }
+                        } else {
+                          navigator.clipboard.writeText(window.location.href);
+                        }
+                      }}
+                      className="gap-2"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        // Hide UI elements before printing
+                        const tocButton = document.querySelector(
+                          'button[aria-label="Toggle Table of Contents"]'
+                        );
+                        const navButtons = document.querySelector(
+                          ".absolute.bottom-0.right-0"
+                        );
+                        const actionButtons = document.querySelector(
+                          ".mt-8.flex.justify-end"
+                        );
+
+                        if (tocButton)
+                          (tocButton as HTMLElement).style.display = "none";
+                        if (navButtons)
+                          (navButtons as HTMLElement).style.display = "none";
+                        if (actionButtons)
+                          (actionButtons as HTMLElement).style.display = "none";
+
+                        window.print();
+
+                        // Restore UI elements after printing
+                        setTimeout(() => {
+                          if (tocButton)
+                            (tocButton as HTMLElement).style.display = "";
+                          if (navButtons)
+                            (navButtons as HTMLElement).style.display = "";
+                          if (actionButtons)
+                            (actionButtons as HTMLElement).style.display = "";
+                        }, 100);
+                      }}
+                      className="gap-2"
+                    >
+                      <Printer className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
