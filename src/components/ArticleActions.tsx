@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Presentation } from "lucide-react";
+import { Presentation, Loader2 } from "lucide-react";
 import PrintButton from "@/components/PrintButton";
 
 interface ArticleActionsProps {
@@ -19,8 +19,10 @@ export function ArticleActions({
   image,
 }: ArticleActionsProps): React.ReactNode {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleOpenPresentation = () => {
+    setIsLoading(true);
     // Get current path and encode it for the URL
     const currentPath = window.location.pathname;
     const encodedPath = encodeURIComponent(currentPath);
@@ -33,10 +35,15 @@ export function ArticleActions({
       <PrintButton />
       <button
         onClick={handleOpenPresentation}
-        className="inline-flex items-center justify-center p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors"
+        disabled={isLoading}
+        className="inline-flex items-center justify-center p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Open Presentation Mode"
       >
-        <Presentation className="w-4 h-4" />
+        {isLoading ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Presentation className="w-4 h-4" />
+        )}
       </button>
     </div>
   );
