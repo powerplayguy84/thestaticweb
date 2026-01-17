@@ -13,8 +13,10 @@ export default async function Navigation() {
   ]);
 
   // Use navbar-specific values if provided, otherwise fall back to hero values
-  const navbarTitle = hero.navbar?.title || hero.title;
-  const navbarLogo = hero.navbar?.logo || hero.logo;
+  const navbarTitle =
+    hero.navbar?.title !== undefined ? hero.navbar.title : hero.title;
+  const navbarLogo =
+    hero.navbar?.logo !== undefined ? hero.navbar.logo : hero.logo;
 
   return (
     <nav className="py-4 border-b border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 print:hidden">
@@ -30,14 +32,18 @@ export default async function Navigation() {
                   className="object-contain"
                 />
               </div>
+              {navbarTitle && (
+                <span className="text-xl font-bold text-foreground">
+                  {navbarTitle}
+                </span>
+              )}
+            </>
+          ) : (
+            navbarTitle && (
               <span className="text-xl font-bold text-foreground">
                 {navbarTitle}
               </span>
-            </>
-          ) : (
-            <span className="text-xl font-bold text-foreground">
-              {navbarTitle}
-            </span>
+            )
           )}
         </Link>
         {/* Desktop Navigation */}
