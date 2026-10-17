@@ -1,5 +1,5 @@
 import { getFeaturedArticles, getHomepageHero } from "@/lib/markdown";
-import ArticleCard from "@/components/ArticleCard";
+import { ArticleListFeed } from "@/components/article-list-feed";
 import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -29,44 +29,46 @@ export default async function Home() {
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-12 sm:gap-16 max-w-6xl mx-auto pb-12 sm:pb-16 px-6">
+      <div className="flex flex-col gap-10 max-w-2xl mx-auto pb-16 px-4 md:px-6">
         {/* Hero Section */}
-        <section className="pt-16">
+        <section className="pt-10">
           <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-6">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl font-bold text-foreground">
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-foreground">
                 {hero.title}
               </h1>
               {hero.subtitle && (
-                <p className="text-2xl sm:text-3xl font-semibold text-muted-foreground">
+                <p className="text-lg sm:text-xl font-medium text-foreground/80">
                   {hero.subtitle}
                 </p>
               )}
-              <p className="text-xl text-muted-foreground max-w-2xl">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 {hero.description}
               </p>
             </div>
+
             {hero.image && (
-              <div className="relative w-full aspect-[4/3] sm:aspect-video rounded-2xl overflow-hidden shadow-sm border border-border/50">
+              <div className="relative w-full aspect-[16/9] sm:aspect-[1.91/1] rounded-2xl overflow-hidden shadow-xs border border-border/60">
                 <Image
                   src={hero.image}
                   alt={`${hero.title} hero image`}
                   fill
                   className="object-cover"
                   priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 768px, 1024px"
+                  sizes="(max-width: 640px) 100vw, 680px"
                 />
               </div>
             )}
+
             {/* CTA Button */}
             {hero.cta && (
-              <div className="pt-4">
+              <div className="pt-1">
                 <Link
                   href={hero.cta.link}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-2xl hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-full hover:bg-primary/90 active:scale-95 transition-all shadow-xs"
                 >
                   {hero.cta.text}
-                  <HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
+                  <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
                 </Link>
               </div>
             )}
@@ -83,21 +85,19 @@ export default async function Home() {
           </section>
         )}
 
-        {/* Featured Articles Section */}
+        {/* Featured Articles Feed Section */}
         {featuredArticles.length > 0 && (
-          <section>
+          <section className="pt-2">
             <Motion animation="fade-in-up" delay={100} duration="long">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 mt-0">
-                Featured
-              </h2>
-              <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-                {featuredArticles.map((article) => (
-                  <ArticleCard
-                    key={`${article.category}-${article.slug}`}
-                    article={article}
-                  />
-                ))}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Featured Articles
+                </h2>
+                <span className="text-xs text-muted-foreground">
+                  {featuredArticles.length} {featuredArticles.length === 1 ? "article" : "articles"}
+                </span>
               </div>
+              <ArticleListFeed articles={featuredArticles} />
             </Motion>
           </section>
         )}

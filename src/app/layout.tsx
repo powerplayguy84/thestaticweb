@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SearchIndexInitializer } from "@/components/SearchIndexInitializer";
 import { NavbarWrapper } from "@/components/NavbarWrapper";
 import { getSiteSettings } from "@/lib/markdown";
 import { generateOrganizationSchema, cleanSchema } from "@/lib/schema";
+
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-serif",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background`}
       >
         {/* Organization Schema */}
         <script
