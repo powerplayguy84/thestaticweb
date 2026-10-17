@@ -16,7 +16,7 @@ export default function ArticleImage({ src, alt }: ArticleImageProps) {
   }
 
   return (
-    <div className="w-full h-64 sm:h-96 bg-muted overflow-hidden rounded-lg relative mb-8">
+    <div className="w-full h-64 sm:h-96 bg-muted overflow-hidden rounded-lg border border-border/60 relative mb-8">
       <Image
         src={src}
         alt={alt}

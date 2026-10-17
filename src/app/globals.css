@@ -868,7 +868,7 @@ small {
   article img,
   .prose img,
   .markdown img {
-    @apply rounded-md max-w-full h-auto;
+    @apply rounded-md max-w-full h-auto border border-border/60;
   }
 
   /* Figure and figcaption */
