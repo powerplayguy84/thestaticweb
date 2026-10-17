@@ -33,13 +33,13 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted active:scale-95 transition-transform"
+      className="p-2 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-muted active:scale-95 transition-all flex items-center justify-center size-9"
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       {theme === "light" ? (
-        <HugeiconsIcon icon={Moon02Icon} className="size-5" />
+        <HugeiconsIcon icon={Moon02Icon} className="size-4" />
       ) : (
-        <HugeiconsIcon icon={Sun02Icon} className="size-5" />
+        <HugeiconsIcon icon={Sun02Icon} className="size-4" />
       )}
     </button>
   );

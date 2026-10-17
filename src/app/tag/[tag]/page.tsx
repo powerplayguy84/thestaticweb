@@ -47,7 +47,7 @@ export default async function TagPage({ params }: TagPageProps) {
           duration="long"
           className="space-y-3"
         >
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-foreground">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             #{tag}
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">

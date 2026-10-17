@@ -29,7 +29,11 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
           const isLast = index === items.length - 1;
           return (
             <li key={index} className="flex items-center gap-2 m-0">
-              <HugeiconsIcon icon={ArrowRight01Icon} className="w-3.5 h-3.5 text-muted-foreground/70" aria-hidden="true" />
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                className="w-3.5 h-3.5 text-muted-foreground/70"
+                aria-hidden="true"
+              />
               {item.href && !isLast ? (
                 <Link
                   href={item.href}

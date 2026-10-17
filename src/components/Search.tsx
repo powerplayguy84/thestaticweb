@@ -257,7 +257,7 @@ export default function Search() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full hover:bg-muted min-h-[40px]"
+        className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full border border-border bg-card hover:bg-muted min-h-[36px]"
         aria-label="Search articles (⌘K)"
       >
         <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
@@ -405,7 +405,7 @@ export default function Search() {
       {/* Search trigger button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full hover:bg-muted min-h-[40px]"
+        className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full border border-border bg-card hover:bg-muted min-h-[36px]"
         aria-label="Search articles (⌘K)"
       >
         <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />

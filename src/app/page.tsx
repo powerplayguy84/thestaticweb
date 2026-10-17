@@ -1,5 +1,10 @@
-import { getFeaturedArticles, getHomepageHero } from "@/lib/markdown";
-import { ArticleListFeed } from "@/components/article-list-feed";
+import {
+  getFeaturedArticles,
+  getHomepageHero,
+  getCategoriesWithInfo,
+  getAllArticles,
+} from "@/lib/markdown";
+import { CategoryFeedSection } from "@/components/category-feed-section";
 import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -22,19 +27,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [featuredArticles, hero] = await Promise.all([
+  const [featuredArticles, hero, categoriesInfo, allArticles] = await Promise.all([
     getFeaturedArticles(),
     getHomepageHero(),
+    getCategoriesWithInfo(),
+    getAllArticles(),
   ]);
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-10 max-w-2xl mx-auto pb-16 px-4 md:px-6">
+      <div className="flex flex-col gap-6 max-w-2xl mx-auto pb-16 px-4 md:px-6">
         {/* Hero Section */}
         <section className="pt-10">
           <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-6">
             <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-foreground">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
                 {hero.title}
               </h1>
               {hero.subtitle && (
@@ -75,7 +82,7 @@ export default async function Home() {
 
             {/* Wavy Border */}
             <div
-              className="pt-6 pb-2 flex items-center text-primary"
+              className="pt-2 pb-1 flex items-center text-primary"
               aria-hidden="true"
             >
               <svg
@@ -104,21 +111,13 @@ export default async function Home() {
           </section>
         )}
 
-        {/* Featured Articles Feed Section */}
-        {featuredArticles.length > 0 && (
-          <section className="pt-2">
-            <Motion animation="fade-in-up" delay={100} duration="long">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Featured Articles
-                </h2>
-                <span className="text-xs text-muted-foreground">
-                  {featuredArticles.length} {featuredArticles.length === 1 ? "article" : "articles"}
-                </span>
-              </div>
-              <ArticleListFeed articles={featuredArticles} />
-            </Motion>
-          </section>
+        {/* Articles Feed Section with Category Pills */}
+        {(featuredArticles.length > 0 || allArticles.length > 0) && (
+          <CategoryFeedSection
+            initialArticles={featuredArticles}
+            categories={categoriesInfo}
+            allArticles={allArticles}
+          />
         )}
       </div>
     </main>

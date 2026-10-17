@@ -44,7 +44,7 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
                 className="group cursor-pointer space-y-4 py-2 hover:opacity-95 transition-opacity"
               >
                 <div className="space-y-1.5">
-                  <h2 className="text-2xl sm:text-3xl font-serif leading-tight text-foreground group-hover:text-primary transition-colors">
+                  <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors">
                     {article.title}
                   </h2>
                   <p className="text-xs text-muted-foreground flex items-center gap-2">

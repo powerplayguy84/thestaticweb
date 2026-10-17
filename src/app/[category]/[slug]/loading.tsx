@@ -1,7 +1,7 @@
 export default function ArticleLoading() {
   return (
-    <main className="min-h-screen bg-background">
-      <article className="px-6 py-12 max-w-4xl mx-auto">
+    <main className="min-h-screen bg-background lg:pl-56">
+      <article className="px-6 pt-6 pb-12 sm:pt-8 sm:pb-16 max-w-3xl mx-auto">
         {/* Breadcrumb Skeleton */}
         <div className="h-5 bg-muted rounded w-64 mb-8 animate-pulse"></div>
 

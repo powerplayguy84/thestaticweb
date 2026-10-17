@@ -25,6 +25,7 @@ import { MermaidInitializer } from "@/components/MermaidInitializer";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -116,7 +117,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       siteUrl,
       organizationName,
       logoUrl,
-    })
+    }),
   );
 
   // Generate breadcrumb schema
@@ -125,7 +126,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     { label: article.title, path: `/${category}/${slug}` },
   ];
   const breadcrumbSchema = cleanSchema(
-    generateBreadcrumbSchema(breadcrumbItems, siteUrl)
+    generateBreadcrumbSchema(breadcrumbItems, siteUrl),
   );
 
   // Add IDs to headings for TOC anchors
@@ -157,7 +158,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       }
 
       return match;
-    }
+    },
   );
 
   return (
@@ -178,7 +179,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main id="main-content" className="min-h-screen bg-background lg:pl-56">
-        <article className="px-6 py-12 sm:py-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
+        <article className="px-6 pt-6 pb-12 sm:pt-8 sm:pb-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
           <div className="print:hidden">
             <Breadcrumbs
               items={[
@@ -193,54 +194,58 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Header */}
           <div className="mb-8 print:mb-4">
-            <div className="flex items-center justify-between gap-2 mb-4 print:hidden">
-              <div className="flex items-center gap-2">
-                <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm font-medium rounded">
-                  {displayCategory}
-                </span>
-                <time
-                  className="text-sm text-muted-foreground"
-                  dateTime={article.date}
-                >
-                  {formatDate(article.date)}
-                </time>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="space-y-1.5 flex-1">
+                <h1 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground print:text-3xl">
+                  {article.title}
+                </h1>
+                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                  <span>
+                    Posted on{" "}
+                    {article.date ? formatDate(article.date) : "Recent"}
+                  </span>
+                  <span>•</span>
+                  <Link
+                    href={`/${encodeURIComponent(category)}`}
+                    className="capitalize hover:text-foreground transition-colors"
+                  >
+                    {category}
+                  </Link>
+                </p>
+                {article.tags && article.tags.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1.5 print:hidden">
+                    {article.tags.map((tag) => (
+                      <Link key={tag} href={`/tag/${tag}`}>
+                        <Badge
+                          variant="secondary"
+                          className="rounded-lg px-2 py-0.5 text-[11px] font-medium font-mono text-muted-foreground bg-muted/60 hover:bg-muted"
+                        >
+                          #{tag}
+                        </Badge>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-              <ArticleActions
-                htmlContent={contentWithHeadingIds}
-                description={article.description}
-                title={article.title}
-                image={article.image}
-              />
+              <div className="print:hidden shrink-0 pt-1">
+                <ArticleActions
+                  htmlContent={contentWithHeadingIds}
+                  description={article.description}
+                  title={article.title}
+                  image={article.image}
+                />
+              </div>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 print:text-3xl">
-              {article.title}
-            </h1>
-            <p className="text-lg text-muted-foreground print:hidden">
-              {article.description}
-            </p>
+            {article.description && (
+              <p className="text-base text-muted-foreground print:hidden">
+                {article.description}
+              </p>
+            )}
           </div>
 
           {/* Featured Image */}
           {article.image && article.image.trim() !== "" && (
             <ArticleImage src={article.image} alt={article.title} />
-          )}
-
-          {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
-            <div
-              className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-border print:hidden"
-              data-tags-container
-            >
-              {article.tags.map((tag) => (
-                <Link
-                  key={tag}
-                  href={`/tag/${tag}`}
-                  className="text-xs bg-muted text-muted-foreground px-2.5 py-1 rounded hover:bg-muted/80 transition-colors"
-                >
-                  {tag}
-                </Link>
-              ))}
-            </div>
           )}
 
           {/* Content */}

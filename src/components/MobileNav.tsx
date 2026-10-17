@@ -30,10 +30,10 @@ export default function MobileNav({ categoriesInfo }: MobileNavProps) {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <button
-            className="p-2 text-muted-foreground hover:text-foreground active:scale-95 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center rounded-full hover:bg-muted"
+            className="p-2 text-muted-foreground hover:text-foreground active:scale-95 transition-all size-9 flex items-center justify-center rounded-full border border-border bg-card hover:bg-muted"
             aria-label="Open navigation menu"
           >
-            <HugeiconsIcon icon={Menu01Icon} className="w-6 h-6" />
+            <HugeiconsIcon icon={Menu01Icon} className="w-5 h-5" />
           </button>
         </SheetTrigger>
         <SheetContent side="right">

@@ -4,10 +4,10 @@ subtitle: "Your Markdown-Powered Website Starter"
 description: "A modern, fast starter template for markdown-based websites. Built with Next.js, TypeScript, and Tailwind CSS."
 image: "https://translate.how/i/bicycle.webp"
 navbar:
-  title: "The Static Web"
+  title: "TSW"
   logo: ""
 cta:
-  text: "Start Reading"
+  text: "Explore"
   link: "/guides/tailwind-setup"
 ---
 

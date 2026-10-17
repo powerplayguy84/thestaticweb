@@ -48,15 +48,6 @@ export default async function Navigation() {
         </Link>
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
-          {categoriesInfo.map((category) => (
-            <Link
-              key={category.slug}
-              href={`/${encodeURIComponent(category.slug)}`}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors capitalize"
-            >
-              {category.title || formatCategoryName(category.slug)}
-            </Link>
-          ))}
           <Search />
           <ThemeToggle />
         </div>
