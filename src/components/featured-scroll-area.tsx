@@ -8,6 +8,14 @@ import { ArticleMetadata } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Motion } from "@/components/ui/motion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 interface FeaturedScrollAreaProps {
   articles: ArticleMetadata[];
@@ -39,9 +47,12 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                 <Link
                   key={`${article.category}-${article.slug}`}
                   href={articleUrl}
-                  className="group block shrink-0 w-64 md:w-72 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl transition-transform active:scale-[0.98]"
+                  className="group block shrink-0 w-64 md:w-72 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl transition-transform active:scale-[0.98]"
                 >
-                  <article className="flex flex-col h-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm hover:border-foreground/20 hover:shadow-md transition-all">
+                  <Card
+                    size="sm"
+                    className="h-full overflow-hidden border border-border/60 hover:border-foreground/20 hover:shadow-md transition-all gap-0 py-0"
+                  >
                     {/* Media Aspect Container */}
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted/50">
                       {hasImage ? (
@@ -63,24 +74,25 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                     </div>
 
                     {/* Card Body */}
-                    <div className="flex flex-col p-3.5 space-y-1.5 whitespace-normal">
-                      <h3 className="font-serif font-bold text-base text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-                        {article.title}
-                      </h3>
+                    <div className="flex flex-1 flex-col p-3.5 space-y-1.5 whitespace-normal">
+                      <CardHeader className="p-0 gap-1.5">
+                        <CardTitle className="line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                          {article.title}
+                        </CardTitle>
+                        {article.description && (
+                          <CardDescription className="line-clamp-2 text-xs leading-relaxed">
+                            {article.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
 
-                      {article.description && (
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                          {article.description}
-                        </p>
-                      )}
-
-                      <div className="pt-2 text-[11px] text-muted-foreground font-mono flex items-center gap-1.5">
+                      <CardFooter className="p-0 pt-2 text-[11px] text-muted-foreground font-mono flex items-center gap-1.5 mt-auto">
                         <span>{article.date ? formatDate(article.date) : "Recent"}</span>
                         <span>•</span>
                         <span className="capitalize">{article.category}</span>
-                      </div>
+                      </CardFooter>
                     </div>
-                  </article>
+                  </Card>
                 </Link>
               );
             })}
