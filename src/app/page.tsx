@@ -10,6 +10,7 @@ import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Motion } from "@/components/ui/motion";
+import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -70,13 +71,16 @@ export default async function Home() {
             {/* CTA Button */}
             {hero.cta && (
               <div className="pt-1">
-                <Link
-                  href={hero.cta.link}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-full hover:bg-primary/90 active:scale-95 transition-all shadow-xs"
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-full px-5 py-2.5 h-auto text-sm font-semibold shadow-xs gap-2"
                 >
-                  {hero.cta.text}
-                  <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-                </Link>
+                  <Link href={hero.cta.link}>
+                    {hero.cta.text}
+                    <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
+                  </Link>
+                </Button>
               </div>
             )}
 

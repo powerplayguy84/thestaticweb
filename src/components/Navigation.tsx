@@ -1,16 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getCategoriesWithInfo, getHomepageHero } from "@/lib/markdown";
-import MobileNav from "@/components/MobileNav";
+import { getHomepageHero } from "@/lib/markdown";
 import ThemeToggle from "@/components/ThemeToggle";
 import Search from "@/components/Search";
-import { formatCategoryName } from "@/lib/utils";
 
 export default async function Navigation() {
-  const [categoriesInfo, hero] = await Promise.all([
-    getCategoriesWithInfo(),
-    getHomepageHero(),
-  ]);
+  const hero = await getHomepageHero();
 
   // Use navbar-specific values if provided, otherwise fall back to hero values
   const navbarTitle =
@@ -19,8 +14,8 @@ export default async function Navigation() {
     hero.navbar?.logo !== undefined ? hero.navbar.logo : hero.logo;
 
   return (
-    <nav className="py-4 border-b border-border/80 sticky top-0 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 z-50 print:hidden transition-colors">
-      <div className="flex items-center justify-between max-w-6xl mx-auto px-4 md:px-6">
+    <nav className="py-4 sticky top-0 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 z-50 print:hidden transition-colors">
+      <div className="flex items-center justify-between max-w-2xl mx-auto px-4 md:px-6">
         <Link href="/" className="flex items-center gap-3">
           {navbarLogo ? (
             <>
@@ -46,13 +41,10 @@ export default async function Navigation() {
             )
           )}
         </Link>
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Search />
           <ThemeToggle />
         </div>
-        {/* Mobile Navigation */}
-        <MobileNav categoriesInfo={categoriesInfo} />
       </div>
     </nav>
   );
