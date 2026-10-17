@@ -448,21 +448,21 @@ small {
   article .code-block-wrapper,
   .prose .code-block-wrapper,
   .markdown .code-block-wrapper {
-    @apply relative my-6;
+    @apply relative my-7 rounded-xl overflow-hidden border border-border/70 bg-muted/40 shadow-xs transition-colors;
     position: relative;
   }
 
   article .code-block-wrapper pre,
   .prose .code-block-wrapper pre,
   .markdown .code-block-wrapper pre {
-    @apply bg-muted border border-border rounded-md p-0 overflow-hidden m-0;
+    @apply bg-transparent border-0 rounded-none p-0 overflow-hidden m-0;
   }
 
   /* Copy button styling */
   article .copy-code-btn,
   .prose .copy-code-btn,
   .markdown .copy-code-btn {
-    @apply absolute top-2 right-2 p-2 rounded-md bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground border border-border;
+    @apply absolute top-2.5 right-2.5 p-1.5 rounded-lg bg-background/85 backdrop-blur-xs hover:bg-background transition-all text-muted-foreground hover:text-foreground border border-border/70 shadow-xs hover:shadow-sm;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -474,13 +474,13 @@ small {
   article .copy-code-btn:focus,
   .prose .copy-code-btn:focus,
   .markdown .copy-code-btn:focus {
-    @apply outline-none ring-2 ring-ring;
+    @apply outline-none ring-2 ring-ring/40;
   }
 
   article .copy-code-btn svg,
   .prose .copy-code-btn svg,
   .markdown .copy-code-btn svg {
-    @apply w-4 h-4;
+    @apply w-3.5 h-3.5;
   }
 
   article .copy-code-btn .hidden,
@@ -499,27 +499,27 @@ small {
   .prose .copy-code-btn.copied .check-icon,
   .markdown .copy-code-btn.copied .check-icon {
     display: inline-block;
-    @apply text-chart-2;
+    @apply text-emerald-500 dark:text-emerald-400;
   }
 
-  /* Code block container */
+  /* Standalone code block container */
   article pre,
   .prose pre,
   .markdown pre {
-    @apply bg-muted border border-border rounded-md p-0 my-6 overflow-hidden;
+    @apply bg-muted/40 border border-border/70 rounded-xl p-0 my-7 overflow-hidden shadow-xs;
   }
 
   article pre code,
   .prose pre code,
   .markdown pre code {
-    @apply block overflow-x-auto p-4 bg-transparent text-foreground text-sm leading-relaxed font-mono;
+    @apply block overflow-x-auto p-4 bg-transparent text-foreground text-[13px] leading-relaxed font-mono;
   }
 
   /* Thin scrollbar for code blocks */
   article pre code::-webkit-scrollbar,
   .prose pre code::-webkit-scrollbar,
   .markdown pre code::-webkit-scrollbar {
-    @apply h-2;
+    @apply h-1.5;
   }
 
   article pre code::-webkit-scrollbar-track,
@@ -531,13 +531,13 @@ small {
   article pre code::-webkit-scrollbar-thumb,
   .prose pre code::-webkit-scrollbar-thumb,
   .markdown pre code::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    @apply bg-border/80 rounded-full;
   }
 
   article pre code::-webkit-scrollbar-thumb:hover,
   .prose pre code::-webkit-scrollbar-thumb:hover,
   .markdown pre code::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
+    @apply bg-muted-foreground/40;
   }
 
   /* Firefox thin scrollbar */
@@ -552,14 +552,14 @@ small {
   article code:not(pre code),
   .prose code:not(pre code),
   .markdown code:not(pre code) {
-    @apply bg-muted text-foreground px-1.5 py-0.5 rounded-sm text-sm font-semibold font-mono;
+    @apply bg-muted/70 text-foreground px-1.5 py-0.5 rounded-md text-[0.875em] font-medium font-mono border border-border/50;
   }
 
   /* Markdown Tables - Wrapper approach for horizontal scrolling */
   article .table-wrapper,
   .prose .table-wrapper,
   .markdown .table-wrapper {
-    @apply overflow-x-auto my-6 border border-border rounded-md;
+    @apply overflow-x-auto my-7 border border-border/70 rounded-xl bg-card shadow-xs;
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
@@ -578,7 +578,7 @@ small {
   article .table-wrapper::-webkit-scrollbar,
   .prose .table-wrapper::-webkit-scrollbar,
   .markdown .table-wrapper::-webkit-scrollbar {
-    @apply h-2;
+    @apply h-1.5;
   }
 
   article .table-wrapper::-webkit-scrollbar-track,
@@ -590,19 +590,19 @@ small {
   article .table-wrapper::-webkit-scrollbar-thumb,
   .prose .table-wrapper::-webkit-scrollbar-thumb,
   .markdown .table-wrapper::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    @apply bg-border/80 rounded-full;
   }
 
   article .table-wrapper::-webkit-scrollbar-thumb:hover,
   .prose .table-wrapper::-webkit-scrollbar-thumb:hover,
   .markdown .table-wrapper::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
+    @apply bg-muted-foreground/40;
   }
 
   article thead th,
   .prose thead th,
   .markdown thead th {
-    @apply px-3 py-2 text-left font-medium text-muted-foreground border-b border-r border-border;
+    @apply px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-muted/40 border-b border-r border-border/60;
     white-space: nowrap;
   }
 
@@ -615,8 +615,14 @@ small {
   article tbody td,
   .prose tbody td,
   .markdown tbody td {
-    @apply px-3 py-2 border-b border-r border-border/50;
+    @apply px-4 py-2.5 border-b border-r border-border/40 text-foreground/90 transition-colors;
     white-space: nowrap;
+  }
+
+  article tbody tr:hover td,
+  .prose tbody tr:hover td,
+  .markdown tbody tr:hover td {
+    @apply bg-muted/30;
   }
 
   article tbody td:last-child,
@@ -663,56 +669,56 @@ small {
   article h1,
   .prose h1,
   .markdown h1 {
-    @apply font-serif text-3xl font-bold mt-8 mb-6 text-foreground;
+    @apply font-serif text-3xl sm:text-4xl font-bold mt-12 mb-5 text-foreground tracking-tight;
   }
 
   article h2,
   .prose h2,
   .markdown h2 {
-    @apply font-serif text-2xl font-bold mt-8 mb-4 text-foreground;
+    @apply font-serif text-2xl sm:text-[1.65rem] font-bold mt-10 mb-4 text-foreground tracking-tight border-b border-border/40 pb-2;
   }
 
   article h3,
   .prose h3,
   .markdown h3 {
-    @apply font-serif text-xl font-semibold mt-6 mb-3 text-foreground;
+    @apply font-serif text-xl sm:text-2xl font-semibold mt-8 mb-3 text-foreground tracking-tight;
   }
 
   article h4,
   .prose h4,
   .markdown h4 {
-    @apply font-serif text-lg font-semibold mt-6 mb-3 text-foreground;
+    @apply font-serif text-lg sm:text-xl font-semibold mt-6 mb-2.5 text-foreground;
   }
 
   article h5,
   .prose h5,
   .markdown h5 {
-    @apply text-base font-semibold mt-4 mb-2 text-foreground;
+    @apply text-base font-semibold mt-5 mb-2 text-foreground;
   }
 
   article h6,
   .prose h6,
   .markdown h6 {
-    @apply text-sm font-semibold mt-4 mb-2 text-foreground;
+    @apply text-xs uppercase tracking-wider font-semibold mt-4 mb-2 text-muted-foreground;
   }
 
   /* Markdown prose styles */
   article p,
   .prose p,
   .markdown p {
-    @apply mb-4 leading-relaxed;
+    @apply mb-4 leading-relaxed text-foreground/90;
   }
 
   article ul,
   .prose ul,
   .markdown ul {
-    @apply mb-4 ml-6 list-disc space-y-1;
+    @apply mb-5 ml-6 list-disc space-y-1.5 text-foreground/90;
   }
 
   article ol,
   .prose ol,
   .markdown ol {
-    @apply mb-4 ml-6 list-decimal space-y-1;
+    @apply mb-5 ml-6 list-decimal space-y-1.5 text-foreground/90;
   }
 
   article li,
@@ -724,7 +730,13 @@ small {
   article blockquote,
   .prose blockquote,
   .markdown blockquote {
-    @apply my-6 border-l-4 border-border pl-6 text-muted-foreground italic;
+    @apply my-6 border-l-3 border-primary/60 bg-muted/30 rounded-r-xl px-5 py-3.5 text-foreground/80 italic font-normal;
+  }
+
+  article blockquote p:last-child,
+  .prose blockquote p:last-child,
+  .markdown blockquote p:last-child {
+    @apply mb-0;
   }
 
   /* Links in markdown content */
@@ -750,7 +762,7 @@ small {
   .markdown h6 a,
   .markdown td a,
   .markdown th a {
-    @apply underline;
+    @apply underline underline-offset-4 decoration-border/80 hover:decoration-primary text-foreground hover:text-primary transition-colors font-medium;
   }
 
   /* Strong and emphasis */
@@ -898,42 +910,47 @@ small {
   }
 
   /* Images in markdown content */
-  article img,
   .prose img,
   .markdown img {
-    @apply rounded-md max-w-full h-auto border border-border/60;
+    @apply rounded-xl max-w-full h-auto border border-border/70 shadow-xs my-6;
   }
 
   /* Figure and figcaption */
   article figure,
   .prose figure,
   .markdown figure {
-    @apply my-6;
+    @apply my-8 flex flex-col items-center;
+  }
+
+  article figure img,
+  .prose figure img,
+  .markdown figure img {
+    @apply my-0;
   }
 
   article figcaption,
   .prose figcaption,
   .markdown figcaption {
-    @apply text-sm text-muted-foreground text-center mt-2 italic;
+    @apply text-xs text-muted-foreground text-center mt-2.5 font-normal tracking-normal;
   }
 
   /* Details and Summary */
   article details,
   .prose details,
   .markdown details {
-    @apply my-4 border border-border rounded-md p-4;
+    @apply my-5 border border-border/70 rounded-xl p-4 bg-muted/20 transition-all;
   }
 
   article summary,
   .prose summary,
   .markdown summary {
-    @apply cursor-pointer font-semibold select-none hover:text-primary;
+    @apply cursor-pointer font-medium text-foreground select-none hover:text-primary transition-colors focus:outline-none;
   }
 
   article details[open] summary,
   .prose details[open] summary,
   .markdown details[open] summary {
-    @apply mb-4;
+    @apply mb-3.5 pb-2.5 border-b border-border/40;
   }
 
   /* Preformatted text (not code) */
@@ -1033,7 +1050,7 @@ small {
   .prose .mermaid-wrapper,
   article .mermaid-wrapper,
   .markdown .mermaid-wrapper {
-    @apply my-6 bg-muted/50 border border-border rounded-lg p-6 overflow-x-auto flex justify-center;
+    @apply my-8 bg-muted/30 border border-border/70 rounded-xl p-6 sm:p-8 overflow-x-auto flex justify-center shadow-xs;
   }
 
   .prose .mermaid,
