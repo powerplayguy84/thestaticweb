@@ -5,6 +5,7 @@ import {
   getAllArticles,
 } from "@/lib/markdown";
 import { CategoryFeedSection } from "@/components/category-feed-section";
+import { FeaturedScrollArea } from "@/components/featured-scroll-area";
 import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -115,10 +116,15 @@ export default async function Home() {
           </section>
         )}
 
+        {/* Featured Horizontal Scroll Area */}
+        {featuredArticles.length > 0 && (
+          <FeaturedScrollArea articles={featuredArticles} />
+        )}
+
         {/* Articles Feed Section with Category Pills */}
-        {(featuredArticles.length > 0 || allArticles.length > 0) && (
+        {allArticles.length > 0 && (
           <CategoryFeedSection
-            initialArticles={featuredArticles}
+            initialArticles={allArticles}
             categories={categoriesInfo}
             allArticles={allArticles}
           />
@@ -127,3 +133,4 @@ export default async function Home() {
     </main>
   );
 }
+
