@@ -198,7 +198,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="mb-8 print:mb-4">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="space-y-1.5 flex-1">
-                <h1 className="text-3xl sm:text-4xl font-serif font-bold leading-tight text-foreground print:text-3xl">
+                <h1 className="text-3xl sm:text-4xl font-serif leading-tight text-foreground print:text-3xl">
                   {article.title}
                 </h1>
                 <p className="text-xs text-muted-foreground flex items-center gap-2">

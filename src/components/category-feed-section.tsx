@@ -54,8 +54,8 @@ export function CategoryFeedSection({
         </div>
 
         <div className="flex items-center justify-between pb-5">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-foreground">
-            More
+          <h2 className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground">
+            More...
           </h2>
         </div>
 

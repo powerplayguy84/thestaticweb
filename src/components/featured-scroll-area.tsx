@@ -30,7 +30,7 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
     <section className="space-y-4 pt-4">
       <Motion animation="fade-in-up" delay={50} duration="long">
         <div className="flex items-center justify-between pb-3">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground">
             Featured
           </h2>
         </div>
@@ -87,7 +87,9 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                       </CardHeader>
 
                       <CardFooter className="p-0 pt-2 text-xs text-muted-foreground font-mono flex items-center gap-1.5 mt-auto">
-                        <span>{article.date ? formatDate(article.date) : "Recent"}</span>
+                        <span>
+                          {article.date ? formatDate(article.date) : "Recent"}
+                        </span>
                         <span>•</span>
                         <span className="capitalize">{article.category}</span>
                       </CardFooter>

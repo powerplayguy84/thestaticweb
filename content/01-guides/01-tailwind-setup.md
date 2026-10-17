@@ -4,7 +4,7 @@ description: "Master the simplified setup and powerful features of Tailwind CSS 
 date: "25-11-2025"
 featured: true
 tags: ["tailwind", "css", "setup", "styling"]
-image: "https://made-byshape.transforms.svdcdn.com/production/uploads/images/tailwind-thumb.jpg?w=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1609771799&s=f4f2d93d9e2c9cf40b964258bf5cd4b1"
+image: "https://miro.medium.com/v2/resize:fit:1400/1*__f27S-qQF2CAASt5bOwqg.png"
 ---
 
 <!--

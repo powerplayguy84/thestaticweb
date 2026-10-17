@@ -37,7 +37,7 @@ export default function RelatedArticles({
       className="mt-12 pt-8 border-t border-border"
       data-no-search-highlight
     >
-      <h3 className="text-lg font-serif font-semibold text-foreground mb-4">
+      <h3 className="text-lg font-serif text-foreground mb-4">
         More in {formatCategoryName(category)}
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

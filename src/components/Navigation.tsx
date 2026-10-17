@@ -28,14 +28,14 @@ export default async function Navigation() {
                 />
               </div>
               {navbarTitle && (
-                <span className="text-xl font-serif font-bold text-foreground">
+                <span className="text-xl font-serif text-foreground">
                   {navbarTitle}
                 </span>
               )}
             </>
           ) : (
             navbarTitle && (
-              <span className="text-xl font-serif font-bold text-foreground">
+              <span className="text-xl font-serif text-foreground">
                 {navbarTitle}
               </span>
             )

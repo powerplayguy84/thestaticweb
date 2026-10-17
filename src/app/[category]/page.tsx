@@ -69,7 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <Breadcrumbs items={[{ label: displayCategory }]} />
 
         <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-3">
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-foreground">
+          <h1 className="text-3xl sm:text-4xl font-serif tracking-tight text-foreground">
             {displayCategory}
           </h1>
           {description && (
