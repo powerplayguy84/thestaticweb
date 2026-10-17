@@ -14,8 +14,8 @@ export default async function Navigation() {
     hero.navbar?.logo !== undefined ? hero.navbar.logo : hero.logo;
 
   return (
-    <nav className="py-4 sticky top-0 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 z-50 print:hidden transition-colors">
-      <div className="flex items-center justify-between max-w-2xl mx-auto px-4 md:px-6">
+    <nav className="py-4 sticky top-0 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 z-50 print:hidden transition-colors w-full">
+      <div className="flex items-center justify-between w-full max-w-2xl mx-auto px-4 md:px-6">
         <Link href="/" className="flex items-center gap-3">
           {navbarLogo ? (
             <>

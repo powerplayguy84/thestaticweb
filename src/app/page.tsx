@@ -70,7 +70,7 @@ export default async function Home() {
 
             {/* CTA Button */}
             {hero.cta && (
-              <div className="pt-1">
+              <div className="pt-1 flex justify-end">
                 <Button
                   asChild
                   variant="outline"
