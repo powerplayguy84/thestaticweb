@@ -20,6 +20,7 @@ import { ArticleActions } from "@/components/ArticleActions";
 import SearchHighlighter from "@/components/SearchHighlighter";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
 import TableOfContents from "@/components/TableOfContents";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import CodeCopyInitializer from "@/components/CodeCopyInitializer";
 import { MermaidInitializer } from "@/components/MermaidInitializer";
 import { notFound } from "next/navigation";
@@ -165,6 +166,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <>
       <SearchHighlighter />
       <SearchNavigationFab />
+      <ReadingProgressBar />
       <TableOfContents content={article.content} />
       <CodeCopyInitializer />
       <MermaidInitializer />
