@@ -72,6 +72,25 @@ export default async function Home() {
                 </Link>
               </div>
             )}
+
+            {/* Wavy Border */}
+            <div
+              className="pt-6 pb-2 flex items-center text-primary"
+              aria-hidden="true"
+            >
+              <svg
+                width="96"
+                height="12"
+                viewBox="0 0 96 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              >
+                <path d="M 4 6 Q 11 1, 18 6 T 32 6 T 46 6 T 60 6 T 74 6 T 88 6" />
+              </svg>
+            </div>
           </Motion>
         </section>
 
