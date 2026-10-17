@@ -72,7 +72,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       )}
 
       <CardHeader>
-        <CardTitle className="text-lg">{article.title}</CardTitle>
+        <CardTitle className="text-lg font-serif">{article.title}</CardTitle>
         <CardDescription>{article.description}</CardDescription>
         <CardAction>
           <HugeiconsIcon

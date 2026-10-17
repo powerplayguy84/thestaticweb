@@ -11,6 +11,7 @@ const dmSerif = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-serif",
+  display: "swap",
 });
 
 const geistSans = Geist({

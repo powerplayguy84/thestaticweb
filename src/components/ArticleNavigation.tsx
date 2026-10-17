@@ -25,7 +25,7 @@ export default function ArticleNavigation({
             <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
             Previous
           </div>
-          <h4 className="font-semibold text-foreground group-hover:text-muted-foreground">
+          <h4 className="font-serif font-semibold text-foreground group-hover:text-muted-foreground">
             {previous.title}
           </h4>
         </Link>
@@ -42,7 +42,7 @@ export default function ArticleNavigation({
             Next
             <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
           </div>
-          <h4 className="font-semibold text-foreground group-hover:text-muted-foreground">
+          <h4 className="font-serif font-semibold text-foreground group-hover:text-muted-foreground">
             {next.title}
           </h4>
         </Link>

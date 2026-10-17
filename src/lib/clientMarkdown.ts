@@ -122,10 +122,10 @@ function fallbackMarkdownToHtml(markdown: string): string {
     // Headings
     .replace(
       /^### (.*?)$/gm,
-      "<h3 class='text-lg font-semibold mt-4 mb-2'>$1</h3>"
+      "<h3 class='text-lg font-serif font-semibold mt-4 mb-2'>$1</h3>"
     )
-    .replace(/^## (.*?)$/gm, "<h2 class='text-2xl font-bold mt-6 mb-3'>$1</h2>")
-    .replace(/^# (.*?)$/gm, "<h1 class='text-3xl font-bold mt-8 mb-4'>$1</h1>")
+    .replace(/^## (.*?)$/gm, "<h2 class='text-2xl font-serif font-bold mt-6 mb-3'>$1</h2>")
+    .replace(/^# (.*?)$/gm, "<h1 class='text-3xl font-serif font-bold mt-8 mb-4'>$1</h1>")
     // Unordered lists
     .replace(/^\* (.*?)$/gm, "<li class='ml-4'>$1</li>")
     .replace(/^\- (.*?)$/gm, "<li class='ml-4'>$1</li>")

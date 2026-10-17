@@ -41,7 +41,7 @@ export default async function Home() {
         <section className="pt-10">
           <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-6">
             <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-foreground">
                 {hero.title}
               </h1>
               {hero.subtitle && (

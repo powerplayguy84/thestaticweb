@@ -348,7 +348,7 @@ export default function Search() {
                               </span>
                             )}
                         </div>
-                        <h3 className="font-medium text-foreground truncate">
+                        <h3 className="font-serif font-medium text-foreground truncate">
                           {highlightText(result.title, query)}
                         </h3>
 
