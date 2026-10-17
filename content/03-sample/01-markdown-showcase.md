@@ -2,7 +2,7 @@
 title: "Complete Markdown Showcase"
 description: "A comprehensive demonstration of all markdown elements and styling supported in this Next.js site, from headings to code blocks to interactive components."
 date: "29-10-2025"
-featured: false
+featured: true
 tags: ["markdown", "showcase", "documentation", "reference"]
 image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=1200&h=630&fit=crop"
 ---

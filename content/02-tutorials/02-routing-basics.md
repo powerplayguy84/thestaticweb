@@ -2,7 +2,7 @@
 title: "Routing Basics in Next.js"
 description: "Master file-based routing in the App Router"
 date: "22-10-2025"
-featured: true
+featured: false
 image: ""
 tags: ["nextjs", "routing"]
 ---

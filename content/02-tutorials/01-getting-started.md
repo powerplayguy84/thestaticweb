@@ -2,7 +2,7 @@
 title: "Getting Started with Next.js"
 description: "Learn the basics of Next.js and how to build your first app"
 date: "20-10-2025"
-featured: true
+featured: false
 image: ""
 tags: ["nextjs", "beginner"]
 ---

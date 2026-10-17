@@ -41,7 +41,7 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                   href={articleUrl}
                   className="group block shrink-0 w-64 md:w-72 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl transition-transform active:scale-[0.98]"
                 >
-                  <article className="flex flex-col h-full overflow-hidden rounded-xl border border-border/60 bg-card hover:border-foreground/20 hover:shadow-md transition-all">
+                  <article className="flex flex-col h-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm hover:border-foreground/20 hover:shadow-md transition-all">
                     {/* Media Aspect Container */}
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted/50">
                       {hasImage ? (
@@ -60,9 +60,6 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                           />
                         </div>
                       )}
-                      <span className="absolute top-2.5 left-2.5 rounded-md bg-background/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-mono font-medium text-foreground capitalize border border-border/40 shadow-xs">
-                        {article.category}
-                      </span>
                     </div>
 
                     {/* Card Body */}
@@ -77,8 +74,10 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                         </p>
                       )}
 
-                      <div className="pt-2 text-[11px] text-muted-foreground font-mono">
-                        {article.date ? formatDate(article.date) : "Recent"}
+                      <div className="pt-2 text-[11px] text-muted-foreground font-mono flex items-center gap-1.5">
+                        <span>{article.date ? formatDate(article.date) : "Recent"}</span>
+                        <span>•</span>
+                        <span className="capitalize">{article.category}</span>
                       </div>
                     </div>
                   </article>

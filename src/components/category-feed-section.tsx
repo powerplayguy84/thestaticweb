@@ -34,13 +34,13 @@ export function CategoryFeedSection({
   return (
     <section className="space-y-4 pt-4">
       <Motion animation="fade-in-up" delay={100} duration="long">
-        <div className="flex items-center justify-between pb-3">
+        <div className="flex items-center justify-between pb-5">
           <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-foreground">
-            Explore
+            More
           </h2>
         </div>
 
-        <div className="flex flex-col gap-3 mb-6">
+        <div className="flex flex-col gap-3 mb-7">
           <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 no-scrollbar sm:mx-0 sm:px-0 sm:flex-wrap">
             {/* Category pills */}
             {categories.map((category) => {

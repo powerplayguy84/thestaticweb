@@ -4,7 +4,7 @@ description: "Master the simplified setup and powerful features of Tailwind CSS 
 date: "25-11-2025"
 featured: true
 tags: ["tailwind", "css", "setup", "styling"]
-image: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg?v=1716221309"
+image: "https://made-byshape.transforms.svdcdn.com/production/uploads/images/tailwind-thumb.jpg?w=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1609771799&s=f4f2d93d9e2c9cf40b964258bf5cd4b1"
 ---
 
 <!--
