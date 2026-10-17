@@ -34,10 +34,30 @@ export function CategoryFeedSection({
   return (
     <section className="space-y-4 pt-4">
       <Motion animation="fade-in-up" delay={100} duration="long">
-        <div className="flex items-center justify-between pb-5">
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-foreground">
-            More
-          </h2>
+        <div className="flex flex-col gap-2 pb-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-foreground">
+              More
+            </h2>
+          </div>
+          {/* Wavy Border */}
+          <div
+            className="pt-1 flex items-center text-primary"
+            aria-hidden="true"
+          >
+            <svg
+              width="96"
+              height="12"
+              viewBox="0 0 96 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
+              <path d="M 4 6 Q 11 1, 18 6 T 32 6 T 46 6 T 60 6 T 74 6 T 88 6" />
+            </svg>
+          </div>
         </div>
 
         <div className="flex flex-col gap-3 mb-7">

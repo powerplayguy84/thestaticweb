@@ -47,7 +47,7 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                 <Link
                   key={`${article.category}-${article.slug}`}
                   href={articleUrl}
-                  className="group block shrink-0 w-64 md:w-72 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl transition-transform active:scale-[0.98]"
+                  className="group block shrink-0 w-64 md:w-72 p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl transition-transform active:scale-[0.98]"
                 >
                   <Card
                     size="sm"
@@ -74,19 +74,19 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                     </div>
 
                     {/* Card Body */}
-                    <div className="flex flex-1 flex-col p-3.5 space-y-1.5 whitespace-normal">
+                    <div className="flex flex-1 flex-col p-4 space-y-2 whitespace-normal">
                       <CardHeader className="p-0 gap-1.5">
-                        <CardTitle className="line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                        <CardTitle className="text-lg line-clamp-2 leading-snug group-hover:text-primary transition-colors">
                           {article.title}
                         </CardTitle>
                         {article.description && (
-                          <CardDescription className="line-clamp-2 text-xs leading-relaxed">
+                          <CardDescription className="line-clamp-2 text-sm leading-relaxed">
                             {article.description}
                           </CardDescription>
                         )}
                       </CardHeader>
 
-                      <CardFooter className="p-0 pt-2 text-[11px] text-muted-foreground font-mono flex items-center gap-1.5 mt-auto">
+                      <CardFooter className="p-0 pt-2 text-xs text-muted-foreground font-mono flex items-center gap-1.5 mt-auto">
                         <span>{article.date ? formatDate(article.date) : "Recent"}</span>
                         <span>•</span>
                         <span className="capitalize">{article.category}</span>
