@@ -308,10 +308,10 @@ src/
 
 - **Framework**: Next.js 16 with App Router
 - **Language**: TypeScript 5 (strict mode)
-- **Styling**: Tailwind CSS v4
-- **UI Components**: shadcn/ui with Radix UI primitives
+- **Styling**: Tailwind CSS v4 with Material Design 3 motion & semantic design tokens
+- **UI Components**: shadcn/ui with Radix UI & Vaul primitives
 - **Markdown**: `remark` + `remark-html` + `rehype` plugins
-- **Icons**: lucide-react
+- **Icons**: Hugeicons (`@hugeicons/react` + `@hugeicons/core-free-icons`)
 - **Front Matter**: gray-matter
 - **Syntax Highlighting**: highlight.js via rehype-highlight
 

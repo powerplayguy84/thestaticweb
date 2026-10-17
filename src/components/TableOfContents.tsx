@@ -3,7 +3,8 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Menu01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 
 interface Heading {
@@ -205,11 +206,11 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           <SheetTrigger asChild>
             <Button
               variant="outline"
-              className="fixed bottom-6 right-6 z-40 gap-2 shadow-lg"
+              className="fixed bottom-6 right-6 z-40 gap-2 shadow-xl rounded-full bg-background/95 hover:bg-background text-foreground border border-border/80 backdrop-blur-md active:scale-95 transition-all px-4 py-2.5 h-11"
               aria-label="Open table of contents"
             >
-              <Menu className="w-4 h-4" />
-              <span>Contents</span>
+              <HugeiconsIcon icon={Menu01Icon} className="w-4 h-4 text-primary" />
+              <span className="font-semibold text-sm">Contents</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 overflow-y-auto">

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { PresentationMode } from "@/components/PresentationMode";
 
 interface PresentationClientProps {
@@ -28,10 +29,10 @@ export default function PresentationClient({
       {/* Close Button */}
       <button
         onClick={handleClose}
-        className="fixed top-4 right-4 z-50 p-2 rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground border border-border transition-colors"
+        className="fixed top-4 right-4 z-50 p-2.5 rounded-full bg-muted/80 backdrop-blur-sm hover:bg-muted text-muted-foreground hover:text-foreground border border-border/80 shadow-md active:scale-95 transition-all"
         aria-label="Close presentation"
       >
-        <X className="w-5 h-5" />
+        <HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
       </button>
 
       {/* Presentation Mode Component */}

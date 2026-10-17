@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Presentation, Loader2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Presentation01Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 import PrintButton from "@/components/PrintButton";
 
 interface ArticleActionsProps {
@@ -36,13 +37,13 @@ export function ArticleActions({
       <button
         onClick={handleOpenPresentation}
         disabled={isLoading}
-        className="inline-flex items-center justify-center p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center p-2 bg-muted hover:bg-muted/80 text-foreground rounded-full active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Open Presentation Mode"
       >
         {isLoading ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 animate-spin" />
         ) : (
-          <Presentation className="w-4 h-4" />
+          <HugeiconsIcon icon={Presentation01Icon} className="w-4 h-4" />
         )}
       </button>
     </div>

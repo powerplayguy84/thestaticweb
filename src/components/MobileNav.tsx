@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Home } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Menu01Icon, Home01Icon } from "@hugeicons/core-free-icons";
 import { useState } from "react";
 import { formatCategoryName } from "@/lib/utils";
 import {
@@ -29,10 +30,10 @@ export default function MobileNav({ categoriesInfo }: MobileNavProps) {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <button
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
+            className="p-2 text-muted-foreground hover:text-foreground active:scale-95 transition-all min-h-[48px] min-w-[48px] flex items-center justify-center rounded-full hover:bg-muted"
             aria-label="Open navigation menu"
           >
-            <Menu className="w-6 h-6" />
+            <HugeiconsIcon icon={Menu01Icon} className="w-6 h-6" />
           </button>
         </SheetTrigger>
         <SheetContent side="right">
@@ -46,9 +47,9 @@ export default function MobileNav({ categoriesInfo }: MobileNavProps) {
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-3 px-2 rounded-lg hover:bg-muted min-h-[48px]"
+              className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-3 px-3 rounded-2xl hover:bg-muted min-h-[48px] active:scale-95"
             >
-              <Home className="w-5 h-5" />
+              <HugeiconsIcon icon={Home01Icon} className="w-5 h-5" />
               Home
             </Link>
             {categoriesInfo.map((category) => (

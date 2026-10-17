@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeft, ChevronRight, List, Share2, Printer } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  Menu01Icon,
+  Share01Icon,
+  PrinterIcon,
+} from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -443,9 +450,9 @@ export function PresentationMode({
                           navigator.clipboard.writeText(window.location.href);
                         }
                       }}
-                      className="gap-2"
+                      className="gap-2 rounded-full active:scale-95 transition-all"
                     >
-                      <Share2 className="w-4 h-4" />
+                      <HugeiconsIcon icon={Share01Icon} className="w-4 h-4" />
                     </Button>
                     <Button
                       variant="secondary"
@@ -456,7 +463,7 @@ export function PresentationMode({
                           'button[aria-label="Toggle Table of Contents"]'
                         );
                         const navButtons = document.querySelector(
-                          ".absolute.bottom-0.right-0"
+                          ".absolute.bottom-4.right-4, .absolute.bottom-0.right-0"
                         );
                         const actionButtons = document.querySelector(
                           ".mt-8.flex.justify-end"
@@ -481,9 +488,9 @@ export function PresentationMode({
                             (actionButtons as HTMLElement).style.display = "";
                         }, 100);
                       }}
-                      className="gap-2"
+                      className="gap-2 rounded-full active:scale-95 transition-all"
                     >
-                      <Printer className="w-4 h-4" />
+                      <HugeiconsIcon icon={PrinterIcon} className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -498,10 +505,10 @@ export function PresentationMode({
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="absolute bottom-0 left-0 z-40 shadow-lg"
+            className="fixed bottom-4 left-4 z-40 rounded-full shadow-lg border border-border/80 bg-background/90 backdrop-blur-sm active:scale-95 transition-all h-10 w-10 p-0"
             aria-label="Toggle Table of Contents"
           >
-            <List />
+            <HugeiconsIcon icon={Menu01Icon} className="w-5 h-5" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
@@ -515,9 +522,9 @@ export function PresentationMode({
                   onClick={() => {
                     setCurrentSlide(index);
                   }}
-                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                  className={`w-full text-left px-3 py-2.5 rounded-2xl transition-all active:scale-[0.98] ${
                     currentSlide === index
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-primary text-primary-foreground font-semibold"
                       : "hover:bg-muted text-foreground"
                   }`}
                 >
@@ -537,32 +544,34 @@ export function PresentationMode({
       </Sheet>
 
       {/* Navigation FAB - Bottom Right */}
-      <div className="absolute bottom-0 right-0 z-40">
-        <ButtonGroup className="shadow-lg">
+      <div className="fixed bottom-4 right-4 z-40">
+        <div className="flex items-center rounded-full bg-background/90 backdrop-blur-sm border border-border/80 shadow-lg p-1">
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
+            className="h-9 w-9 rounded-full active:scale-95 transition-transform"
             onClick={() => setCurrentSlide((prev) => Math.max(0, prev - 1))}
             disabled={currentSlide === 0}
             aria-label="Previous slide"
           >
-            <ChevronLeft />
+            <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
           </Button>
-          <div className="flex items-center justify-center bg-background border px-4 text-xs font-medium text-muted-foreground">
+          <div className="flex items-center justify-center px-3 text-xs font-semibold text-muted-foreground select-none">
             {currentSlide + 1} / {slides.length}
           </div>
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
+            className="h-9 w-9 rounded-full active:scale-95 transition-transform"
             onClick={() =>
               setCurrentSlide((prev) => Math.min(slides.length - 1, prev + 1))
             }
             disabled={currentSlide === slides.length - 1}
             aria-label="Next slide"
           >
-            <ChevronRight />
+            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
           </Button>
-        </ButtonGroup>
+        </div>
       </div>
     </div>
   );

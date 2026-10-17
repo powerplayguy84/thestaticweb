@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { ArticleMetadata } from "@/lib/markdown";
 
 interface ArticleNavigationProps {
@@ -18,10 +19,10 @@ export default function ArticleNavigation({
       {previous ? (
         <Link
           href={`/${encodeURIComponent(category)}/${previous.slug}`}
-          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group min-w-0"
+          className="flex-1 p-4 rounded-2xl border border-border hover:border-foreground/20 hover:bg-muted active:scale-[0.98] transition-all group min-w-0"
         >
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-            <ChevronLeft className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
             Previous
           </div>
           <h4 className="font-semibold text-foreground group-hover:text-muted-foreground">
@@ -35,11 +36,11 @@ export default function ArticleNavigation({
       {next ? (
         <Link
           href={`/${encodeURIComponent(category)}/${next.slug}`}
-          className="flex-1 p-4 rounded-lg border border-border hover:border-foreground/20 hover:bg-muted transition-all group text-right min-w-0"
+          className="flex-1 p-4 rounded-2xl border border-border hover:border-foreground/20 hover:bg-muted active:scale-[0.98] transition-all group text-right min-w-0"
         >
           <div className="flex items-center justify-end gap-2 text-sm text-muted-foreground mb-2">
             Next
-            <ChevronRight className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
           </div>
           <h4 className="font-semibold text-foreground group-hover:text-muted-foreground">
             {next.title}

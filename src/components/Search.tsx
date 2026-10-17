@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Search as SearchIcon, X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { useRouter } from "next/navigation";
 
 interface SearchResult {
@@ -256,12 +257,12 @@ export default function Search() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted min-h-[40px]"
+        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full hover:bg-muted min-h-[40px]"
         aria-label="Search articles (⌘K)"
       >
-        <SearchIcon className="w-4 h-4" />
+        <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>
-        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded border border-border">
+        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded-full border border-border">
           <span>⌘</span>K
         </kbd>
       </button>
@@ -282,26 +283,26 @@ export default function Search() {
       />
 
       {/* Search Modal */}
-      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-[10000] px-4">
-        <div className="bg-background border border-border rounded-lg shadow-lg overflow-hidden">
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-[10000] px-4 animate-scale-in">
+        <div className="bg-background border border-border rounded-2xl shadow-xl overflow-hidden ring-1 ring-foreground/10">
           {/* Search Input */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
-            <SearchIcon className="w-5 h-5 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} className="w-5 h-5 text-muted-foreground" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search articles..."
-              className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none"
+              className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
               autoFocus
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground active:scale-95 transition-transform"
                 aria-label="Clear search"
               >
-                <X className="w-4 h-4" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -404,12 +405,12 @@ export default function Search() {
       {/* Search trigger button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted min-h-[40px]"
+        className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full hover:bg-muted min-h-[40px]"
         aria-label="Search articles (⌘K)"
       >
-        <SearchIcon className="w-4 h-4" />
+        <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>
-        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded border border-border">
+        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded-full border border-border">
           <span>⌘</span>K
         </kbd>
       </button>

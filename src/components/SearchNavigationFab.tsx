@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ChevronUp, ChevronDown, X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowUp01Icon,
+  ArrowDown01Icon,
+  Cancel01Icon,
+} from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 
 export default function SearchNavigationFab() {
@@ -122,7 +127,7 @@ export default function SearchNavigationFab() {
           onClick={handlePrevious}
           aria-label="Previous result"
         >
-          <ChevronUp className="h-4 w-4" />
+          <HugeiconsIcon icon={ArrowUp01Icon} className="h-4 w-4" />
         </Button>
 
         <Button
@@ -132,7 +137,7 @@ export default function SearchNavigationFab() {
           onClick={handleNext}
           aria-label="Next result"
         >
-          <ChevronDown className="h-4 w-4" />
+          <HugeiconsIcon icon={ArrowDown01Icon} className="h-4 w-4" />
         </Button>
 
         <div className="w-px h-6 bg-border mx-1" />
@@ -144,7 +149,7 @@ export default function SearchNavigationFab() {
           onClick={handleClose}
           aria-label="Close search highlights"
         >
-          <X className="h-4 w-4" />
+          <HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
         </Button>
       </div>
     </div>

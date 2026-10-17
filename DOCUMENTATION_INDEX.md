@@ -246,10 +246,10 @@ _Perfect for: Keep open while working_
 
 - Next.js 16 (App Router)
 - TypeScript 5 (strict mode)
-- Tailwind CSS v4
+- Tailwind CSS v4 & Material Design 3 motion
+- Hugeicons (`@hugeicons/react`)
 - remark + remark-html
 - gray-matter
-- lucide-react
 
 ---
 

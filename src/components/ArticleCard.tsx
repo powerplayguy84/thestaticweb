@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArticleMetadata } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
-import { ArrowRight } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -74,8 +75,9 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         <CardTitle className="text-lg">{article.title}</CardTitle>
         <CardDescription>{article.description}</CardDescription>
         <CardAction>
-          <ArrowRight
-            className="w-5 h-5 text-muted-foreground"
+          <HugeiconsIcon
+            icon={ArrowRight01Icon}
+            className="w-5 h-5 text-muted-foreground group-hover:translate-x-0.5 transition-transform"
             aria-hidden="true"
           />
         </CardAction>
