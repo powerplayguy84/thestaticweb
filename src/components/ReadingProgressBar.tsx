@@ -28,7 +28,7 @@ export default function ReadingProgressBar() {
   return (
     <div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 h-[3px] z-[60] bg-transparent pointer-events-none print:hidden"
+      className="fixed top-0 left-0 right-0 h-[3px] z-[70] bg-transparent pointer-events-none print:hidden"
     >
       <div
         className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 transition-[width] duration-150 ease-out"

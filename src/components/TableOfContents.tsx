@@ -191,7 +191,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   return (
     <>
       {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-24 w-56 max-h-[calc(100vh-6rem)] overflow-y-auto px-4 py-6 border-r border-border print:hidden">
+      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-56 overflow-y-auto scrollbar-thin px-4 py-6 border-r border-border bg-background print:hidden z-[60]">
         <h2 className="text-xs font-semibold mb-4 text-muted-foreground uppercase tracking-widest">
           On this page
         </h2>
@@ -213,7 +213,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
               <span className="font-semibold text-sm">Contents</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-64 overflow-y-auto">
+          <SheetContent side="left" className="w-64 overflow-y-auto scrollbar-thin">
             <SheetTitle className="mb-4">On this page</SheetTitle>
             <div className="space-y-0.5">
               {tocContent}
