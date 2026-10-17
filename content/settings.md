@@ -23,7 +23,6 @@ iconUrl: "./public/example-icon.svg"
 # Hidden categories (won't appear in navigation)
 # Add category folder names you want to hide from the navbar
 hiddenCategories:
-  - "sample"
   - "_templates"
 
 # Admin Panel Password Protection
