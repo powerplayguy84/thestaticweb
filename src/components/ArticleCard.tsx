@@ -72,8 +72,12 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       )}
 
       <CardHeader>
-        <CardTitle className="text-lg font-serif">{article.title}</CardTitle>
-        <CardDescription>{article.description}</CardDescription>
+        <CardTitle className="text-lg font-sans font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+          {article.title}
+        </CardTitle>
+        <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+          {article.description}
+        </CardDescription>
         <CardAction>
           <HugeiconsIcon
             icon={ArrowRight01Icon}
@@ -84,8 +88,8 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       </CardHeader>
 
       <CardContent>
-        <div className="flex items-center gap-2 text-sm">
-          <time className="text-muted-foreground" dateTime={article.date}>
+        <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
+          <time dateTime={article.date}>
             {formatDate(article.date)}
           </time>
         </div>

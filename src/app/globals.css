@@ -53,7 +53,7 @@ small {
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-serif);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-serif);
+  --font-heading: var(--font-geist-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -181,6 +181,27 @@ small {
       background: color-mix(in srgb, var(--foreground) 45%, transparent);
     }
   }
+}
+
+::selection {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+}
+
+input, textarea {
+  caret-color: var(--color-foreground);
+}
+
+.ambient-mesh {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.07), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(16, 185, 129, 0.05), transparent 60%);
+}
+
+.dark .ambient-mesh {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(16, 185, 129, 0.08), transparent 60%);
 }
 
 .dark {
@@ -669,25 +690,25 @@ small {
   article h1,
   .prose h1,
   .markdown h1 {
-    @apply font-serif text-3xl sm:text-4xl mt-12 mb-5 text-foreground tracking-tight;
+    @apply font-sans font-bold text-3xl sm:text-4xl mt-12 mb-5 text-foreground tracking-tight;
   }
 
   article h2,
   .prose h2,
   .markdown h2 {
-    @apply font-serif text-2xl sm:text-[1.65rem] mt-10 mb-4 text-foreground tracking-tight border-b border-border/40 pb-2;
+    @apply font-sans font-bold text-2xl sm:text-[1.65rem] mt-10 mb-4 text-foreground tracking-tight border-b border-border/40 pb-2;
   }
 
   article h3,
   .prose h3,
   .markdown h3 {
-    @apply font-serif text-xl sm:text-2xl mt-8 mb-3 text-foreground tracking-tight;
+    @apply font-sans font-semibold text-xl sm:text-2xl mt-8 mb-3 text-foreground tracking-tight;
   }
 
   article h4,
   .prose h4,
   .markdown h4 {
-    @apply font-serif text-lg sm:text-xl mt-6 mb-2.5 text-foreground;
+    @apply font-sans font-semibold text-lg sm:text-xl mt-6 mb-2.5 text-foreground;
   }
 
   article h5,

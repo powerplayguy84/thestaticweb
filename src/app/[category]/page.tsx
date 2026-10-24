@@ -64,35 +64,25 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const description = categoryInfo?.description;
 
   return (
-    <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-8 max-w-2xl mx-auto pb-16 px-4 md:px-6 pt-8 sm:pt-12">
+    <main id="main-content" className="min-h-screen bg-background ambient-mesh">
+      <div className="flex flex-col gap-8 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
         <Breadcrumbs items={[{ label: displayCategory }]} />
 
         <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-3">
-          <h1 className="text-3xl sm:text-4xl font-serif tracking-tight text-foreground">
-            {displayCategory}
-          </h1>
-          {description && (
-            <p className="text-base text-muted-foreground leading-relaxed">
-              {description}
-            </p>
-          )}
-          <div
-            className="pt-5 pb-2 flex items-center text-primary"
-            aria-hidden="true"
-          >
-            <svg
-              width="96"
-              height="12"
-              viewBox="0 0 96 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            >
-              <path d="M 4 6 Q 11 1, 18 6 T 32 6 T 46 6 T 60 6 T 74 6 T 88 6" />
-            </svg>
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 border-b border-border/40 pb-5">
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground">
+                {displayCategory}
+              </h1>
+              {description && (
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-2 max-w-2xl">
+                  {description}
+                </p>
+              )}
+            </div>
+            <span className="text-xs font-mono text-muted-foreground shrink-0">
+              {articles.length} {articles.length === 1 ? "item" : "items"}
+            </span>
           </div>
         </Motion>
 

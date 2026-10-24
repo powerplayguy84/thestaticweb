@@ -108,7 +108,7 @@ function fallbackMarkdownToHtml(markdown: string): string {
   const frontmatterRegex = /^---\n([\s\S]*?)\n---\n/;
   const content = markdown.replace(frontmatterRegex, "");
 
-  let html = content
+  const html = content
     // Code blocks (before inline code)
     .replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
       const language = lang || "plaintext";
@@ -122,10 +122,10 @@ function fallbackMarkdownToHtml(markdown: string): string {
     // Headings
     .replace(
       /^### (.*?)$/gm,
-      "<h3 class='text-lg font-serif mt-4 mb-2'>$1</h3>"
+      "<h3 class='text-lg font-sans font-semibold tracking-tight mt-4 mb-2'>$1</h3>"
     )
-    .replace(/^## (.*?)$/gm, "<h2 class='text-2xl font-serif mt-6 mb-3'>$1</h2>")
-    .replace(/^# (.*?)$/gm, "<h1 class='text-3xl font-serif mt-8 mb-4'>$1</h1>")
+    .replace(/^## (.*?)$/gm, "<h2 class='text-2xl font-sans font-bold tracking-tight mt-6 mb-3'>$1</h2>")
+    .replace(/^# (.*?)$/gm, "<h1 class='text-3xl font-sans font-bold tracking-tight mt-8 mb-4'>$1</h1>")
     // Unordered lists
     .replace(/^\* (.*?)$/gm, "<li class='ml-4'>$1</li>")
     .replace(/^\- (.*?)$/gm, "<li class='ml-4'>$1</li>")

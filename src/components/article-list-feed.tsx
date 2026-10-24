@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -9,10 +8,8 @@ import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { ArticleMetadata } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ArticleFeedImage } from "@/components/article-feed-image";
+
 
 interface ArticleListFeedProps {
   articles: ArticleMetadata[];
@@ -24,94 +21,95 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
 
   if (!articles || articles.length === 0) {
     return (
-      <div className="py-16 text-center text-sm text-muted-foreground border border-dashed border-border/70 rounded-3xl">
-        No articles published yet.
+      <div className="py-16 text-center text-sm text-muted-foreground border border-dashed border-border/70 rounded-2xl">
+        No items found in this category.
       </div>
     );
   }
 
   return (
     <>
-      <div className="flex flex-col">
-        {articles.map((article, index) => {
+      <div className="flex flex-col divide-y divide-border/40">
+        {articles.map((article) => {
           const articleUrl = `/${encodeURIComponent(article.category)}/${article.slug}`;
+          const hasImage = Boolean(article.image && article.image.trim() !== "");
 
           return (
-            <div key={`${article.category}-${article.slug}`}>
-              {index > 0 && <Separator className="my-6 md:my-8" />}
+            <div key={`${article.category}-${article.slug}`} className="py-6 sm:py-7">
               <div
                 onClick={() => router.push(articleUrl)}
-                className="group cursor-pointer space-y-4 py-2 hover:opacity-95 transition-opacity"
+                className="group cursor-pointer p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-200 hover:bg-muted/30 border border-transparent hover:border-border/60"
               >
-                <div className="space-y-1.5">
-                  <h2 className="text-2xl sm:text-3xl font-serif leading-tight text-foreground group-hover:text-primary transition-colors">
-                    {article.title}
-                  </h2>
-                  <p className="text-xs text-muted-foreground flex items-center gap-2">
-                    <span>
-                      Posted on{" "}
-                      {article.date ? formatDate(article.date) : "Recent"}
-                    </span>
-                    <span>•</span>
-                    <span className="capitalize">{article.category}</span>
-                  </p>
-                  {article.tags && article.tags.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                      {article.tags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="secondary"
-                          className="rounded-lg px-2 py-0.5 text-[11px] font-medium font-mono text-muted-foreground bg-muted/60 hover:bg-muted"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            router.push(`/tag/${tag}`);
-                          }}
-                        >
-                          #{tag}
-                        </Badge>
-                      ))}
+                <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-5 md:gap-8">
+                  {/* Content Column */}
+                  <div className="space-y-3 flex-1 min-w-0">
+                    {/* Meta row */}
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
+                      <span className="px-2 py-0.5 rounded-md bg-muted/80 text-foreground font-medium uppercase text-[10px] tracking-wider border border-border/50">
+                        {article.category}
+                      </span>
+                      <span>•</span>
+                      <time dateTime={article.date}>
+                        {article.date ? formatDate(article.date) : "Recent"}
+                      </time>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl sm:text-2xl font-sans font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+
+                    {/* Description */}
+                    {article.description && (
+                      <p className="text-sm sm:text-base text-muted-foreground line-clamp-2 leading-relaxed">
+                        {article.description}
+                      </p>
+                    )}
+
+                    {/* Tags & Action */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                      {article.tags && article.tags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {article.tags.map((tag) => (
+                            <Badge
+                              key={tag}
+                              variant="secondary"
+                              className="rounded-md px-2 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/50 hover:bg-muted border border-border/40"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(`/tag/${tag}`);
+                              }}
+                            >
+                              #{tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center text-xs font-semibold text-foreground/80 group-hover:text-primary transition-colors gap-1 ml-auto">
+                        <span>Read</span>
+                        <HugeiconsIcon
+                          icon={ArrowRight01Icon}
+                          className="size-3.5 group-hover:translate-x-1 transition-transform"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Thumbnail Column */}
+                  {hasImage && (
+                    <div className="w-full md:w-52 lg:w-60 shrink-0">
+                      <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-muted/50 border border-border/60 shadow-xs">
+                        <Image
+                          src={article.image!}
+                          alt={article.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 240px"
+                        />
+                      </div>
                     </div>
                   )}
-                </div>
-
-                {/* Description */}
-                {article.description && (
-                  <p className="text-sm sm:text-base text-foreground/90 whitespace-pre-wrap line-clamp-3 leading-relaxed">
-                    {article.description}
-                  </p>
-                )}
-
-                {/* Image Preview */}
-                {article.image && article.image.trim() !== "" && (
-                  <div
-                    className="space-y-2 pt-1"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ArticleFeedImage
-                      src={article.image}
-                      alt={article.title}
-                      onClick={() => setSelectedImage(article.image!)}
-                    />
-                  </div>
-                )}
-
-                {/* Footer Action */}
-                <div className="flex items-center justify-end pt-1">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-full px-4 h-8 gap-1.5 active:scale-95 transition-transform"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push(articleUrl);
-                    }}
-                  >
-                    Read
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      className="size-3.5 group-hover:translate-x-0.5 transition-transform"
-                    />
-                  </Button>
                 </div>
               </div>
             </div>

@@ -37,8 +37,8 @@ export default async function TagPage({ params }: TagPageProps) {
   }
 
   return (
-    <main id="main-content" className="min-h-screen bg-background">
-      <div className="flex flex-col gap-8 max-w-2xl mx-auto pb-16 px-4 md:px-6 pt-8 sm:pt-12">
+    <main id="main-content" className="min-h-screen bg-background ambient-mesh">
+      <div className="flex flex-col gap-8 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
         <Breadcrumbs items={[{ label: `#${tag}` }]} />
 
         <Motion
@@ -47,26 +47,19 @@ export default async function TagPage({ params }: TagPageProps) {
           duration="long"
           className="space-y-3"
         >
-          <p className="text-base text-muted-foreground leading-relaxed">
-            Articles tagged with{" "}
-            <span className="font-semibold text-foreground">#{tag}</span>
-          </p>
-          <div
-            className="pt-5 pb-2 flex items-center text-primary"
-            aria-hidden="true"
-          >
-            <svg
-              width="96"
-              height="12"
-              viewBox="0 0 96 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            >
-              <path d="M 4 6 Q 11 1, 18 6 T 32 6 T 46 6 T 60 6 T 74 6 T 88 6" />
-            </svg>
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 border-b border-border/40 pb-5">
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground flex items-center gap-1.5">
+                <span className="text-muted-foreground/50 font-normal">#</span>
+                <span>{tag}</span>
+              </h1>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-2">
+                All content tagged with #{tag}
+              </p>
+            </div>
+            <span className="text-xs font-mono text-muted-foreground shrink-0">
+              {articles.length} {articles.length === 1 ? "item" : "items"}
+            </span>
           </div>
         </Motion>
 

@@ -16,31 +16,36 @@ export default async function Navigation() {
 
   return (
     <NavigationLayout>
-      <Link href="/" className="flex items-center gap-3">
-          {navbarLogo ? (
-            <>
-              <div className="relative w-8 h-8">
-                <Image
-                  src={navbarLogo}
-                  alt={`${navbarTitle} logo`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              {navbarTitle && (
-                <span className="text-xl font-serif text-foreground">
-                  {navbarTitle}
-                </span>
-              )}
-            </>
-          ) : (
-            navbarTitle && (
-              <span className="text-xl font-serif text-foreground">
+      <Link href="/" className="group flex items-center gap-2.5">
+        {navbarLogo ? (
+          <>
+            <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-border/60">
+              <Image
+                src={navbarLogo}
+                alt={`${navbarTitle} logo`}
+                fill
+                className="object-contain"
+              />
+            </div>
+            {navbarTitle && (
+              <span className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
                 {navbarTitle}
               </span>
-            )
-          )}
-        </Link>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="w-7 h-7 rounded-lg bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs tracking-wider shadow-xs">
+              {navbarTitle ? navbarTitle.slice(0, 2).toUpperCase() : "SW"}
+            </div>
+            {navbarTitle && (
+              <span className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                {navbarTitle}
+              </span>
+            )}
+          </>
+        )}
+      </Link>
         <div className="flex items-center gap-2 md:gap-4">
           <Search />
           <ThemeToggle />

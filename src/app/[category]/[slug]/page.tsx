@@ -180,8 +180,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <main id="main-content" className="min-h-screen bg-background lg:pl-56">
-        <article className="px-6 pt-6 pb-12 sm:pt-8 sm:pb-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
+      <main id="main-content" className="min-h-screen bg-background ambient-mesh lg:pl-56">
+        <article className="px-5 sm:px-6 pt-6 pb-12 sm:pt-10 sm:pb-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
           <div className="print:hidden">
             <Breadcrumbs
               items={[
@@ -195,32 +195,31 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
 
           {/* Header */}
-          <div className="mb-8 print:mb-4">
+          <div className="mb-8 print:mb-4 pt-2">
             <div className="flex items-start justify-between gap-4 mb-4">
-              <div className="space-y-1.5 flex-1">
-                <h1 className="text-3xl sm:text-4xl font-serif leading-tight text-foreground print:text-3xl">
+              <div className="space-y-3 flex-1 min-w-0">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
                   {article.title}
                 </h1>
-                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2">
                   <span>
-                    Posted on{" "}
                     {article.date ? formatDate(article.date) : "Recent"}
                   </span>
                   <span>•</span>
                   <Link
                     href={`/${encodeURIComponent(category)}`}
-                    className="capitalize hover:text-foreground transition-colors"
+                    className="capitalize hover:text-foreground transition-colors underline-offset-4 hover:underline"
                   >
                     {category}
                   </Link>
                 </p>
                 {article.tags && article.tags.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1.5 print:hidden">
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1 print:hidden">
                     {article.tags.map((tag) => (
                       <Link key={tag} href={`/tag/${tag}`}>
                         <Badge
                           variant="secondary"
-                          className="rounded-lg px-2 py-0.5 text-[11px] font-medium font-mono text-muted-foreground bg-muted/60 hover:bg-muted"
+                          className="rounded-md px-2 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/40"
                         >
                           #{tag}
                         </Badge>
@@ -239,7 +238,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             </div>
             {article.description && (
-              <p className="text-base text-muted-foreground print:hidden">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed print:hidden pt-1">
                 {article.description}
               </p>
             )}
@@ -253,8 +252,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Content */}
           <div className="overflow-x-hidden">
             <div
-              className="prose print:prose-sm content-with-wrapped-code"
-              dangerouslySetInnerHTML={{ __html: contentWithHeadingIds }}
+              className="prose print:prose-sm content-with-wrapped-code max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: contentWithHeadingIds.replace(/^\s*<h1[^>]*>.*?<\/h1>/i, ""),
+              }}
             />
           </div>
 

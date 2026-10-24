@@ -1,0 +1,94 @@
+{
+  "options": [
+    {
+      "id": "grounded-engineering-logbook",
+      "kind": "grounded",
+      "label": "The Modern Engineering Logbook",
+      "thesis": "Clean, structured linear hierarchy designed for seamless transitions between project showcase cards and deep markdown reading.",
+      "palette": [
+        "#0f172a",
+        "#f8fafc",
+        "#6366f1",
+        "#10b981"
+      ],
+      "materials": [
+        "slate elevation",
+        "crisp hairline borders",
+        "precision metadata chips"
+      ],
+      "viewport": "Modern hero with portfolio intro and metrics, featured project cards with live links, and an organized markdown article feed.",
+      "risk": "Familiar and dependable; prioritizes high usability, scanability, and content clarity over eccentric flourishes.",
+      "comp": ".impeccable/mocks/decision/grounded-engineering-logbook.webp"
+    },
+    {
+      "id": "grounded-minimalist-monograph",
+      "kind": "grounded",
+      "label": "The Minimalist Studio Monograph",
+      "thesis": "Generous whitespace, refined Swiss typography, and quiet monochrome precision inspired by modern design engineering (Linear, Vercel).",
+      "palette": [
+        "#09090b",
+        "#ffffff",
+        "#3b82f6",
+        "#71717a"
+      ],
+      "materials": [
+        "pure monochrome paper",
+        "frosted blur header",
+        "hairline dividers"
+      ],
+      "viewport": "Understated hero with large editorial typography, borderless project cards with hover illumination, and an uninterrupted prose column.",
+      "risk": "Extremely clean and understated; relies on typographic craft rather than bold ornament.",
+      "comp": ".impeccable/mocks/decision/grounded-minimalist-monograph.webp"
+    },
+    {
+      "id": "grounded-techstack-ledger",
+      "kind": "grounded",
+      "label": "The Developer Tech Stack Ledger",
+      "thesis": "Purpose-built for showcasing code repositories, live project links, and in-depth documentation with monospaced metadata callouts.",
+      "palette": [
+        "#121316",
+        "#ffffff",
+        "#059669",
+        "#94a3b8"
+      ],
+      "materials": [
+        "dark carbon surfaces",
+        "monospaced git tags",
+        "high-contrast markdown prose"
+      ],
+      "viewport": "Interactive tech stack matrix hero, followed by rich markdown documentation views with syntax-highlighted code and table of contents.",
+      "risk": "Deeply developer-focused; emphasizes technical utility, git ergonomics, and code snippet presentation.",
+      "comp": ".impeccable/mocks/decision/grounded-techstack-ledger.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The Category Standard",
+    "thesis": "The classic modern developer portfolio and blog (Lee Robinson, Astro Paper, Next.js templates) executed at peak craft.",
+    "palette": [
+      "#09090b",
+      "#ffffff",
+      "#3b82f6"
+    ],
+    "materials": [
+      "neutral glass",
+      "dark mode glow",
+      "standard cards"
+    ],
+    "viewport": "Centered headline, subtitle, hero image, and 2-column article card grid.",
+    "risk": "Familiar to every developer; effective and clean, but follows the established template formula.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}

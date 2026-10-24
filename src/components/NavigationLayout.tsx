@@ -17,13 +17,13 @@ export function NavigationLayout({ children }: { children: ReactNode }) {
 
   return (
     <nav
-      className={`py-4 sticky top-0 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 z-50 print:hidden transition-colors w-full ${
+      className={`py-3.5 sticky top-0 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-b border-border/40 z-50 print:hidden transition-colors w-full ${
         isArticlePage ? "lg:pl-56" : ""
       }`}
     >
       <div
         className={`flex items-center justify-between w-full mx-auto ${
-          isArticlePage ? "max-w-3xl px-6" : "max-w-2xl px-4 md:px-6"
+          isArticlePage ? "max-w-3xl px-6" : "max-w-3xl lg:max-w-4xl px-4 sm:px-6"
         }`}
       >
         {children}

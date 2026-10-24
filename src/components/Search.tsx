@@ -258,7 +258,7 @@ export default function Search() {
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full border border-border bg-card hover:bg-muted min-h-[36px]"
-        aria-label="Search articles (⌘K)"
+        aria-label="Search (⌘K)"
       >
         <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>
@@ -292,7 +292,7 @@ export default function Search() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search articles..."
+              placeholder="Search..."
               className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
               autoFocus
             />
@@ -348,7 +348,7 @@ export default function Search() {
                               </span>
                             )}
                         </div>
-                        <h3 className="font-serif font-medium text-foreground truncate">
+                        <h3 className="font-semibold text-foreground truncate tracking-tight">
                           {highlightText(result.title, query)}
                         </h3>
 
@@ -390,7 +390,7 @@ export default function Search() {
 
             {!query && (
               <div className="px-4 py-8 text-center text-muted-foreground text-sm">
-                <p>Start typing to search articles...</p>
+                <p>Start typing to search...</p>
                 <p className="mt-2 text-xs">Press ESC to close</p>
               </div>
             )}
@@ -406,7 +406,7 @@ export default function Search() {
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full border border-border bg-card hover:bg-muted min-h-[36px]"
-        aria-label="Search articles (⌘K)"
+        aria-label="Search (⌘K)"
       >
         <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>
