@@ -162,20 +162,20 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
 
   const tocContent = (
     <nav className="space-y-1">
-      {headings.map((heading, index) => (
+      {headings.map((heading) => (
         <Link
           key={heading.id}
           ref={activeId === heading.id ? activeRef : null}
           href={`#${heading.id}`}
-          className={`flex items-start gap-2 text-sm transition-all duration-200 rounded-md px-3 py-2 ${
+          className={`flex items-start gap-2 text-sm transition-all duration-200 rounded-lg px-3 py-1.5 ${
             activeId === heading.id
               ? heading.level === 3
-                ? "text-primary font-normal bg-primary/10"
-                : "text-primary font-semibold bg-primary/10"
+                ? "text-foreground font-medium bg-muted/80 shadow-xs border border-border/40"
+                : "text-foreground font-semibold bg-muted/80 shadow-xs border border-border/40"
               : heading.level === 2
-                ? "text-foreground font-medium hover:bg-muted/50 hover:text-primary"
-                : "text-muted-foreground hover:bg-muted/30 hover:text-foreground"
-          } ${heading.level === 3 ? "pl-6 font-normal" : ""}`}
+                ? "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                : "text-muted-foreground/80 hover:bg-muted/30 hover:text-foreground"
+          } ${heading.level === 3 ? "pl-5 text-xs" : ""}`}
           onClick={(e) => handleLinkClick(e, heading.id)}
         >
           <span className="flex-1 line-clamp-2">{heading.text}</span>
@@ -191,8 +191,8 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   return (
     <>
       {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-56 overflow-y-auto scrollbar-thin px-4 py-6 border-r border-border bg-background print:hidden z-[60]">
-        <h2 className="text-xs font-semibold mb-4 text-muted-foreground uppercase tracking-widest">
+      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-56 overflow-y-auto scrollbar-thin px-4 py-6 border-r border-border/60 bg-background/95 backdrop-blur-xl print:hidden z-[60]">
+        <h2 className="text-[11px] font-mono font-medium mb-4 text-muted-foreground uppercase tracking-wider">
           On this page
         </h2>
         <div className="space-y-0.5">

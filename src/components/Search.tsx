@@ -405,12 +405,12 @@ export default function Search() {
       {/* Search trigger button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all rounded-full border border-border bg-card hover:bg-muted min-h-[36px]"
+        className="flex items-center gap-2 px-3.5 py-1.5 text-sm text-muted-foreground hover:text-foreground active:scale-95 transition-all duration-200 rounded-full border border-border/70 bg-card/80 backdrop-blur-md hover:bg-muted/70 hover:border-foreground/20 min-h-[36px] shadow-2xs"
         aria-label="Search (⌘K)"
       >
         <HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>
-        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-muted rounded-full border border-border">
+        <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono bg-muted/80 rounded-full border border-border/60 text-muted-foreground">
           <span>⌘</span>K
         </kbd>
       </button>

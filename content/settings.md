@@ -7,7 +7,7 @@ siteUrl: "https://yourdomain.com"
 
 # Site title and description (used in metadata)
 siteTitle: "The Static Web"
-siteDescription: "A collection of articles, tutorials, and guides for modern web development."
+siteDescription: "A premier digital news publication and markdown-powered website template covering world news, politics, sports, entertainment, and technology."
 
 # Author information (used in structured data)
 author: "The Static Web"

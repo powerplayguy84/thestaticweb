@@ -9,6 +9,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
 import { visit } from "unist-util-visit";
 import type { Element } from "hast";
+import { parseDateTimestamp } from "@/lib/date";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -324,7 +325,9 @@ export async function getAllArticles(): Promise<ArticleMetadata[]> {
   );
   return allArticles
     .flat()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort(
+      (a, b) => parseDateTimestamp(b.date) - parseDateTimestamp(a.date)
+    );
 }
 
 /**
@@ -361,7 +364,7 @@ export async function getAllArticlesWithContent(): Promise<Article[]> {
   }
 
   return allArticles.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) => parseDateTimestamp(b.date) - parseDateTimestamp(a.date)
   );
 }
 

@@ -16,40 +16,33 @@ export default async function Navigation() {
 
   return (
     <NavigationLayout>
-      <Link href="/" className="group flex items-center gap-2.5">
+      <Link href="/" className="group flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
         {navbarLogo ? (
-          <>
-            <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-border/60">
-              <Image
-                src={navbarLogo}
-                alt={`${navbarTitle} logo`}
-                fill
-                className="object-contain"
-              />
-            </div>
-            {navbarTitle && (
-              <span className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
-                {navbarTitle}
-              </span>
-            )}
-          </>
+          <div className="relative size-8 rounded-xl overflow-hidden border border-border/70 shadow-xs group-hover:border-foreground/30 transition-all group-hover:scale-[1.02]">
+            <Image
+              src={navbarLogo}
+              alt={`${navbarTitle} logo`}
+              fill
+              className="object-contain"
+            />
+          </div>
         ) : (
-          <>
-            <div className="w-7 h-7 rounded-lg bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs tracking-wider shadow-xs">
-              {navbarTitle ? navbarTitle.slice(0, 2).toUpperCase() : "SW"}
-            </div>
-            {navbarTitle && (
-              <span className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
-                {navbarTitle}
-              </span>
-            )}
-          </>
+          <div className="relative size-8 rounded-xl bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs tracking-wider shadow-xs border border-border/40 group-hover:shadow-sm group-hover:scale-[1.03] transition-all duration-200">
+            {navbarTitle ? navbarTitle.slice(0, 2).toUpperCase() : "SW"}
+          </div>
+        )}
+        {navbarTitle && (
+          <div className="flex items-center gap-2">
+            <span className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+              {navbarTitle}
+            </span>
+          </div>
         )}
       </Link>
-        <div className="flex items-center gap-2 md:gap-4">
-          <Search />
-          <ThemeToggle />
-        </div>
+      <div className="flex items-center gap-2.5 sm:gap-3.5">
+        <Search />
+        <ThemeToggle />
+      </div>
     </NavigationLayout>
   );
 }

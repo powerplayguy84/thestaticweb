@@ -751,7 +751,7 @@ input, textarea {
   article blockquote,
   .prose blockquote,
   .markdown blockquote {
-    @apply my-6 border-l-3 border-primary/60 bg-muted/30 rounded-r-xl px-5 py-3.5 text-foreground/80 italic font-normal;
+    @apply my-6 border-l border-border/80 bg-muted/20 rounded-r-xl px-5 py-3.5 text-foreground/85 italic font-normal;
   }
 
   article blockquote p:last-child,

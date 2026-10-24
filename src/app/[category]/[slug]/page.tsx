@@ -219,7 +219,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                       <Link key={tag} href={`/tag/${tag}`}>
                         <Badge
                           variant="secondary"
-                          className="rounded-md px-2 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/40"
+                          className="rounded-full px-2.5 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/50 transition-colors"
                         >
                           #{tag}
                         </Badge>

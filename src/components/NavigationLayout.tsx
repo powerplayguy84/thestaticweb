@@ -17,7 +17,7 @@ export function NavigationLayout({ children }: { children: ReactNode }) {
 
   return (
     <nav
-      className={`py-3.5 sticky top-0 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-b border-border/40 z-50 print:hidden transition-colors w-full ${
+      className={`py-3 sm:py-3.5 sticky top-0 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/65 border-b border-border/50 z-50 print:hidden transition-colors w-full shadow-[0_1px_3px_0_rgba(0,0,0,0.02)] ${
         isArticlePage ? "lg:pl-56" : ""
       }`}
     >

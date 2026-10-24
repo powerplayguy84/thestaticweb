@@ -12,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,61 +41,98 @@ export default async function Home() {
     <main id="main-content" className="min-h-screen bg-background ambient-mesh">
       <div className="flex flex-col gap-10 sm:gap-14 max-w-3xl lg:max-w-4xl mx-auto pb-20 px-4 sm:px-6">
         {/* Hero Section */}
-        <section className="pt-8 sm:pt-14">
-          <Motion animation="fade-in-up" delay={0} duration="long" className="space-y-6">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-bold tracking-tight text-foreground leading-[1.08]">
-                {hero.title}
-              </h1>
+        <section className="pt-6 sm:pt-10">
+          <Motion animation="fade-in-up" delay={0} duration="long">
+            <div
+              className={cn(
+                "relative isolate w-full rounded-3xl overflow-hidden border border-border/70 shadow-lg flex flex-col justify-end",
+                hero.image
+                  ? "min-h-[380px] sm:min-h-[440px] md:min-h-[480px] p-6 sm:p-10 md:p-12 text-white"
+                  : "p-8 sm:p-12 bg-card text-foreground"
+              )}
+            >
+              {hero.image && (
+                <>
+                  <Image
+                    src={hero.image}
+                    alt={`${hero.title} hero background`}
+                    fill
+                    priority
+                    className="object-cover -z-20 scale-[1.02] transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 1200px"
+                  />
+                  {/* Darkening & gradient overlay for optimal text legibility and rich atmosphere */}
+                  <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/92 via-black/60 to-black/35" />
+                  <div className="absolute inset-0 -z-10 backdrop-blur-[0.5px]" />
+                </>
+              )}
 
-              {hero.subtitle && (
-                <p className="text-xl sm:text-2xl font-medium text-foreground/85 tracking-tight">
-                  {hero.subtitle}
+              <div className="space-y-4 max-w-2xl relative z-10">
+                <h1
+                  className={cn(
+                    "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight leading-[1.08]",
+                    hero.image ? "text-white drop-shadow-xs" : "text-foreground"
+                  )}
+                >
+                  {hero.title}
+                </h1>
+
+                {hero.subtitle && (
+                  <p
+                    className={cn(
+                      "text-lg sm:text-xl md:text-2xl font-medium tracking-tight",
+                      hero.image ? "text-white/90" : "text-foreground/85"
+                    )}
+                  >
+                    {hero.subtitle}
+                  </p>
+                )}
+
+                <p
+                  className={cn(
+                    "text-sm sm:text-base md:text-lg leading-relaxed",
+                    hero.image ? "text-white/80" : "text-muted-foreground"
+                  )}
+                >
+                  {hero.description}
                 </p>
-              )}
 
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                {hero.description}
-              </p>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="pt-1 flex items-center gap-3">
-              {hero.cta ? (
-                <Button
-                  asChild
-                  className="rounded-full px-5 py-2.5 h-auto text-sm font-semibold gap-2 shadow-xs bg-foreground text-background hover:bg-foreground/90"
-                >
-                  <Link href={hero.cta.link}>
-                    {hero.cta.text}
-                    <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-                  </Link>
-                </Button>
-              ) : (
-                <Button
-                  asChild
-                  className="rounded-full px-5 py-2.5 h-auto text-sm font-semibold gap-2 shadow-xs bg-foreground text-background hover:bg-foreground/90"
-                >
-                  <a href="#explore-section">
-                    Explore
-                    <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-                  </a>
-                </Button>
-              )}
-            </div>
-
-            {hero.image && (
-              <div className="relative w-full aspect-[16/9] sm:aspect-[2/1] rounded-2xl overflow-hidden shadow-sm border border-border/60 mt-4">
-                <Image
-                  src={hero.image}
-                  alt={`${hero.title} hero image`}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 900px"
-                />
+                {/* Quick Action - Primary CTA only */}
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  {hero.cta ? (
+                    <Button
+                      asChild
+                      className={cn(
+                        "rounded-full px-6 py-2.5 h-auto text-sm font-semibold gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer",
+                        hero.image
+                          ? "bg-white text-zinc-950 hover:bg-white/90"
+                          : "bg-foreground text-background hover:bg-foreground/90"
+                      )}
+                    >
+                      <Link href={hero.cta.link}>
+                        {hero.cta.text}
+                        <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      asChild
+                      className={cn(
+                        "rounded-full px-6 py-2.5 h-auto text-sm font-semibold gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer",
+                        hero.image
+                          ? "bg-white text-zinc-950 hover:bg-white/90"
+                          : "bg-foreground text-background hover:bg-foreground/90"
+                      )}
+                    >
+                      <a href="#explore-section">
+                        Explore Content
+                        <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
+                      </a>
+                    </Button>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </Motion>
         </section>
 

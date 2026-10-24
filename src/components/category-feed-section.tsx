@@ -56,16 +56,16 @@ export function CategoryFeedSection({
               type="button"
               onClick={() => setSelectedCategory("all")}
               className={cn(
-                "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all border cursor-pointer shrink-0 flex items-center gap-2",
+                "px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border cursor-pointer shrink-0 flex items-center gap-2 active:scale-95",
                 selectedCategory === "all"
-                  ? "bg-foreground text-background border-foreground shadow-xs font-semibold"
-                  : "bg-muted/40 text-muted-foreground hover:text-foreground border-border/60 hover:bg-muted/80",
+                  ? "bg-foreground text-background border-foreground shadow-sm font-semibold"
+                  : "bg-card/75 backdrop-blur-md text-muted-foreground hover:text-foreground border-border/70 hover:border-foreground/30 hover:bg-muted/50",
               )}
             >
               <span>All</span>
               <span className={cn(
-                "text-[11px] font-mono px-1.5 py-0.2 rounded-full",
-                selectedCategory === "all" ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"
+                "text-[11px] font-mono px-2 py-0.5 rounded-full transition-colors",
+                selectedCategory === "all" ? "bg-background/25 text-background font-semibold" : "bg-muted text-muted-foreground"
               )}>
                 {categoryCounts.all ?? allArticles.length}
               </span>
@@ -82,16 +82,16 @@ export function CategoryFeedSection({
                   type="button"
                   onClick={() => setSelectedCategory(category.slug)}
                   className={cn(
-                    "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap capitalize transition-all border cursor-pointer shrink-0 flex items-center gap-2",
+                    "px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap capitalize transition-all duration-200 border cursor-pointer shrink-0 flex items-center gap-2 active:scale-95",
                     isSelected
-                      ? "bg-foreground text-background border-foreground shadow-xs font-semibold"
-                      : "bg-muted/40 text-muted-foreground hover:text-foreground border-border/60 hover:bg-muted/80",
+                      ? "bg-foreground text-background border-foreground shadow-sm font-semibold"
+                      : "bg-card/75 backdrop-blur-md text-muted-foreground hover:text-foreground border-border/70 hover:border-foreground/30 hover:bg-muted/50",
                   )}
                 >
                   <span>{category.title || formatCategoryName(category.slug)}</span>
                   <span className={cn(
-                    "text-[11px] font-mono px-1.5 py-0.2 rounded-full",
-                    isSelected ? "bg-background/20 text-background" : "bg-muted text-muted-foreground"
+                    "text-[11px] font-mono px-2 py-0.5 rounded-full transition-colors",
+                    isSelected ? "bg-background/25 text-background font-semibold" : "bg-muted text-muted-foreground"
                   )}>
                     {count}
                   </span>

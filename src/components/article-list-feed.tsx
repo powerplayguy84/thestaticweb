@@ -38,14 +38,14 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
             <div key={`${article.category}-${article.slug}`} className="py-6 sm:py-7">
               <div
                 onClick={() => router.push(articleUrl)}
-                className="group cursor-pointer p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-200 hover:bg-muted/30 border border-transparent hover:border-border/60"
+                className="group cursor-pointer p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-300 hover:bg-card/80 hover:backdrop-blur-md border border-transparent hover:border-border/70 hover:shadow-md"
               >
                 <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-5 md:gap-8">
                   {/* Content Column */}
                   <div className="space-y-3 flex-1 min-w-0">
                     {/* Meta row */}
                     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
-                      <span className="px-2 py-0.5 rounded-md bg-muted/80 text-foreground font-medium uppercase text-[10px] tracking-wider border border-border/50">
+                      <span className="px-2.5 py-0.5 rounded-full bg-muted/90 text-foreground font-medium uppercase text-[10px] tracking-wider border border-border/60">
                         {article.category}
                       </span>
                       <span>•</span>
@@ -74,7 +74,7 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
                             <Badge
                               key={tag}
                               variant="secondary"
-                              className="rounded-md px-2 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/50 hover:bg-muted border border-border/40"
+                              className="rounded-full px-2.5 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/50 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 router.push(`/tag/${tag}`);
@@ -86,7 +86,7 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
                         </div>
                       )}
 
-                      <div className="flex items-center text-xs font-semibold text-foreground/80 group-hover:text-primary transition-colors gap-1 ml-auto">
+                      <div className="flex items-center text-xs font-semibold text-foreground/80 group-hover:text-primary transition-colors gap-1.5 ml-auto">
                         <span>Read</span>
                         <HugeiconsIcon
                           icon={ArrowRight01Icon}
@@ -99,12 +99,12 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
                   {/* Thumbnail Column */}
                   {hasImage && (
                     <div className="w-full md:w-52 lg:w-60 shrink-0">
-                      <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-muted/50 border border-border/60 shadow-xs">
+                      <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-muted/50 border border-border/60 shadow-xs group-hover:border-foreground/25 transition-all">
                         <Image
                           src={article.image!}
                           alt={article.title}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
                           sizes="(max-width: 768px) 100vw, 240px"
                         />
                       </div>

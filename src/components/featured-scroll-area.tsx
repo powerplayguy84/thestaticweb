@@ -51,18 +51,21 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                 >
                   <Card
                     size="sm"
-                    className="h-full overflow-hidden border border-border/70 bg-card hover:border-foreground/30 hover:shadow-lg transition-all duration-300 gap-0 py-0 rounded-2xl"
+                    className="h-full overflow-hidden border border-border/70 bg-card/85 backdrop-blur-md hover:border-foreground/30 dark:hover:border-primary/40 hover:shadow-xl transition-all duration-300 gap-0 py-0 rounded-2xl group-hover:-translate-y-1"
                   >
                     {/* Media Aspect Container */}
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted/40 border-b border-border/50">
                       {hasImage ? (
-                        <Image
-                          src={article.image!}
-                          alt={article.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          sizes="(max-width: 768px) 288px, 320px"
-                        />
+                        <>
+                          <Image
+                            src={article.image!}
+                            alt={article.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 288px, 320px"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        </>
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted/60 to-muted text-muted-foreground">
                           <HugeiconsIcon
@@ -72,7 +75,7 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                         </div>
                       )}
                       <div className="absolute top-2.5 left-2.5">
-                        <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-medium uppercase tracking-wider bg-background/85 backdrop-blur-md text-foreground border border-border/60 shadow-xs">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-medium uppercase tracking-wider bg-background/90 backdrop-blur-md text-foreground border border-border/70 shadow-xs">
                           {article.category}
                         </span>
                       </div>
@@ -94,6 +97,9 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                       <CardFooter className="p-0 pt-3 text-[11px] text-muted-foreground font-mono flex items-center justify-between mt-auto border-t border-border/40">
                         <span>
                           {article.date ? formatDate(article.date) : "Recent"}
+                        </span>
+                        <span className="text-foreground/70 group-hover:text-primary transition-colors font-sans text-xs font-medium flex items-center gap-1">
+                          View &rarr;
                         </span>
                       </CardFooter>
                     </div>
