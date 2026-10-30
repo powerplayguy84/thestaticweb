@@ -8,9 +8,9 @@ Software investments should hold their value over multiple years without requiri
 
 ```mermaid
 flowchart LR
-    A[User Requirements] --> B[Mobile-First Design]
-    B --> C[Type-Safe Codebase]
-    C --> D[Accessible Web Application]
+    A(User Requirements) --> B(Mobile-First Design)
+    B --> C(Type-Safe Codebase)
+    C --> D(Accessible Web Application)
 ```
 
 - **Modern standard stack.** We build with Next.js, React, TypeScript, and standard web APIs, keeping dependencies minimal and well-maintained.

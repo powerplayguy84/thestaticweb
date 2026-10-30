@@ -1111,6 +1111,17 @@ input, textarea {
     @apply max-w-full h-auto;
   }
 
+  /* Ensure sequence diagram participant boxes and note boxes have rounded corners */
+  .prose .mermaid svg rect.actor,
+  article .mermaid svg rect.actor,
+  .markdown .mermaid svg rect.actor,
+  .prose .mermaid svg rect.note,
+  article .mermaid svg rect.note,
+  .markdown .mermaid svg rect.note {
+    rx: 8px;
+    ry: 8px;
+  }
+
   /* Print styles - only show markdown content */
   @media print {
     /* Hide header, footer, navigation */
