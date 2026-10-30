@@ -13,8 +13,17 @@ export default async function PresentationPage({
 }: PresentationPageProps) {
   const { encoded } = await params;
 
-  // Decode the path (e.g., "/guides/tailwind-setup")
-  const sourcePath = decodeURIComponent(encoded);
+  // Fully decode the path even if double-encoded (e.g., "%2Fabout%2520us%2Fcore-philosophy")
+  let sourcePath = decodeURIComponent(encoded);
+  while (sourcePath.includes("%")) {
+    try {
+      const next = decodeURIComponent(sourcePath);
+      if (next === sourcePath) break;
+      sourcePath = next;
+    } catch {
+      break;
+    }
+  }
 
   // Extract category and slug from path
   const pathParts = sourcePath.split("/").filter(Boolean);

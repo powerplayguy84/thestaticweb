@@ -506,8 +506,14 @@ export async function getArticle(
   category: string,
   slug: string
 ): Promise<Article | null> {
+  // Normalize both category and slug in case either is URI-encoded
+  const cleanCategory = decodeURIComponent(category).trim();
+  const cleanSlug = decodeURIComponent(slug).trim();
+
   const categoriesInfo = await getCategoriesWithInfo();
-  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+  const categoryInfo = categoriesInfo.find(
+    (cat) => cat.slug === cleanCategory || cat.slug === category
+  );
 
   if (!categoryInfo) {
     return null;
@@ -523,7 +529,10 @@ export async function getArticle(
 
   // 1. Check for nested article directory matching slug
   const targetDir = entries.find(
-    (e) => e.isDirectory() && e.name.replace(/^\d+-/, "") === slug
+    (e) =>
+      e.isDirectory() &&
+      (e.name.replace(/^\d+-/, "") === cleanSlug ||
+        e.name.replace(/^\d+-/, "") === slug)
   );
 
   if (targetDir) {
@@ -531,8 +540,8 @@ export async function getArticle(
     const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
     return await parseArticleDirectory(
       path.join(categoryPath, targetDir.name),
-      category,
-      slug,
+      cleanCategory,
+      cleanSlug,
       index
     );
   }
@@ -543,7 +552,8 @@ export async function getArticle(
       !e.isDirectory() &&
       e.name.endsWith(".md") &&
       e.name !== "index.md" &&
-      e.name.replace(/^\d+-/, "").replace(/\.md$/, "") === slug
+      (e.name.replace(/^\d+-/, "").replace(/\.md$/, "") === cleanSlug ||
+        e.name.replace(/^\d+-/, "").replace(/\.md$/, "") === slug)
   );
 
   if (targetFile) {
@@ -554,8 +564,8 @@ export async function getArticle(
     const { metadata, content } = await parseMarkdownFile(filePath);
 
     return {
-      slug,
-      category,
+      slug: cleanSlug,
+      category: cleanCategory,
       index,
       ...metadata,
       content,
