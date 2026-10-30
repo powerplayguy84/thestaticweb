@@ -73,7 +73,7 @@ Use this checklist when setting up **The Static Web** for a new project.
 
 - [ ] Read [AI_CONTENT_CREATION.md](./AI_CONTENT_CREATION.md)
 - [ ] Set up GitHub Copilot or preferred AI tool
-- [ ] **AI-Assisted Writing:** Use the built-in skill at `.gemini/skills/portal-content/` or reference `.github/copilot-instructions.md`
+- [ ] **AI-Assisted Writing:** Use the built-in skill at `.agents/skills/portal-content/`
 - [ ] Review `content/_templates/article-template.md`
 
 ### Create Initial Content

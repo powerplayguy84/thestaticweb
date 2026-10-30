@@ -22,76 +22,34 @@ This template is **AI-optimized** with templates, clear structure, and consisten
 
 ## 🚀 Quick Start with AI
 
-### 🎯 Pro Tip: Use Custom Instructions
+### 🎯 Built-in AI Skill
 
-**For AI Assistants & Skills:**
-The project includes a built-in skill at `.gemini/skills/portal-content/SKILL.md` that teaches your AI agent (Antigravity, Cursor, Claude) your exact content structure, sequential number ordering, and front-matter validation automatically.
-
-**For GitHub Copilot users:**
-You can reference the rules directly or include them in `.github/copilot-instructions.md`.
-
-**Result:** Copilot will automatically generate content following your template without you needing to explain it every time.
-
-**Example - Before Instructions:**
-
-```
-You: "Create an article about React hooks"
-Copilot: [generates content with wrong date format, missing fields]
-```
-
-**Example - After Instructions:**
-
-```
-You: "Create an article about React hooks"
-Copilot: [generates complete article with:
-  ✅ Proper front matter
-  ✅ DD-MM-YYYY date format
-  ✅ SEO description
-  ✅ Relevant tags
-  ✅ Structured content following template]
-```
-
-**→ See full before/after examples:** [.github/COPILOT_EXAMPLE.md](.github/COPILOT_EXAMPLE.md)
+The project includes an agent skill located at `.agents/skills/portal-content/SKILL.md`. When working with AI coding agents (Antigravity, Cursor, Claude Code), the assistant automatically follows your site's exact content rules:
+* Verifies existing category numbers and auto-increments (`01-`, `02-`, etc.).
+* Formats front matter with strict DD-MM-YYYY dates, SEO descriptions, and tags.
+* Prevents repeating the H1 title in the markdown body.
+* Preserves clean slugs and relative links.
 
 ---
 
-### Method 1: GitHub Copilot (VS Code)
+### Method 1: Autonomous Agent (Antigravity, Claude Code, Cursor)
 
-**Best for:** Generating content while you code
+**Best for:** End-to-end hands-free writing and file placement.
 
-#### Step 1: Open the Article Template
-
-```bash
-# Open VS Code in your project
-code .
-
-# Open the template
-open content/_templates/article-template.md
-```
-
-#### Step 2: Use Copilot Chat
-
-Press `Cmd+I` (Mac) or `Ctrl+I` (Windows) to open Copilot inline chat, then prompt:
+Simply prompt your agent:
 
 ```
-Create a new article about [TOPIC] following this template.
-Use the category "tutorials" and make it beginner-friendly.
-Include code examples and make it around 800 words.
+Create a new comprehensive article about [TOPIC] in the "tutorials" category.
+Include practical code snippets and make sure it's marked as featured.
 ```
 
-#### Step 3: Save to Content Directory
-
-Copilot will generate the content. Save it as:
-
-```
-content/tutorials/03-[your-topic-slug].md
-```
+The agent will read the `portal-content` skill, inspect `content/tutorials/`, find the next available sequential number, generate the article with valid front matter, and write the file directly.
 
 ---
 
-### Method 2: ChatGPT / Claude (Web Interface)
+### Method 2: ChatGPT / Claude / Web LLMs
 
-**Best for:** Generating multiple articles at once
+**Best for:** Brainstorming and drafting outside the code editor.
 
 #### Step 1: Copy the Template
 
