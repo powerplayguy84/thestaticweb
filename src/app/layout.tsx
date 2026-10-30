@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
+import { Google_Sans, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SearchIndexInitializer } from "@/components/SearchIndexInitializer";
@@ -14,9 +14,10 @@ const dmSerif = DM_Serif_Display({
   display: "swap",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const googleSans = Google_Sans({
+  variable: "--font-sans-main",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -45,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background ambient-mesh`}
+        className={`${googleSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background ambient-mesh`}
       >
         {/* Organization Schema */}
         <script

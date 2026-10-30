@@ -723,6 +723,9 @@ export async function getHomepageHero(): Promise<{
   navbar?: {
     title?: string;
     logo?: string;
+    logoStyle?: "square" | "fullwidth";
+    bordered?: boolean;
+    logoHeight?: number;
   };
   content?: string;
 }> {
@@ -763,6 +766,18 @@ export async function getHomepageHero(): Promise<{
       ? {
           title: data.navbar.title || undefined,
           logo: data.navbar.logo || undefined,
+          logoStyle:
+            data.navbar.logoStyle === "fullwidth" ? "fullwidth" : "square",
+          bordered:
+            typeof data.navbar.bordered === "boolean"
+              ? data.navbar.bordered
+              : false,
+          logoHeight:
+            typeof data.navbar.logoHeight === "number"
+              ? data.navbar.logoHeight
+              : typeof data.navbar.height === "number"
+              ? data.navbar.height
+              : undefined,
         }
       : undefined,
     content: htmlContent || undefined,

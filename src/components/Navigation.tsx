@@ -8,26 +8,60 @@ import { NavigationLayout } from "@/components/NavigationLayout";
 export default async function Navigation() {
   const hero = await getHomepageHero();
 
-  // Use navbar-specific values if provided, otherwise fall back to hero values
+  // If navbar is explicitly configured, use navbar.title (allowing it to be omitted/undefined)
   const navbarTitle =
-    hero.navbar?.title !== undefined ? hero.navbar.title : hero.title;
+    hero.navbar !== undefined ? hero.navbar.title : hero.title;
   const navbarLogo =
     hero.navbar?.logo !== undefined ? hero.navbar.logo : hero.logo;
+  const logoStyle = hero.navbar?.logoStyle ?? "square";
+  const isBordered = hero.navbar?.bordered ?? false;
+  const logoHeight = hero.navbar?.logoHeight;
 
   return (
     <NavigationLayout>
-      <Link href="/" className="group flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
+      <Link
+        href="/"
+        className="group inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg shrink-0"
+      >
         {navbarLogo ? (
-          <div className="relative size-8 rounded-xl overflow-hidden border border-border/70 shadow-xs group-hover:border-foreground/30 transition-all group-hover:scale-[1.02]">
-            <Image
-              src={navbarLogo}
-              alt={`${navbarTitle} logo`}
-              fill
-              className="object-contain"
-            />
+          <div
+            style={
+              {
+                "--logo-h": `${logoHeight || (logoStyle === "fullwidth" ? 40 : 32)}px`,
+              } as React.CSSProperties
+            }
+            className={`relative overflow-hidden transition-all group-hover:scale-[1.01] shrink-0 ${
+              logoStyle === "fullwidth"
+                ? "h-[calc(var(--logo-h)*0.75)] sm:h-[var(--logo-h)] max-h-20 sm:max-h-24 w-auto rounded-md flex items-center"
+                : "size-7 sm:size-8 rounded-xl"
+            } ${
+              isBordered
+                ? "border border-border/70 shadow-xs group-hover:border-foreground/30"
+                : ""
+            }`}
+          >
+            {logoStyle === "fullwidth" ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={navbarLogo}
+                alt={`${navbarTitle} logo`}
+                className="h-full w-auto max-w-[42vw] sm:max-w-none object-contain block"
+              />
+            ) : (
+              <Image
+                src={navbarLogo}
+                alt={`${navbarTitle} logo`}
+                fill
+                className="object-contain"
+              />
+            )}
           </div>
         ) : (
-          <div className="relative size-8 rounded-xl bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs tracking-wider shadow-xs border border-border/40 group-hover:shadow-sm group-hover:scale-[1.03] transition-all duration-200">
+          <div
+            className={`relative size-8 rounded-xl bg-foreground text-background flex items-center justify-center font-mono font-bold text-xs tracking-wider group-hover:scale-[1.03] transition-all duration-200 ${
+              isBordered ? "border border-border/40 shadow-xs group-hover:shadow-sm" : ""
+            }`}
+          >
             {navbarTitle ? navbarTitle.slice(0, 2).toUpperCase() : "SW"}
           </div>
         )}
