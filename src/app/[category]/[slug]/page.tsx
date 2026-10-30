@@ -218,13 +218,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 <span>
                   {article.date ? formatDate(article.date) : "Recent"}
                 </span>
-                <span>•</span>
-                <Link
-                  href={`/${encodeURIComponent(category)}`}
-                  className="capitalize hover:text-foreground transition-colors underline-offset-4 hover:underline"
-                >
-                  {category}
-                </Link>
               </p>
               {article.tags && article.tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5 pt-0.5 print:hidden">

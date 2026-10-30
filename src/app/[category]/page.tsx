@@ -6,7 +6,6 @@ import {
 } from "@/lib/markdown";
 import { formatCategoryName } from "@/lib/utils";
 import ArticleCard from "@/components/ArticleCard";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { Motion } from "@/components/ui/motion";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -66,22 +65,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <main id="main-content" className="min-h-screen bg-background ambient-mesh">
       <div className="flex flex-col gap-6 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
-        <div className="space-y-3">
-          <Breadcrumbs items={[{ label: displayCategory }]} />
-
-          <Motion animation="fade-in-up" delay={0} duration="long">
-            <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground">
-                {displayCategory}
-              </h1>
-              {description && (
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-2 max-w-2xl">
-                  {description}
-                </p>
-              )}
-            </div>
-          </Motion>
-        </div>
+        <Motion animation="fade-in-up" delay={0} duration="long">
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground">
+              {displayCategory}
+            </h1>
+            {description && (
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
+                {description}
+              </p>
+            )}
+          </div>
+        </Motion>
 
         <Motion animation="fade-in-up" delay={100} duration="long">
           {articles.length === 0 ? (

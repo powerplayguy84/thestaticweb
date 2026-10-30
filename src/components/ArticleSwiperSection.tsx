@@ -5,7 +5,10 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Keyboard } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import {
   Dialog,
   DialogContent,
@@ -152,11 +155,19 @@ export function ArticleSwiperSection({
                   </div>
                 </div>
 
-                <div className="px-5 pb-5 pt-0">
-                  <div className="w-full flex items-center justify-between py-2 px-4 rounded-xl border border-border/60 bg-muted/40 text-xs font-medium text-foreground group-hover:bg-foreground group-hover:text-background group-hover:border-transparent transition-all duration-200">
-                    <span>More</span>
-                    <ArrowRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
+                <div className="px-5 pb-5 pt-0 flex justify-end">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    aria-label="Read more"
+                    className="rounded-full shadow-xs transition-all pointer-events-none group-hover:scale-105"
+                  >
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
+                    />
+                  </Button>
                 </div>
               </div>
             )}
@@ -278,11 +289,19 @@ export function ArticleSwiperSection({
                       </div>
                     </div>
 
-                    <div className="px-5 pb-5 pt-0">
-                      <div className="w-full flex items-center justify-between py-2 px-4 rounded-xl border border-border/60 bg-muted/40 text-xs font-medium text-foreground group-hover:bg-foreground group-hover:text-background group-hover:border-transparent transition-all duration-200">
-                        <span>More</span>
-                        <ArrowRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
-                      </div>
+                    <div className="px-5 pb-5 pt-0 flex justify-end">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="icon"
+                        aria-label="Read more"
+                        className="rounded-full shadow-xs transition-all pointer-events-none group-hover:scale-105"
+                      >
+                        <HugeiconsIcon
+                          icon={ArrowRight01Icon}
+                          className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
+                        />
+                      </Button>
                     </div>
                   </div>
                 </SwiperSlide>
