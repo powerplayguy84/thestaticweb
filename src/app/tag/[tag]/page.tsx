@@ -1,5 +1,5 @@
 import { getArticlesByTag, getAllTags } from "@/lib/markdown";
-import { ArticleListFeed } from "@/components/article-list-feed";
+import ArticleCard from "@/components/ArticleCard";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { Motion } from "@/components/ui/motion";
 import { notFound } from "next/navigation";
@@ -38,16 +38,15 @@ export default async function TagPage({ params }: TagPageProps) {
 
   return (
     <main id="main-content" className="min-h-screen bg-background ambient-mesh">
-      <div className="flex flex-col gap-8 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
-        <Breadcrumbs items={[{ label: `#${tag}` }]} />
+      <div className="flex flex-col gap-6 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
+        <div className="space-y-3">
+          <Breadcrumbs items={[{ label: `#${tag}` }]} />
 
-        <Motion
-          animation="fade-in-up"
-          delay={0}
-          duration="long"
-          className="space-y-3"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 border-b border-border/40 pb-5">
+          <Motion
+            animation="fade-in-up"
+            delay={0}
+            duration="long"
+          >
             <div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground flex items-center gap-1.5">
                 <span className="text-muted-foreground/50 font-normal">#</span>
@@ -57,14 +56,23 @@ export default async function TagPage({ params }: TagPageProps) {
                 All content tagged with #{tag}
               </p>
             </div>
-            <span className="text-xs font-mono text-muted-foreground shrink-0">
-              {articles.length} {articles.length === 1 ? "item" : "items"}
-            </span>
-          </div>
-        </Motion>
+          </Motion>
+        </div>
 
         <Motion animation="fade-in-up" delay={100} duration="long">
-          <ArticleListFeed articles={articles} />
+          {articles.length === 0 ? (
+            <div className="py-16 text-center text-sm text-muted-foreground border border-dashed border-border/70 rounded-2xl">
+              No items found with this tag.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles.map((article) => (
+                <div key={`${article.category}-${article.slug}`} className="flex">
+                  <ArticleCard article={article} />
+                </div>
+              ))}
+            </div>
+          )}
         </Motion>
       </div>
     </main>

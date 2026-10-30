@@ -9,11 +9,12 @@ interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
+  className?: string;
 }
 
-export default function Breadcrumbs({ items }: BreadcrumbsProps) {
+export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-8" data-no-search-highlight>
+    <nav aria-label="Breadcrumb" className={className} data-no-search-highlight>
       <ol className="flex items-center gap-2 text-sm text-muted-foreground list-none ml-0">
         <li className="m-0">
           <Link

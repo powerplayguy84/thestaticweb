@@ -196,7 +196,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
 
           {/* Header */}
-          <div className="mb-8 print:mb-4 pt-2">
+          <div className="mb-8 print:mb-4">
             <div className="space-y-3 mb-4">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
                 {article.title}
