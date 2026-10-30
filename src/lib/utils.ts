@@ -7,12 +7,21 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Format category name for display
- * Converts dashes to spaces and capitalizes each word
+ * Decodes URL encodings, converts dashes/underscores/spaces to spaces and capitalizes each word
  * Example: "business-strategy" -> "Business Strategy"
+ * Example: "about%20us" -> "About Us"
  */
 export function formatCategoryName(category: string): string {
-  return category
-    .split("-")
+  let decoded = category;
+  try {
+    decoded = decodeURIComponent(category);
+  } catch {
+    // Keep original if malformed URI
+  }
+
+  return decoded
+    .split(/[-_\s]+/)
+    .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }

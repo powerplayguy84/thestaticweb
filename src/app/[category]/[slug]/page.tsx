@@ -7,6 +7,7 @@ import {
   getAdjacentArticles,
   getSiteSettings,
   getCategories,
+  getCategoriesWithInfo,
 } from "@/lib/markdown";
 import { formatCategoryName } from "@/lib/utils";
 import { formatDate } from "@/lib/date";
@@ -96,7 +97,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const displayCategory = formatCategoryName(category);
+  const categoriesInfo = await getCategoriesWithInfo();
+  const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
+  const displayCategory = categoryInfo?.title || formatCategoryName(category);
   const { previous, next } = await getAdjacentArticles(category, article.index);
   const relatedArticles = await getArticlesByCategory(category);
 
