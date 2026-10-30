@@ -86,6 +86,55 @@ export function MermaidInitializer() {
             nodeSpacing: 40,
             rankSpacing: 40,
             padding: 16,
+            useMaxWidth: false,
+          },
+          sequence: {
+            useMaxWidth: false,
+          },
+          gantt: {
+            useMaxWidth: false,
+          },
+          journey: {
+            useMaxWidth: false,
+          },
+          class: {
+            useMaxWidth: false,
+          },
+          state: {
+            useMaxWidth: false,
+          },
+          er: {
+            useMaxWidth: false,
+          },
+          pie: {
+            useMaxWidth: false,
+          },
+          quadrantChart: {
+            useMaxWidth: false,
+          },
+          xyChart: {
+            useMaxWidth: false,
+          },
+          requirement: {
+            useMaxWidth: false,
+          },
+          mindmap: {
+            useMaxWidth: false,
+          },
+          timeline: {
+            useMaxWidth: false,
+          },
+          gitGraph: {
+            useMaxWidth: false,
+          },
+          c4: {
+            useMaxWidth: false,
+          },
+          sankey: {
+            useMaxWidth: false,
+          },
+          block: {
+            useMaxWidth: false,
           },
         });
 
@@ -115,12 +164,17 @@ export function MermaidInitializer() {
             // Create a wrapper for the diagram with fullscreen button
             const wrapper = document.createElement("div");
             wrapper.className = "mermaid-wrapper relative group";
-            wrapper.innerHTML = svg;
 
-            // Create fullscreen button
+            // Scroll container so SVG scrolls independently without moving the button
+            const scrollContainer = document.createElement("div");
+            scrollContainer.className = "mermaid-scroll-container overflow-x-auto p-4 sm:p-6";
+            scrollContainer.innerHTML = svg;
+            wrapper.appendChild(scrollContainer);
+
+            // Create fullscreen button (fixed to top-right of wrapper)
             const button = document.createElement("button");
             button.className =
-              "absolute top-2 right-2 p-2 rounded-md bg-none  text-muted-foreground hover:text-foreground border border-border z-10 flex items-center justify-center";
+              "absolute top-3 right-3 p-2 rounded-md bg-background/80 hover:bg-background backdrop-blur-xs text-muted-foreground hover:text-foreground border border-border shadow-xs z-10 flex items-center justify-center transition-colors";
             button.setAttribute("aria-label", "View diagram fullscreen");
             button.style.cursor = "pointer";
             button.style.outline = "none";

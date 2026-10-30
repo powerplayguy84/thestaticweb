@@ -195,13 +195,23 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             />
           </div>
 
+          {/* Featured Image */}
+          {article.image && article.image.trim() !== "" && (
+            <ArticleImage src={article.image} alt={article.title} />
+          )}
+
           {/* Header */}
           <div className="mb-8 print:mb-4">
-            <div className="space-y-3 mb-4">
+            <div className="space-y-4 mb-4">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
                 {article.title}
               </h1>
-              <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2">
+              {article.description && (
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed print:hidden">
+                  {article.description}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2 pt-1">
                 <span>
                   {article.date ? formatDate(article.date) : "Recent"}
                 </span>
@@ -214,7 +224,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 </Link>
               </p>
               {article.tags && article.tags.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 pt-1 print:hidden">
+                <div className="flex flex-wrap items-center gap-1.5 pt-0.5 print:hidden">
                   {article.tags.map((tag) => (
                     <Link key={tag} href={`/tag/${tag}`}>
                       <Badge
@@ -237,17 +247,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 />
               </div>
             </div>
-            {article.description && (
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed print:hidden pt-1">
-                {article.description}
-              </p>
-            )}
           </div>
-
-          {/* Featured Image */}
-          {article.image && article.image.trim() !== "" && (
-            <ArticleImage src={article.image} alt={article.title} />
-          )}
 
           {/* Content Rendering */}
           <div className="overflow-x-hidden">

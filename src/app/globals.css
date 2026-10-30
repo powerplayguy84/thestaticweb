@@ -1071,13 +1071,22 @@ input, textarea {
   .prose .mermaid-wrapper,
   article .mermaid-wrapper,
   .markdown .mermaid-wrapper {
-    @apply my-8 bg-muted/30 border border-border/70 rounded-xl p-6 sm:p-8 overflow-x-auto flex justify-center shadow-xs;
+    @apply my-8 bg-muted/30 border border-border/70 rounded-xl relative shadow-xs;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .mermaid-scroll-container {
+    width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prose .mermaid,
   article .mermaid,
   .markdown .mermaid {
-    @apply flex justify-center items-center rounded-md overflow-x-auto;
+    @apply flex justify-center items-center rounded-md;
+    overflow-x: auto !important;
     min-height: 200px;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -1105,11 +1114,18 @@ input, textarea {
     opacity: 0.6;
   }
 
+  .prose .mermaid-wrapper svg,
+  article .mermaid-wrapper svg,
+  .markdown .mermaid-wrapper svg,
+  .mermaid-scroll-container svg,
   .prose .mermaid svg,
   article .mermaid svg,
   .markdown .mermaid svg {
-    @apply max-w-full h-auto;
+    max-width: none !important;
+    height: auto;
     font-family: inherit;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Match flowchart and diagram SVG typography to Geist Sans */

@@ -239,6 +239,55 @@ export function PresentationMode({
             nodeSpacing: 40,
             rankSpacing: 40,
             padding: 16,
+            useMaxWidth: false,
+          },
+          sequence: {
+            useMaxWidth: false,
+          },
+          gantt: {
+            useMaxWidth: false,
+          },
+          journey: {
+            useMaxWidth: false,
+          },
+          class: {
+            useMaxWidth: false,
+          },
+          state: {
+            useMaxWidth: false,
+          },
+          er: {
+            useMaxWidth: false,
+          },
+          pie: {
+            useMaxWidth: false,
+          },
+          quadrantChart: {
+            useMaxWidth: false,
+          },
+          xyChart: {
+            useMaxWidth: false,
+          },
+          requirement: {
+            useMaxWidth: false,
+          },
+          mindmap: {
+            useMaxWidth: false,
+          },
+          timeline: {
+            useMaxWidth: false,
+          },
+          gitGraph: {
+            useMaxWidth: false,
+          },
+          c4: {
+            useMaxWidth: false,
+          },
+          sankey: {
+            useMaxWidth: false,
+          },
+          block: {
+            useMaxWidth: false,
           },
         });
 
