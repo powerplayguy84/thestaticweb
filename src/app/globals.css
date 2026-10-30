@@ -1109,6 +1109,15 @@ input, textarea {
   article .mermaid svg,
   .markdown .mermaid svg {
     @apply max-w-full h-auto;
+    font-family: inherit;
+  }
+
+  /* Match flowchart and diagram SVG typography to Geist Sans */
+  .prose .mermaid svg text,
+  article .mermaid svg text,
+  .markdown .mermaid svg text {
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif !important;
+    font-weight: 500;
   }
 
   /* Ensure sequence diagram participant boxes and note boxes have rounded corners */
