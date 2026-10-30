@@ -32,8 +32,8 @@ export default async function Navigation() {
             }
             className={`relative overflow-hidden transition-all group-hover:scale-[1.01] shrink-0 ${
               logoStyle === "fullwidth"
-                ? "h-[calc(var(--logo-h)*0.75)] sm:h-[var(--logo-h)] w-auto rounded-md flex items-center"
-                : "size-7 sm:size-8 rounded-xl"
+                ? `h-[calc(var(--logo-h)*0.75)] sm:h-[var(--logo-h)] w-auto flex items-center ${isBordered ? "rounded-md" : ""}`
+                : `size-7 sm:size-8 ${isBordered ? "rounded-xl" : ""}`
             } ${
               isBordered
                 ? "border border-border/70 shadow-xs group-hover:border-foreground/30"
