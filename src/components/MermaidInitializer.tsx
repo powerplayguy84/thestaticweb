@@ -19,7 +19,7 @@ export function MermaidInitializer() {
           startOnLoad: false,
           theme: "base",
           securityLevel: "loose",
-          fontFamily: "var(--font-sans-main), ui-sans-serif, system-ui, sans-serif",
+          fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
           themeVariables: isDark
             ? {
                 darkMode: true,
