@@ -44,7 +44,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const categories = await getCategories();
   return categories.map((category) => ({
-    category: encodeURIComponent(category),
+    category,
   }));
 }
 

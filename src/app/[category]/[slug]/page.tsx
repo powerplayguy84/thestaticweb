@@ -79,7 +79,7 @@ export async function generateStaticParams() {
     const articles = await getArticlesByCategory(category);
     for (const article of articles) {
       params.push({
-        category: encodeURIComponent(category),
+        category,
         slug: article.slug,
       });
     }
