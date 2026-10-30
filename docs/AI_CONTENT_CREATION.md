@@ -24,11 +24,11 @@ This template is **AI-optimized** with templates, clear structure, and consisten
 
 ### 🎯 Pro Tip: Use Custom Instructions
 
-**For GitHub Copilot users:** Copy the content from `.github/copilot-instructions-content.md` to your workspace's `.github/copilot-instructions.md` file. This teaches Copilot your exact content structure and conventions!
+**For AI Assistants & Skills:**
+The project includes a built-in skill at `.gemini/skills/portal-content/SKILL.md` that teaches your AI agent (Antigravity, Cursor, Claude) your exact content structure, sequential number ordering, and front-matter validation automatically.
 
-```bash
-cp .github/copilot-instructions-content.md .github/copilot-instructions.md
-```
+**For GitHub Copilot users:**
+You can reference the rules directly or include them in `.github/copilot-instructions.md`.
 
 **Result:** Copilot will automatically generate content following your template without you needing to explain it every time.
 

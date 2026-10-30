@@ -78,7 +78,7 @@ Fill in the front matter at the top, write your content, save, and refresh!
 
 ```bash
 # Copy the Copilot instructions for content creation
-cp .github/copilot-instructions-content.md .github/copilot-instructions.md
+# The built-in AI skill is located at .gemini/skills/portal-content/SKILL.md
 ```
 
 Now Copilot knows your content structure automatically! 🎉
