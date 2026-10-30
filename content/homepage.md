@@ -8,7 +8,7 @@ navbar:
   logo: "/logo.png"
   logoStyle: "fullwidth" # Options: "square" | "fullwidth"
   bordered: false # Options: true | false
-  height: 80 # Logo height in px (e.g. 32, 36, 40)
+  height: 32 # Logo height in px (e.g. 32, 36, 40)
 cta:
   text: "Explore Our Ethos"
   link: "#categories-section"
