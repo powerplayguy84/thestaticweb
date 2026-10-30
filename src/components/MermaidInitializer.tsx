@@ -24,61 +24,61 @@ export function MermaidInitializer() {
             ? {
                 darkMode: true,
                 background: "transparent",
-                primaryColor: "#27272a",
+                primaryColor: "rgba(20, 71, 230, 0.18)", // chart-1 subtle fill
                 primaryTextColor: "#fafafa",
-                primaryBorderColor: "rgba(255, 255, 255, 0.15)",
-                lineColor: "#a1a1aa",
-                secondaryColor: "#18181b",
+                primaryBorderColor: "#1447e6", // chart-1
+                lineColor: "#00bc7d", // chart-2 accent line
+                secondaryColor: "rgba(0, 188, 125, 0.18)", // chart-2
                 secondaryTextColor: "#fafafa",
-                secondaryBorderColor: "rgba(255, 255, 255, 0.12)",
-                tertiaryColor: "#18181b",
+                secondaryBorderColor: "#00bc7d",
+                tertiaryColor: "rgba(254, 154, 0, 0.18)", // chart-3
                 tertiaryTextColor: "#fafafa",
-                tertiaryBorderColor: "rgba(255, 255, 255, 0.12)",
-                noteBkgColor: "#27272a",
+                tertiaryBorderColor: "#fe9a00",
+                noteBkgColor: "rgba(173, 70, 255, 0.18)", // chart-4
                 noteTextColor: "#fafafa",
-                noteBorderColor: "rgba(255, 255, 255, 0.15)",
-                actorBkg: "#27272a",
+                noteBorderColor: "#ad46ff",
+                actorBkg: "rgba(20, 71, 230, 0.18)", // chart-1
                 actorTextColor: "#fafafa",
-                actorBorder: "rgba(255, 255, 255, 0.2)",
-                actorLineColor: "#71717a",
-                signalColor: "#fafafa",
+                actorBorder: "#1447e6",
+                actorLineColor: "rgba(255, 255, 255, 0.2)",
+                signalColor: "#00bc7d", // chart-2
                 signalTextColor: "#fafafa",
-                labelBoxBkgColor: "#27272a",
+                labelBoxBkgColor: "#18181b",
                 labelBoxBorderColor: "rgba(255, 255, 255, 0.15)",
                 labelTextColor: "#fafafa",
                 loopTextColor: "#fafafa",
-                activationBorderColor: "#71717a",
-                activationBkgColor: "#3f3f46",
-                sequenceNumberColor: "#18181b",
+                activationBorderColor: "#1447e6",
+                activationBkgColor: "rgba(20, 71, 230, 0.3)",
+                sequenceNumberColor: "#ffffff",
               }
             : {
                 darkMode: false,
                 background: "transparent",
-                primaryColor: "#f4f4f5",
+                primaryColor: "rgba(245, 73, 0, 0.10)", // chart-1 subtle tint
                 primaryTextColor: "#09090b",
-                primaryBorderColor: "#e4e4e7",
-                lineColor: "#71717a",
-                secondaryColor: "#ffffff",
+                primaryBorderColor: "#f54900", // chart-1
+                lineColor: "#009689", // chart-2
+                secondaryColor: "rgba(0, 150, 137, 0.10)", // chart-2
                 secondaryTextColor: "#09090b",
-                secondaryBorderColor: "#e4e4e7",
-                tertiaryColor: "#fafafa",
+                secondaryBorderColor: "#009689",
+                tertiaryColor: "rgba(16, 78, 100, 0.10)", // chart-3
                 tertiaryTextColor: "#09090b",
-                tertiaryBorderColor: "#e4e4e7",
-                noteBkgColor: "#f4f4f5",
+                tertiaryBorderColor: "#104e64",
+                noteBkgColor: "rgba(255, 185, 0, 0.15)", // chart-4
                 noteTextColor: "#09090b",
-                noteBorderColor: "#e4e4e7",
-                actorBkg: "#ffffff",
+                noteBorderColor: "#ffb900",
+                actorBkg: "rgba(245, 73, 0, 0.08)", // chart-1
                 actorTextColor: "#09090b",
-                actorBorder: "#d4d4d8",
-                actorLineColor: "#a1a1aa",
-                signalColor: "#09090b",
+                actorBorder: "#f54900",
+                actorLineColor: "rgba(0, 0, 0, 0.2)",
+                signalColor: "#009689", // chart-2
                 signalTextColor: "#09090b",
                 labelBoxBkgColor: "#ffffff",
                 labelBoxBorderColor: "#e4e4e7",
                 labelTextColor: "#09090b",
                 loopTextColor: "#09090b",
-                activationBorderColor: "#a1a1aa",
-                activationBkgColor: "#e4e4e7",
+                activationBorderColor: "#f54900",
+                activationBkgColor: "rgba(245, 73, 0, 0.2)",
                 sequenceNumberColor: "#ffffff",
               },
           flowchart: {
