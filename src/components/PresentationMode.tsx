@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowLeft01Icon,
@@ -117,6 +118,7 @@ export function PresentationMode({
   image,
   sections,
 }: PresentationModeProps): React.ReactNode {
+  const router = useRouter();
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [hasReadUrl, setHasReadUrl] = React.useState(false);
@@ -301,12 +303,74 @@ export function PresentationMode({
             const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
             const code = element.textContent || "";
 
+            // Store original code before rendering
+            if (!element.hasAttribute("data-mermaid-code")) {
+              element.setAttribute("data-mermaid-code", code);
+            }
+
             const { svg } = await mermaid.render(id, code);
-            element.innerHTML = svg;
+
+            // Create a wrapper for the diagram with fullscreen button
+            const wrapper = document.createElement("div");
+            wrapper.className = "mermaid-wrapper relative group";
+
+            // Scroll container so SVG scrolls independently without moving the button
+            const scrollContainer = document.createElement("div");
+            scrollContainer.className = "mermaid-scroll-container overflow-x-auto p-4 sm:p-6";
+            scrollContainer.innerHTML = svg;
+            wrapper.appendChild(scrollContainer);
+
+            // Create fullscreen button (fixed to top-right of wrapper)
+            const button = document.createElement("button");
+            button.className =
+              "absolute top-3 right-3 p-2 rounded-md bg-background/80 hover:bg-background backdrop-blur-xs text-muted-foreground hover:text-foreground border border-border shadow-xs z-10 flex items-center justify-center transition-colors";
+            button.setAttribute("aria-label", "View diagram fullscreen");
+            button.style.cursor = "pointer";
+            button.style.outline = "none";
+
+            // Create Lucide Maximize icon
+            const icon = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "svg"
+            );
+            icon.setAttribute("class", "w-4 h-4");
+            icon.setAttribute("fill", "none");
+            icon.setAttribute("stroke", "currentColor");
+            icon.setAttribute("viewBox", "0 0 24 24");
+            icon.setAttribute("stroke-width", "2");
+            icon.setAttribute("stroke-linecap", "round");
+            icon.setAttribute("stroke-linejoin", "round");
+
+            const path = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "path"
+            );
+            path.setAttribute(
+              "d",
+              "M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+            );
+
+            icon.appendChild(path);
+            button.appendChild(icon);
+
+            button.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const diagramId = `diagram-${Math.random()
+                .toString(36)
+                .substr(2, 9)}`;
+              sessionStorage.setItem(diagramId, svg);
+              router.push(`/diagram/${diagramId}`);
+            });
+
+            wrapper.appendChild(button);
+            element.parentNode?.replaceChild(wrapper, element);
             element.setAttribute("data-processed", "true");
           } catch (error) {
             console.error("Failed to render mermaid diagram:", error);
-            element.innerHTML = `<pre>Error rendering diagram</pre>`;
+            const errorDiv = document.createElement("div");
+            errorDiv.innerHTML = `<pre>Error rendering diagram</pre>`;
+            element.parentNode?.replaceChild(errorDiv, element);
           }
         }
       } catch (error) {
