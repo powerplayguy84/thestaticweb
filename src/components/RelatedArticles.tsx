@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Keyboard } from "swiper/modules";
 import { ArticleMetadata } from "@/lib/markdown";
-import { formatCategoryName } from "@/lib/utils";
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import ArticleCard from "@/components/ArticleCard";
+
+import "swiper/css";
 
 interface RelatedArticlesProps {
   articles: ArticleMetadata[];
@@ -18,68 +19,55 @@ export default function RelatedArticles({
   category,
   currentSlug,
 }: RelatedArticlesProps) {
-  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
-
-  const related = articles
-    .filter((article) => article.slug !== currentSlug)
-    .slice(0, 3);
+  const related = articles.filter((article) => article.slug !== currentSlug);
 
   if (related.length === 0) {
     return null;
   }
 
-  const handleImageError = (slug: string) => {
-    setImageErrors((prev) => new Set(prev).add(slug));
-  };
-
   return (
     <aside
-      className="mt-12 pt-8 border-t border-border/40"
+      className="mt-12 pt-8 border-t border-border/40 w-full overflow-hidden"
       data-no-search-highlight
     >
       <h3 className="text-base font-semibold tracking-tight text-foreground mb-4">
-        More in {formatCategoryName(category)}
+        More in this category
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {related.map((article) => {
-          const hasValidImage =
-            article.image &&
-            article.image.trim() !== "" &&
-            !imageErrors.has(article.slug);
 
-          return (
-            <Link
-              key={article.slug}
-              href={`/${encodeURIComponent(category)}/${article.slug}`}
-              className="group"
-            >
-              <Card className="overflow-hidden h-full rounded-xl border border-border/60 hover:border-foreground/20 hover:bg-muted/30 transition-all cursor-pointer p-0">
-                {hasValidImage && (
-                  <div className="w-full h-36 bg-muted overflow-hidden relative">
-                    <Image
-                      src={article.image!}
-                      alt={article.title}
-                      fill
-                      className="object-cover group-hover:scale-[1.03] transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      onError={() => handleImageError(article.slug)}
-                    />
-                  </div>
-                )}
-                <div className="p-4 flex flex-col flex-1">
-                  <p className="font-semibold text-sm text-foreground tracking-tight group-hover:text-primary transition-colors line-clamp-2">
-                    {article.title}
-                  </p>
-                  {article.description && (
-                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5 leading-relaxed">
-                      {article.description}
-                    </p>
-                  )}
-                </div>
-              </Card>
-            </Link>
-          );
-        })}
+      <div className="relative w-full overflow-hidden pt-1">
+        <Swiper
+          modules={[A11y, Keyboard]}
+          spaceBetween={16}
+          slidesPerView={1.15}
+          keyboard={{ enabled: true }}
+          breakpoints={{
+            480: {
+              slidesPerView: related.length > 1 ? 1.3 : 1,
+              spaceBetween: 16,
+            },
+            640: {
+              slidesPerView: related.length > 1 ? 1.6 : 1,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: related.length > 2 ? 2.2 : related.length,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: related.length > 2 ? 2.5 : related.length,
+              spaceBetween: 24,
+            },
+          }}
+          className="pb-2 cursor-grab active:cursor-grabbing w-full"
+        >
+          {related.map((article) => (
+            <SwiperSlide key={article.slug} className="h-auto">
+              <div className="h-full">
+                <ArticleCard article={article} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </aside>
   );

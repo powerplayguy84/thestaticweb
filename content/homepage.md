@@ -1,12 +1,12 @@
 ---
-title: "The Static Web"
-subtitle: "Global News, Culture, and In-Depth Analysis"
-description: "A modern, high-speed digital publication and starter template showcasing the latest world developments across politics, sports, entertainment, and technology. Built with Next.js, TypeScript, and Tailwind CSS."
-image: "/images/hero-news.jpg"
+title: "Invent Peace"
+subtitle: "We engineer high-impact web applications across diverse industries."
+description: "Invent Peace crafts mission-critical web applications for healthcare, fintech, supply chain, and education. Guided by human-first design, mobile-first accessibility, resilient architecture, and measurable outcomes."
+image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&auto=format&fit=crop&q=80"
 navbar:
-  title: "TSW"
-  logo: ""
+  title: "Invent Peace"
+  logo: "/logo.png"
 cta:
-  text: "Explore Latest News"
-  link: "#explore-section"
+  text: "Explore Our Ethos"
+  link: "#categories-section"
 ---

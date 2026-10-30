@@ -19,6 +19,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { ArticleSwiperSection, SwiperCardItem } from "@/components/ArticleSwiperSection";
+import { ArticleSection } from "@/lib/markdown";
+
 interface Slide {
   id: string;
   title: string;
@@ -27,6 +30,7 @@ interface Slide {
   image?: string;
   headingLevel?: string;
   contentType?: "supershort" | "short" | "medium" | "long";
+  swiperCards?: SwiperCardItem[];
 }
 
 type ContentType = "supershort" | "short" | "medium" | "long";
@@ -103,6 +107,7 @@ interface PresentationModeProps {
   description?: string;
   title?: string;
   image?: string;
+  sections?: ArticleSection[];
 }
 
 export function PresentationMode({
@@ -110,6 +115,7 @@ export function PresentationMode({
   description,
   title,
   image,
+  sections,
 }: PresentationModeProps): React.ReactNode {
   const [slides, setSlides] = React.useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
@@ -224,6 +230,53 @@ export function PresentationMode({
   }, [currentSlide]);
 
   React.useEffect(() => {
+    // If structured sections exist (multi-file article)
+    if (sections && sections.length > 0) {
+      const newSlides: Slide[] = [];
+
+      // Slide 1: Cover slide
+      newSlides.push({
+        id: "slide-frontmatter",
+        title: title || "",
+        content: "",
+        description: description,
+        image: image && image.trim() ? image : undefined,
+        headingLevel: "H1",
+        contentType: "short",
+      });
+
+      // Subsequent slides from sections
+      sections.forEach((sec, idx) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(sec.htmlContent || "", "text/html");
+
+        // Look for heading in this section
+        const heading = doc.querySelector("h1, h2, h3, h4, h5, h6");
+        let headingText = sec.title;
+        let headingLevel = "H2";
+        let bodyHtml = sec.htmlContent || "";
+
+        if (heading) {
+          headingText = heading.textContent || headingText;
+          headingLevel = heading.tagName;
+          heading.remove();
+          bodyHtml = doc.body.innerHTML;
+        }
+
+        newSlides.push({
+          id: `slide-section-${idx}`,
+          title: headingText || "",
+          content: bodyHtml.trim(),
+          headingLevel,
+          contentType: getContentType(bodyHtml),
+          swiperCards: sec.subCards && sec.subCards.length > 0 ? sec.subCards : undefined,
+        });
+      });
+
+      setSlides(newSlides);
+      return;
+    }
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
     const newSlides: Slide[] = [];
@@ -312,7 +365,7 @@ export function PresentationMode({
     });
 
     setSlides(newSlides);
-  }, [htmlContent, description, title, image]);
+  }, [htmlContent, description, title, image, sections]);
 
   // Restore slide position from URL after slides are loaded
   React.useEffect(() => {
@@ -348,7 +401,7 @@ export function PresentationMode({
     >
       {slide && (
         <div
-          className={`w-full h-full overflow-y-auto ${
+          className={`w-full h-full overflow-y-auto overflow-x-hidden ${
             hasMermaidDiagram ? "" : "px-4 sm:px-6 md:px-8"
           }`}
         >
@@ -413,7 +466,7 @@ export function PresentationMode({
               {/* Content Section */}
               {slide.content.trim() && (
                 <div
-                  className={`w-full min-h-0 pb-20 ${
+                  className={`w-full min-h-0 ${
                     hasMermaidDiagram ? "" : ""
                   }`}
                 >
@@ -421,50 +474,56 @@ export function PresentationMode({
                     className="prose prose-sm sm:prose-base max-w-none presentation-mode-content"
                     dangerouslySetInnerHTML={{ __html: slide.content }}
                   />
-                  {/* Share and Print Buttons at End of Content */}
-                  <div className="mt-8 flex justify-end gap-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={async () => {
-                        if (navigator.share) {
-                          try {
-                            await navigator.share({
-                              title: slide?.title || "Presentation",
-                              text: slide?.description || "",
-                              url: window.location.href,
-                            });
-                          } catch (error) {
-                            // Handle AbortError (user canceled) and other errors gracefully
-                            if (
-                              error instanceof Error &&
-                              error.name === "AbortError"
-                            ) {
-                              // User canceled the share dialog - this is normal
-                              return;
-                            }
-                            // For other errors, fall back to copying URL
-                            navigator.clipboard.writeText(window.location.href);
-                          }
-                        } else {
-                          navigator.clipboard.writeText(window.location.href);
+                </div>
+              )}
+
+              {/* Swiper Cards Section in Presentation Slide */}
+              {slide.swiperCards && slide.swiperCards.length > 0 && (
+                <div className="w-full my-4">
+                  <ArticleSwiperSection items={slide.swiperCards} />
+                </div>
+              )}
+
+              {/* Share and Print Buttons at End of Slide */}
+              <div className="mt-6 pb-20 flex justify-end gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={async () => {
+                    if (navigator.share) {
+                      try {
+                        await navigator.share({
+                          title: slide?.title || "Presentation",
+                          text: slide?.description || "",
+                          url: window.location.href,
+                        });
+                      } catch (error) {
+                        if (
+                          error instanceof Error &&
+                          error.name === "AbortError"
+                        ) {
+                          return;
                         }
-                      }}
-                      className="gap-2 rounded-full active:scale-95 transition-all"
-                    >
-                      <HugeiconsIcon icon={Share01Icon} className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        // Hide UI elements before printing
-                        const tocButton = document.querySelector(
-                          'button[aria-label="Toggle Table of Contents"]'
-                        );
-                        const navButtons = document.querySelector(
-                          ".absolute.bottom-4.right-4, .absolute.bottom-0.right-0"
-                        );
+                        navigator.clipboard.writeText(window.location.href);
+                      }
+                    } else {
+                      navigator.clipboard.writeText(window.location.href);
+                    }
+                  }}
+                  className="gap-2 rounded-full active:scale-95 transition-all"
+                >
+                  <HugeiconsIcon icon={Share01Icon} className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    const tocButton = document.querySelector(
+                      'button[aria-label="Toggle Table of Contents"]'
+                    );
+                    const navButtons = document.querySelector(
+                      ".absolute.bottom-4.right-4, .absolute.bottom-0.right-0"
+                    );
                         const actionButtons = document.querySelector(
                           ".mt-8.flex.justify-end"
                         );
@@ -493,8 +552,6 @@ export function PresentationMode({
                       <HugeiconsIcon icon={PrinterIcon} className="w-4 h-4" />
                     </Button>
                   </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

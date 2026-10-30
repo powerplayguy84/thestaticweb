@@ -696,7 +696,7 @@ input, textarea {
   article h2,
   .prose h2,
   .markdown h2 {
-    @apply font-sans font-bold text-2xl sm:text-[1.65rem] mt-10 mb-4 text-foreground tracking-tight border-b border-border/40 pb-2;
+    @apply font-sans font-bold text-2xl sm:text-[1.65rem] mt-10 mb-4 text-foreground tracking-tight pb-2;
   }
 
   article h3,

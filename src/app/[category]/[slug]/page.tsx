@@ -1,32 +1,33 @@
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
 import {
   getArticle,
   getArticlesByCategory,
   getAdjacentArticles,
-  getCategories,
   getSiteSettings,
+  getCategories,
 } from "@/lib/markdown";
-import { formatDate } from "@/lib/date";
 import { formatCategoryName } from "@/lib/utils";
+import { formatDate } from "@/lib/date";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RelatedArticles from "@/components/RelatedArticles";
+import ArticleNavigation from "@/components/ArticleNavigation";
+import { Badge } from "@/components/ui/badge";
+import ArticleImage from "@/components/ArticleImage";
+import TableOfContents from "@/components/TableOfContents";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
+import { ArticleActions } from "@/components/ArticleActions";
+import { MermaidInitializer } from "@/components/MermaidInitializer";
+import CodeCopyInitializer from "@/components/CodeCopyInitializer";
+import SearchNavigationFab from "@/components/SearchNavigationFab";
+import SearchHighlighter from "@/components/SearchHighlighter";
+import { ArticleSwiperSection } from "@/components/ArticleSwiperSection";
 import {
   generateArticleSchema,
   generateBreadcrumbSchema,
   cleanSchema,
 } from "@/lib/schema";
-import ArticleNavigation from "@/components/ArticleNavigation";
-import RelatedArticles from "@/components/RelatedArticles";
-import ArticleImage from "@/components/ArticleImage";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import { ArticleActions } from "@/components/ArticleActions";
-import SearchHighlighter from "@/components/SearchHighlighter";
-import SearchNavigationFab from "@/components/SearchNavigationFab";
-import TableOfContents from "@/components/TableOfContents";
-import ReadingProgressBar from "@/components/ReadingProgressBar";
-import CodeCopyInitializer from "@/components/CodeCopyInitializer";
-import { MermaidInitializer } from "@/components/MermaidInitializer";
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -46,36 +47,32 @@ export async function generateMetadata({
     return {};
   }
 
-  const { siteUrl, siteTitle } = getSiteSettings();
-  const articleUrl = `${siteUrl}/${category}/${slug}`;
+  const { siteTitle } = getSiteSettings();
 
   return {
-    title: `${article.title} - ${siteTitle}`,
+    title: `${article.title} | ${siteTitle}`,
     description: article.description,
     openGraph: {
       title: article.title,
       description: article.description,
       type: "article",
       publishedTime: article.date,
-      authors: ["The Static Web"],
-      images: article.image ? [{ url: article.image }] : [],
-      url: articleUrl,
+      tags: article.tags,
+      images: article.image ? [{ url: article.image }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.description,
-      images: article.image ? [article.image] : [],
-    },
-    alternates: {
-      canonical: articleUrl,
+      images: article.image ? [article.image] : undefined,
     },
   };
 }
 
+// Generate static params for all articles across all categories
 export async function generateStaticParams() {
   const categories = await getCategories();
-  const params = [];
+  const params: { category: string; slug: string }[] = [];
 
   for (const category of categories) {
     const articles = await getArticlesByCategory(category);
@@ -130,44 +127,48 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     generateBreadcrumbSchema(breadcrumbItems, siteUrl),
   );
 
-  // Add IDs to headings for TOC anchors
+  // Helper to add IDs to headings for TOC anchors
   const idCounter: Record<string, number> = {};
-  const contentWithHeadingIds = article.content.replace(
-    /<(h[2-3])([^>]*)>([^<]*)<\/\1>/g,
-    (match, tag, attrs, text) => {
-      const cleanText = text.trim();
-
-      // Skip if no text or ID already exists
-      if (!cleanText || attrs.includes("id=")) {
-        return match;
-      }
-
-      let id = cleanText
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-");
-
-      // Make IDs unique by appending a counter if we've seen this ID before
-      if (id) {
-        if (idCounter[id] !== undefined) {
-          idCounter[id]++;
-          id = `${id}-${idCounter[id]}`;
-        } else {
-          idCounter[id] = 0;
+  const addHeadingIds = (html: string) => {
+    return html.replace(
+      /<(h[2-3])([^>]*)>([^<]*)<\/\1>/g,
+      (match, tag, attrs, text) => {
+        const cleanText = text.trim();
+        if (!cleanText || attrs.includes("id=")) {
+          return match;
         }
-        return `<${tag}${attrs} id="${id}">${text}</${tag}>`;
-      }
 
-      return match;
-    },
-  );
+        let id = cleanText
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "-");
+
+        if (id) {
+          if (idCounter[id] !== undefined) {
+            idCounter[id]++;
+            id = `${id}-${idCounter[id]}`;
+          } else {
+            idCounter[id] = 0;
+          }
+          return `<${tag}${attrs} id="${id}">${text}</${tag}>`;
+        }
+
+        return match;
+      },
+    );
+  };
+
+  const contentWithHeadingIds = addHeadingIds(article.content);
+
+  // Check if article uses structured multi-file sections
+  const hasSections = article.sections && article.sections.length > 0;
 
   return (
     <>
       <SearchHighlighter />
       <SearchNavigationFab />
       <ReadingProgressBar />
-      <TableOfContents content={article.content} />
+      <TableOfContents content={contentWithHeadingIds} />
       <CodeCopyInitializer />
       <MermaidInitializer />
       {/* Article Schema */}
@@ -196,39 +197,38 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Header */}
           <div className="mb-8 print:mb-4 pt-2">
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <div className="space-y-3 flex-1 min-w-0">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
-                  {article.title}
-                </h1>
-                <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2">
-                  <span>
-                    {article.date ? formatDate(article.date) : "Recent"}
-                  </span>
-                  <span>•</span>
-                  <Link
-                    href={`/${encodeURIComponent(category)}`}
-                    className="capitalize hover:text-foreground transition-colors underline-offset-4 hover:underline"
-                  >
-                    {category}
-                  </Link>
-                </p>
-                {article.tags && article.tags.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1 print:hidden">
-                    {article.tags.map((tag) => (
-                      <Link key={tag} href={`/tag/${tag}`}>
-                        <Badge
-                          variant="secondary"
-                          className="rounded-full px-2.5 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/50 transition-colors"
-                        >
-                          #{tag}
-                        </Badge>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="print:hidden shrink-0 pt-1">
+            <div className="space-y-3 mb-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
+                {article.title}
+              </h1>
+              <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2">
+                <span>
+                  {article.date ? formatDate(article.date) : "Recent"}
+                </span>
+                <span>•</span>
+                <Link
+                  href={`/${encodeURIComponent(category)}`}
+                  className="capitalize hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                >
+                  {category}
+                </Link>
+              </p>
+              {article.tags && article.tags.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1.5 pt-1 print:hidden">
+                  {article.tags.map((tag) => (
+                    <Link key={tag} href={`/tag/${tag}`}>
+                      <Badge
+                        variant="secondary"
+                        className="rounded-full px-2.5 py-0.5 text-[11px] font-mono font-medium text-muted-foreground bg-muted/60 hover:bg-muted border border-border/50 transition-colors"
+                      >
+                        #{tag}
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
+              )}
+              {/* Action buttons (Print, Presentation) positioned underneath tags */}
+              <div className="print:hidden pt-2 flex items-center gap-2">
                 <ArticleActions
                   htmlContent={contentWithHeadingIds}
                   description={article.description}
@@ -249,18 +249,44 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <ArticleImage src={article.image} alt={article.title} />
           )}
 
-          {/* Content */}
+          {/* Content Rendering */}
           <div className="overflow-x-hidden">
-            <div
-              className="prose print:prose-sm content-with-wrapped-code max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: contentWithHeadingIds.replace(/^\s*<h1[^>]*>.*?<\/h1>/i, ""),
-              }}
-            />
+            {hasSections ? (
+              <div className="space-y-8">
+                {article.sections!.map((section) => {
+                  const sectionHtml = section.htmlContent
+                    ? addHeadingIds(section.htmlContent).replace(/^\s*<h1[^>]*>.*?<\/h1>/i, "")
+                    : "";
+
+                  return (
+                    <div key={section.id} className="section-block">
+                      {sectionHtml && (
+                        <div
+                          className="prose print:prose-sm content-with-wrapped-code max-w-none"
+                          dangerouslySetInnerHTML={{ __html: sectionHtml }}
+                        />
+                      )}
+                      {section.subCards && section.subCards.length > 0 && (
+                        <ArticleSwiperSection
+                          items={section.subCards}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div
+                className="prose print:prose-sm content-with-wrapped-code max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: contentWithHeadingIds.replace(/^\s*<h1[^>]*>.*?<\/h1>/i, ""),
+                }}
+              />
+            )}
           </div>
 
           {/* Navigation */}
-          <div className="print:hidden">
+          <div className="print:hidden mt-12">
             <ArticleNavigation
               previous={previous}
               next={next}

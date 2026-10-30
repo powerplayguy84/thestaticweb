@@ -43,6 +43,25 @@ function rehypeMermaidToDiv() {
   };
 }
 
+export interface SwiperCardData {
+  id: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  badge?: string;
+  image?: string;
+  htmlContent: string;
+  isImageOnly?: boolean;
+}
+
+export interface ArticleSection {
+  id: string;
+  major: number;
+  title?: string;
+  htmlContent?: string;
+  subCards: SwiperCardData[];
+}
+
 export interface Article {
   slug: string;
   category: string;
@@ -54,9 +73,10 @@ export interface Article {
   tags?: string[];
   image?: string;
   content: string;
+  sections?: ArticleSection[];
 }
 
-export type ArticleMetadata = Omit<Article, "content">;
+export type ArticleMetadata = Omit<Article, "content" | "sections">;
 
 export interface CategoryInfo {
   slug: string;
@@ -154,59 +174,46 @@ export async function getCategories(): Promise<string[]> {
 }
 
 /**
- * Parse markdown file and extract metadata + content
+ * Parse markdown file and return metadata and HTML content
  */
-async function parseMarkdownFile(filePath: string): Promise<{
-  metadata: Omit<ArticleMetadata, "slug" | "category" | "index">;
+export async function parseMarkdownFile(filePath: string): Promise<{
+  metadata: {
+    title: string;
+    description: string;
+    date: string;
+    featured: boolean;
+    tags?: string[];
+    image?: string;
+    subtitle?: string;
+    badge?: string;
+    [key: string]: any;
+  };
   content: string;
 }> {
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
 
+  // Parse markdown to HTML
   const processedContent = await remark()
-    .use(remarkGfm) // GitHub Flavored Markdown (tables, task lists, strikethrough)
-    .use(remarkRehype, { allowDangerousHtml: true }) // Convert to rehype (HTML)
-    .use(rehypeRaw) // Parse raw HTML in markdown
-    .use(rehypeMermaidToDiv) // Convert mermaid blocks to divs BEFORE syntax highlighting
-    .use(rehypeHighlight) // Syntax highlighting for code blocks
-    .use(rehypeStringify) // Convert to HTML string
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeMermaidToDiv)
+    .use(rehypeHighlight)
+    .use(rehypeStringify)
     .process(content);
 
   let htmlContent = processedContent.toString();
 
-  // Wrap tables in scrollable containers
-  htmlContent = htmlContent.replace(
-    /<table([^>]*)>/g,
-    '<div class="table-wrapper"><table$1>'
-  );
-  htmlContent = htmlContent.replace(/<\/table>/g, "</table></div>");
-
-  // Wrap code blocks with copy button container (but NOT mermaid divs)
+  // Wrap code blocks with our custom wrapper for copying functionality
   htmlContent = htmlContent.replace(
     /<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/g,
     (match, codeAttrs, codeContent) => {
-      // Skip if this is a mermaid block (shouldn't happen, but safety check)
+      // Don't wrap mermaid diagrams
       if (codeAttrs.includes("language-mermaid")) {
         return match;
       }
-
-      // Extract the actual code text and escape it for JSON
-      const plainText = codeContent
-        .replace(/<[^>]*>/g, "") // Remove HTML tags
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
-        .replace(/&amp;/g, "&")
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'");
-
-      const escapedCode = plainText
-        .replace(/\\/g, "\\\\")
-        .replace(/"/g, '\\"')
-        .replace(/\n/g, "\\n")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-      return `<div class="code-block-wrapper" data-code="${escapedCode}"><pre><code${codeAttrs}>${codeContent}</code></pre><button class="copy-code-btn" aria-label="Copy code" title="Copy code"><svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg><svg class="check-icon hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></button></div>`;
+      return `<div class="code-block-wrapper relative group/code">${match}</div>`;
     }
   );
 
@@ -218,18 +225,222 @@ async function parseMarkdownFile(filePath: string): Promise<{
       featured: data.featured || false,
       tags: data.tags || [],
       image: data.image && data.image.trim() ? data.image : undefined,
+      subtitle: data.subtitle || undefined,
+      badge: data.badge || undefined,
+      ...data,
     },
     content: htmlContent,
   };
 }
 
 /**
+ * Helper to parse numbered file naming:
+ * e.g. "01-intro.md", "02-about.md", "0.3.1-feature1.md", "03.1-feature1.md"
+ */
+function parseNumberedFilename(filename: string): {
+  filename: string;
+  name: string;
+  major: number;
+  minor: number[];
+  isSub: boolean;
+} | null {
+  const match = filename.match(/^([0-9.]+)-(.*)\.md$/);
+  if (!match) return null;
+
+  const rawNum = match[1];
+  const name = match[2];
+
+  let normalized = rawNum;
+  // If written as 0.3.1, normalize to 3.1
+  if (/^0\.\d+/.test(normalized)) {
+    normalized = normalized.replace(/^0\./, "");
+  }
+
+  const parts = normalized
+    .split(".")
+    .map((n) => parseInt(n, 10))
+    .filter((n) => !isNaN(n));
+
+  if (parts.length === 0) return null;
+
+  const major = parts[0];
+  const minor = parts.slice(1);
+  const isSub = minor.length > 0;
+
+  return {
+    filename,
+    name,
+    major,
+    minor,
+    isSub,
+  };
+}
+
+/**
+ * Parses a multi-file article directory
+ */
+async function parseArticleDirectory(
+  dirPath: string,
+  category: string,
+  slug: string,
+  index: number
+): Promise<Article> {
+  const allEntries = fs.readdirSync(dirPath);
+  const mdFiles = allEntries.filter((f) => f.endsWith(".md"));
+
+  const parsedItems = mdFiles
+    .map(parseNumberedFilename)
+    .filter((item): item is NonNullable<typeof item> => item !== null);
+
+  // Sort items: by major asc, non-sub before sub, then sub by minor
+  parsedItems.sort((a, b) => {
+    if (a.major !== b.major) return a.major - b.major;
+    if (!a.isSub && b.isSub) return -1;
+    if (a.isSub && !b.isSub) return 1;
+    for (let i = 0; i < Math.max(a.minor.length, b.minor.length); i++) {
+      const aVal = a.minor[i] ?? 0;
+      const bVal = b.minor[i] ?? 0;
+      if (aVal !== bVal) return aVal - bVal;
+    }
+    return 0;
+  });
+
+  // Group by major section
+  const sectionMap = new Map<number, ArticleSection>();
+  const sections: ArticleSection[] = [];
+
+  // Determine primary article metadata from the lowest numbered non-sub file, or index.md, or first file
+  let primaryMetadata: any = null;
+
+  // Process all files
+  for (const item of parsedItems) {
+    const filePath = path.join(dirPath, item.filename);
+    const { metadata, content } = await parseMarkdownFile(filePath);
+
+    if (!item.isSub) {
+      if (!primaryMetadata) {
+        primaryMetadata = metadata;
+      }
+      let section = sectionMap.get(item.major);
+      if (!section) {
+        section = {
+          id: `section-${item.major}-${item.name}`,
+          major: item.major,
+          title: metadata.title,
+          htmlContent: content,
+          subCards: [],
+        };
+        sectionMap.set(item.major, section);
+        sections.push(section);
+      } else {
+        section.title = metadata.title;
+        section.htmlContent = content;
+      }
+    } else {
+      // Sub-file for horizontal Swiper
+      let section = sectionMap.get(item.major);
+      if (!section) {
+        section = {
+          id: `section-${item.major}`,
+          major: item.major,
+          title: undefined,
+          htmlContent: undefined,
+          subCards: [],
+        };
+        sectionMap.set(item.major, section);
+        sections.push(section);
+      }
+
+      // Check if image is in frontmatter or in markdown content
+      let cardImage = metadata.image;
+      let bodyWithoutImg = content;
+
+      if (!cardImage && content) {
+        const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+        if (imgMatch) {
+          cardImage = imgMatch[1];
+          bodyWithoutImg = content.replace(/<p>\s*<img[^>]+>\s*<\/p>/i, "").trim();
+        }
+      }
+
+      // Check if this card has NO text content (no subtitle, description, or body text)
+      const hasTextBody = bodyWithoutImg.replace(/<[^>]*>/g, "").trim().length > 0;
+      const hasDescription = Boolean(metadata.description && metadata.description.trim());
+      const hasSubtitle = Boolean(metadata.subtitle && metadata.subtitle.trim());
+      const hasTitle = Boolean(metadata.title && metadata.title.trim() && metadata.title !== "Untitled");
+
+      const isImageOnly = Boolean(cardImage && !hasTextBody && !hasDescription && !hasSubtitle && !hasTitle);
+
+      section.subCards.push({
+        id: `${item.major}-${item.name}`,
+        title: metadata.title && metadata.title !== "Untitled" ? metadata.title : undefined,
+        subtitle: metadata.subtitle,
+        description: metadata.description,
+        badge: metadata.badge || (metadata.tags && metadata.tags[0]),
+        image: cardImage,
+        htmlContent: isImageOnly ? "" : bodyWithoutImg,
+        isImageOnly,
+      });
+    }
+  }
+
+  // Fallback metadata if not found from non-sub file
+  if (!primaryMetadata) {
+    const indexPath = path.join(dirPath, "index.md");
+    if (fs.existsSync(indexPath)) {
+      const parsedIndex = await parseMarkdownFile(indexPath);
+      primaryMetadata = parsedIndex.metadata;
+    } else if (parsedItems.length > 0) {
+      const firstPath = path.join(dirPath, parsedItems[0].filename);
+      const parsedFirst = await parseMarkdownFile(firstPath);
+      primaryMetadata = parsedFirst.metadata;
+    } else {
+      primaryMetadata = {
+        title: slug.replace(/-/g, " "),
+        description: "",
+        date: new Date().toISOString().split("T")[0],
+        featured: false,
+        tags: [],
+      };
+    }
+  }
+
+  // Combine full content for text search, TOC, and fallback reading
+  const contentParts: string[] = [];
+  for (const sec of sections) {
+    if (sec.htmlContent) {
+      contentParts.push(sec.htmlContent);
+    }
+    for (const card of sec.subCards) {
+      if (card.htmlContent) {
+        contentParts.push(`<h3>${card.title}</h3>\n${card.htmlContent}`);
+      }
+    }
+  }
+  const combinedContent = contentParts.join("\n\n");
+
+  return {
+    slug,
+    category,
+    index,
+    title: primaryMetadata.title || "Untitled",
+    description: primaryMetadata.description || "",
+    date: primaryMetadata.date || new Date().toISOString().split("T")[0],
+    featured: primaryMetadata.featured || false,
+    tags: primaryMetadata.tags || [],
+    image: primaryMetadata.image,
+    content: combinedContent,
+    sections,
+  };
+}
+
+/**
  * Get all articles in a category, sorted by index
+ * Supports both nested article directories (01-article-name/) and direct markdown files (01-article-name.md)
  */
 export async function getArticlesByCategory(
   category: string
 ): Promise<ArticleMetadata[]> {
-  // Find the actual folder name for this category slug
   const categoriesInfo = await getCategoriesWithInfo();
   const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
 
@@ -243,27 +454,47 @@ export async function getArticlesByCategory(
     return [];
   }
 
-  const files = fs
-    .readdirSync(categoryPath)
-    .filter((file) => file.endsWith(".md") && file !== "index.md");
+  const entries = fs.readdirSync(categoryPath, { withFileTypes: true });
 
-  const articles: ArticleMetadata[] = await Promise.all(
-    files.map(async (file) => {
-      const filePath = path.join(categoryPath, file);
-      const slug = file.replace(/^\d+-/, "").replace(/\.md$/, "");
-      const indexMatch = file.match(/^(\d+)-/);
+  const articles: ArticleMetadata[] = [];
+
+  for (const entry of entries) {
+    if (entry.name === "index.md") continue;
+
+    if (entry.isDirectory()) {
+      // Nested article directory: e.g. "01-core-philosophy"
+      const folderName = entry.name;
+      const slug = folderName.replace(/^\d+-/, "");
+      const indexMatch = folderName.match(/^(\d+)-/);
+      const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
+
+      const fullArticle = await parseArticleDirectory(
+        path.join(categoryPath, folderName),
+        category,
+        slug,
+        index
+      );
+
+      const { content, sections, ...metadata } = fullArticle;
+      articles.push(metadata);
+    } else if (entry.name.endsWith(".md")) {
+      // Single markdown file: e.g. "01-core-philosophy.md"
+      const filename = entry.name;
+      const filePath = path.join(categoryPath, filename);
+      const slug = filename.replace(/^\d+-/, "").replace(/\.md$/, "");
+      const indexMatch = filename.match(/^(\d+)-/);
       const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
 
       const { metadata } = await parseMarkdownFile(filePath);
 
-      return {
+      articles.push({
         slug,
         category,
         index,
         ...metadata,
-      };
-    })
-  );
+      });
+    }
+  }
 
   return articles.sort((a, b) => a.index - b.index);
 }
@@ -275,7 +506,6 @@ export async function getArticle(
   category: string,
   slug: string
 ): Promise<Article | null> {
-  // Find the actual folder name for this category slug
   const categoriesInfo = await getCategoriesWithInfo();
   const categoryInfo = categoriesInfo.find((cat) => cat.slug === category);
 
@@ -289,30 +519,50 @@ export async function getArticle(
     return null;
   }
 
-  const files = fs
-    .readdirSync(categoryPath)
-    .filter((file) => file.endsWith(".md") && file !== "index.md");
-  const targetFile = files.find(
-    (file) => file.replace(/^\d+-/, "").replace(/\.md$/, "") === slug
+  const entries = fs.readdirSync(categoryPath, { withFileTypes: true });
+
+  // 1. Check for nested article directory matching slug
+  const targetDir = entries.find(
+    (e) => e.isDirectory() && e.name.replace(/^\d+-/, "") === slug
   );
 
-  if (!targetFile) {
-    return null;
+  if (targetDir) {
+    const indexMatch = targetDir.name.match(/^(\d+)-/);
+    const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
+    return await parseArticleDirectory(
+      path.join(categoryPath, targetDir.name),
+      category,
+      slug,
+      index
+    );
   }
 
-  const filePath = path.join(categoryPath, targetFile);
-  const indexMatch = targetFile.match(/^(\d+)-/);
-  const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
+  // 2. Fall back to standalone .md file
+  const targetFile = entries.find(
+    (e) =>
+      !e.isDirectory() &&
+      e.name.endsWith(".md") &&
+      e.name !== "index.md" &&
+      e.name.replace(/^\d+-/, "").replace(/\.md$/, "") === slug
+  );
 
-  const { metadata, content } = await parseMarkdownFile(filePath);
+  if (targetFile) {
+    const filePath = path.join(categoryPath, targetFile.name);
+    const indexMatch = targetFile.name.match(/^(\d+)-/);
+    const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
 
-  return {
-    slug,
-    category,
-    index,
-    ...metadata,
-    content,
-  };
+    const { metadata, content } = await parseMarkdownFile(filePath);
+
+    return {
+      slug,
+      category,
+      index,
+      ...metadata,
+      content,
+    };
+  }
+
+  return null;
 }
 
 /**
@@ -334,36 +584,20 @@ export async function getAllArticles(): Promise<ArticleMetadata[]> {
  * Get all articles with full content (for search indexing)
  */
 export async function getAllArticlesWithContent(): Promise<Article[]> {
-  const categoriesInfo = await getCategoriesWithInfo();
-  const allArticles: Article[] = [];
+  const categories = await getCategories();
+  const articles: Article[] = [];
 
-  for (const categoryInfo of categoriesInfo) {
-    const categoryPath = path.join(CONTENT_DIR, categoryInfo.name);
-    if (!fs.existsSync(categoryPath)) continue;
-
-    const files = fs
-      .readdirSync(categoryPath)
-      .filter((file) => file.endsWith(".md") && file !== "index.md");
-
-    for (const file of files) {
-      const filePath = path.join(categoryPath, file);
-      const slug = file.replace(/^\d+-/, "").replace(/\.md$/, "");
-      const indexMatch = file.match(/^(\d+)-/);
-      const index = indexMatch ? parseInt(indexMatch[1], 10) : 0;
-
-      const { metadata, content } = await parseMarkdownFile(filePath);
-
-      allArticles.push({
-        slug,
-        category: categoryInfo.slug,
-        index,
-        ...metadata,
-        content,
-      });
+  for (const cat of categories) {
+    const metas = await getArticlesByCategory(cat);
+    for (const meta of metas) {
+      const art = await getArticle(cat, meta.slug);
+      if (art) {
+        articles.push(art);
+      }
     }
   }
 
-  return allArticles.sort(
+  return articles.sort(
     (a, b) => parseDateTimestamp(b.date) - parseDateTimestamp(a.date)
   );
 }
@@ -433,19 +667,18 @@ export function getSiteSettings(): {
   author: string;
   organizationName: string;
   logoUrl?: string;
-  hiddenCategories?: string[];
+  iconUrl?: string;
+  theme?: string;
 } {
   const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
 
   if (!fs.existsSync(settingsFilePath)) {
     return {
       siteUrl: "https://yourdomain.com",
-      siteTitle: "The Static Web",
-      siteDescription:
-        "A collection of articles, tutorials, and guides for modern web development.",
-      author: "The Static Web",
-      organizationName: "The Static Web",
-      hiddenCategories: [],
+      siteTitle: "Invent Peace",
+      siteDescription: "Invent Peace Web Portal",
+      author: "Invent Peace",
+      organizationName: "Invent Peace",
     };
   }
 
@@ -454,71 +687,74 @@ export function getSiteSettings(): {
 
   return {
     siteUrl: data.siteUrl || "https://yourdomain.com",
-    siteTitle: data.siteTitle || "The Static Web",
-    siteDescription:
-      data.siteDescription ||
-      "A collection of articles, tutorials, and guides for modern web development.",
-    author: data.author || "The Static Web",
-    organizationName: data.organizationName || "The Static Web",
+    siteTitle: data.siteTitle || "Invent Peace",
+    siteDescription: data.siteDescription || "Invent Peace Web Portal",
+    author: data.author || "Invent Peace",
+    organizationName: data.organizationName || "Invent Peace",
     logoUrl: data.logoUrl || undefined,
-    hiddenCategories: data.hiddenCategories || [],
+    iconUrl: data.iconUrl || undefined,
+    theme: data.theme || undefined,
   };
 }
 
 /**
- * Get homepage hero content
+ * Get homepage hero configuration from homepage.md
  */
 export async function getHomepageHero(): Promise<{
   title: string;
-  description: string;
   subtitle?: string;
+  description?: string;
   image?: string;
+  cta?: {
+    text: string;
+    link: string;
+  };
   logo?: string;
   navbar?: {
     title?: string;
     logo?: string;
   };
-  cta?: {
-    text: string;
-    link: string;
-  };
   content?: string;
 }> {
-  const homepageFilePath = path.join(CONTENT_DIR, "homepage.md");
+  const homepagePath = path.join(CONTENT_DIR, "homepage.md");
 
-  if (!fs.existsSync(homepageFilePath)) {
+  if (!fs.existsSync(homepagePath)) {
     return {
-      title: "The Static Web",
-      description:
-        "A collection of articles, tutorials, and guides for modern web development. Built with Next.js and Markdown.",
+      title: "Invent Peace",
+      subtitle: "Welcome to our website",
+      description: "A modern static website powered by Markdown",
     };
   }
 
-  const fileContent = fs.readFileSync(homepageFilePath, "utf-8");
+  const fileContent = fs.readFileSync(homepagePath, "utf-8");
   const { data, content } = matter(fileContent);
 
-  // Process markdown content to HTML
-  const processedContent = await remark()
-    .use(remarkGfm)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeMermaidToDiv) // Convert mermaid blocks to divs BEFORE syntax highlighting
-    .use(rehypeHighlight)
-    .use(rehypeStringify)
-    .process(content);
+  let htmlContent = "";
+  if (content && content.trim()) {
+    const processedContent = await remark()
+      .use(remarkGfm)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeHighlight)
+      .use(rehypeStringify)
+      .process(content);
 
-  const htmlContent = processedContent.toString();
+    htmlContent = processedContent.toString();
+  }
 
   return {
-    title: data.title || "The Static Web",
-    description:
-      data.description ||
-      "A collection of articles, tutorials, and guides for modern web development. Built with Next.js and Markdown.",
+    title: data.title || "Invent Peace",
     subtitle: data.subtitle || undefined,
-    image: data.image && data.image.trim() ? data.image : undefined,
+    description: data.description || undefined,
+    image: data.image || undefined,
     logo: data.logo || undefined,
-    navbar: data.navbar || undefined,
     cta: data.cta || undefined,
-    content: htmlContent,
+    navbar: data.navbar
+      ? {
+          title: data.navbar.title || undefined,
+          logo: data.navbar.logo || undefined,
+        }
+      : undefined,
+    content: htmlContent || undefined,
   };
 }

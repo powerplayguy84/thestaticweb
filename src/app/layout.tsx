@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background ambient-mesh`}
       >
         {/* Organization Schema */}
         <script

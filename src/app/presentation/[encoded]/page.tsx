@@ -37,6 +37,7 @@ export default async function PresentationPage({
       title={article.title}
       description={article.description}
       image={article.image}
+      sections={article.sections}
     />
   );
 }

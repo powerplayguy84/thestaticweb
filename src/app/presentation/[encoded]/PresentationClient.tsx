@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { PresentationMode } from "@/components/PresentationMode";
+import { ArticleSection } from "@/lib/markdown";
 
 interface PresentationClientProps {
   htmlContent: string;
   title?: string;
   description?: string;
   image?: string;
+  sections?: ArticleSection[];
 }
 
 export default function PresentationClient({
@@ -17,6 +19,7 @@ export default function PresentationClient({
   title,
   description,
   image,
+  sections,
 }: PresentationClientProps) {
   const router = useRouter();
 
@@ -41,6 +44,7 @@ export default function PresentationClient({
         title={title}
         description={description}
         image={image}
+        sections={sections}
       />
     </div>
   );
