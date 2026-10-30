@@ -191,7 +191,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   return (
     <>
       {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-56 overflow-y-auto scrollbar-thin px-4 py-6 border-r border-border/60 bg-background/95 backdrop-blur-xl print:hidden z-[60]">
+      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-56 overflow-y-auto scrollbar-thin px-4 py-6 border-r border-border/60 bg-background/95 backdrop-blur-xl print:hidden z-30">
         <h2 className="text-[11px] font-mono font-medium mb-4 text-muted-foreground uppercase tracking-wider">
           On this page
         </h2>
