@@ -1,241 +1,93 @@
 ---
-title: "Your Article Title Here"
-description: "A compelling 1-2 sentence description that appears in search results and social media previews (aim for 120-160 characters)"
-date: "28-10-2025"
-featured: false
-tags: ["tag1", "tag2", "tag3"]
-image: "https://example.com/your-image.jpg"
+title: "Article Title (Max 60 Characters)"
+description: "A clear description between 120 and 160 characters for search results and previews."
+date: "02-11-2026" # Format: DD-MM-YYYY
+featured: false # Set to true to highlight on the homepage
+tags: ["example", "guide", "performance"] # 2-4 lowercase tags
+image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80"
 ---
 
-# Your Article Title
+> An optional brief callout or executive summary.
 
-> Optional: A brief introduction or excerpt that captures the reader's attention. This appears at the top of the article.
+Explain the problem directly in the opening paragraph. State what the reader will learn or build without staged run-ups. Note: do not add a `# Title` header at the top of the body, as the portal renders the title automatically from front matter.
 
-## Introduction
+## Core Concepts
 
-Start with why this topic matters. Hook the reader with a problem, question, or interesting fact.
+Break complex ideas into direct explanations. Pair explanations with concrete snippets.
 
-Example:
-
-- What problem does this solve?
-- Why should readers care?
-- What will they learn?
-
-## Main Section 1
-
-### Subsection
-
-Your main content goes here. Use clear, concise language.
-
-**Key points:**
-
-- Use bullet points for lists
-- **Bold** important terms
-- _Italics_ for emphasis
-- `code snippets` for technical terms
-
-### Code Examples
-
-Include practical code examples:
+### Code Example
 
 ```typescript
-// Example TypeScript code
-interface User {
-  name: string;
-  email: string;
+interface CacheOptions {
+  ttlSeconds: number;
+  staleWhileRevalidate: boolean;
 }
 
-const user: User = {
-  name: "Jane Doe",
-  email: "jane@example.com",
-};
-```
-
-```jsx
-// Example React component
-export default function Button({ children, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="px-4 py-2 bg-primary text-white rounded"
-    >
-      {children}
-    </button>
-  );
+export function createEdgeCache(options: CacheOptions) {
+  return {
+    headers: {
+      "Cache-Control": `public, s-maxage=${options.ttlSeconds}`,
+    },
+  };
 }
 ```
 
-## Main Section 2
+## Architecture and Flow Diagrams
 
-Continue with your main content. Break it into logical sections.
+Use Mermaid code fences for flowcharts, sequences, or architecture maps:
 
-### Step-by-Step Instructions
-
-When providing tutorials:
-
-1. **First step**: Explain what to do
-2. **Second step**: Show the code or action
-3. **Third step**: Explain the result
-
-### Tips and Best Practices
-
-> 💡 **Pro Tip**: Use blockquotes for important tips or warnings.
-
-> ⚠️ **Warning**: Highlight potential pitfalls or common mistakes.
-
-> ✅ **Best Practice**: Share industry-standard approaches.
-
-## Main Section 3
-
-### Tables (Optional)
-
-| Feature   | Description         | Example        |
-| --------- | ------------------- | -------------- |
-| Feature 1 | What it does        | `code example` |
-| Feature 2 | Another feature     | `more code`    |
-| Feature 3 | Yet another feature | `final code`   |
-
-### Images
-
-Include images with proper alt text:
-
-![Alt text describing the image](https://example.com/image.jpg)
-
-**Image best practices:**
-
-- Use descriptive alt text
-- Optimize images (WebP format, compressed)
-- Host on CDN or use relative paths to `/public/`
-
-### Links
-
-Link to related content:
-
-- [Internal link to another article](/category/article-slug)
-- [External resource](https://example.com)
-- [Documentation](https://nextjs.org/docs)
-
-## Common Pitfalls
-
-Address common mistakes or challenges:
-
-### Mistake 1: Not Following Best Practices
-
-**Problem**: Describe the issue
-**Solution**: Provide the fix
-**Example**: Show code
-
-```typescript
-// ❌ Bad
-const bad = "example";
-
-// ✅ Good
-const good = "better example";
+```mermaid
+flowchart LR
+    A[Markdown Source] --> B[Static Compiler]
+    B --> C[Edge Assets]
+    C --> D[Browser]
 ```
 
-## Advanced Topics (Optional)
+## Creating Interactive Swiper Carousels
 
-For intermediate/advanced readers, include deeper dives:
+The Static Web converts sub-folders with decimal numbers into interactive swipeable card carousels.
 
-- Advanced techniques
-- Performance optimization
-- Edge cases
-- Integration with other tools
+To add a carousel, create a folder for the article instead of a single file:
 
-## Conclusion
+```text
+content/04-guides/03-sample-article/
+├── 01-intro.md
+├── 02-overview.md
+├── 03-features.md            # Section 3 text
+├── 0.3.1-card-one.md         # Carousel card 1 under section 3
+├── 0.3.2-card-two.md         # Carousel card 2 under section 3
+├── 0.3.3-gallery.md          # Optional image-only card
+└── 04-summary.md
+```
 
-Summarize the key takeaways:
+### Carousel Card Example (`0.3.1-card-one.md`)
 
-1. **Main point 1**: Brief reminder
-2. **Main point 2**: Key learning
-3. **Main point 3**: Action item
-
-### Next Steps
-
-Guide readers on what to do next:
-
-- Related article to read
-- Practice exercise
-- Additional resources
-
-### Resources
-
-- [Official Documentation](https://example.com/docs)
-- [GitHub Repository](https://github.com/example/repo)
-- [Community Forum](https://example.com/forum)
-
+```markdown
+---
+title: "Edge Delivery"
+subtitle: "Network Layer"
+description: "Static pages served worldwide in under 100 milliseconds."
+badge: "Speed"
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"
 ---
 
-## Front Matter Reference
+Body content displayed inside the modal dialog when readers click this card.
 
-```yaml
+- Pre-rendered HTML
+- Zero database queries at runtime
+- Brotli compressed assets
+```
+
+### Image-Only Lightbox Card Example (`0.3.3-gallery.md`)
+
+```markdown
 ---
-title: "Article Title (60 chars max for SEO)"
-description: "SEO description (120-160 chars)"
-date: "DD-MM-YYYY" # Format: 28-10-2025
-featured: true/false # Shows on homepage if true
-tags: ["tag1", "tag2", "tag3", "tag4"] # 3-7 tags recommended
-image: "https://example.com/image.jpg" # Hero image URL
+image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80"
 ---
 ```
 
-### Required Fields:
+When an entry contains only an image in front matter, the carousel renders it as a full-bleed visual card with click-to-zoom lightbox behavior.
 
-- `title` - Article title
-- `description` - SEO description
-- `date` - Publication date
-- `featured` - Boolean for homepage display
-- `tags` - Array of topic tags
-- `image` - Hero/preview image URL
+## Summary
 
-### Optional Fields (add as needed):
-
-- `author` - Author name
-- `category` - Override category (uses folder by default)
-- `updated` - Last updated date
-- `readTime` - Reading time in minutes
-
----
-
-## Content Guidelines
-
-### Writing Style:
-
-- **Clear and concise**: Avoid jargon, explain technical terms
-- **Actionable**: Provide concrete examples and steps
-- **Engaging**: Use questions, stories, and real-world scenarios
-- **Structured**: Use headings, lists, and formatting
-
-### SEO Best Practices:
-
-- Use keywords naturally in title and description
-- Include keywords in headings (H2, H3)
-- Use descriptive link text
-- Optimize images with alt text
-- Keep URLs clean and readable
-
-### Code Examples:
-
-- Test all code before publishing
-- Include comments for clarity
-- Show both good and bad examples
-- Provide context for why code works
-
-### Accessibility:
-
-- Use semantic headings (don't skip levels)
-- Provide alt text for all images
-- Use descriptive link text (not "click here")
-- Ensure proper contrast in examples
-
----
-
-**📝 Ready to write?**
-
-1. Copy this template to `content/[category]/[number]-[slug].md`
-2. Fill in the front matter
-3. Replace placeholder content with your article
-4. Test locally with `npm run dev`
-5. Commit and deploy!
-
-For AI assistance, see [AI_CONTENT_CREATION.md](../../AI_CONTENT_CREATION.md)
+Recap the primary findings or next steps in plain language without repetitive conclusion formulas.

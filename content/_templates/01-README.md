@@ -1,105 +1,90 @@
 # Content Templates
 
-This directory contains templates for creating new content.
+This directory contains templates and reference files for creating content across The Static Web.
 
 ## Available Templates
 
-### article-template.md
+### 1. `00-article-template.md`
+Standard template for single-file articles and multi-section guides. Includes:
+- Complete YAML front matter (`title`, `description`, `date: DD-MM-YYYY`, `featured`, `tags`, `image`)
+- Heading hierarchy without redundant H1 tags
+- Code block examples with language specifiers
+- Mermaid diagram examples
+- Multi-card swipeable carousel examples (`0.X.Y-card.md`)
 
-A comprehensive template for creating new articles. Includes:
+### 2. `category-index-template.md`
+Template for category folder `index.md` files:
+- Custom display title and description
+- Folder numbering ordering guidelines (`01-why`, `02-features`, etc.)
 
-- Complete front matter structure with all fields
-- Content sections and formatting examples
-- Code block examples
-- Image and link examples
-- SEO and accessibility guidelines
+---
+
+## Interactive Carousel & Multi-Card Swiper Structure
+
+The Static Web compiles sub-folders with decimal-numbered files into interactive card carousels.
+
+```text
+content/04-guides/03-sample-guide/
+├── 01-overview.md
+├── 02-architecture.md
+├── 03-features.md            # Main section 3 header
+├── 0.3.1-card-one.md         # Carousel slide 1
+├── 0.3.2-card-two.md         # Carousel slide 2
+├── 0.3.3-card-three.md       # Carousel slide 3 (or image-only slide)
+└── 04-conclusion.md
+```
+
+### Standard Carousel Card (`0.3.1-card-one.md`)
+```markdown
+---
+title: "Fast Asset Delivery"
+subtitle: "Performance"
+description: "Pre-compiled static files served directly from edge nodes."
+badge: "Pillar 1"
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"
+---
+
+Detailed content displayed in the pop-up modal when the card is clicked.
+
+- Automatic code splitting
+- Edge caching by default
+- Sub-100ms response targets
+```
+
+### Image-Only Lightbox Slide (`0.3.3-card-three.md`)
+```markdown
+---
+image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80"
+---
+```
+When clicked, image-only cards open immediately in an edge-to-edge lightbox.
+
+---
+
+## Writing Standards (`/humanizer`)
+
+All prose should read naturally and plainly:
+1. Avoid staged run-ups like "Let's dive in" or "Here is what you need to know".
+2. Avoid artificial contrasts ("not X, but Y").
+3. Avoid overused marketing jargon (tapestry, delve, vibrant, pivotal).
+4. Keep punctuation clean: avoid excessive em dashes (—).
+5. State facts and instructions directly.
+
+---
 
 ## Using Templates
 
-### Method 1: Copy Template Manually
+### Copying a Template
 
 ```bash
-# Copy template to new article
-cp content/_templates/article-template.md content/tutorials/03-my-article.md
+# Standard article
+cp content/_templates/00-article-template.md content/04-guides/03-caching-strategy.md
 
-# Edit the new file
-code content/tutorials/03-my-article.md
+# Category index
+cp content/_templates/category-index-template.md content/05-tutorials/index.md
 ```
 
-### Method 2: Use with AI Tools
-
-See [AI_CONTENT_CREATION.md](../../AI_CONTENT_CREATION.md) for detailed guides on using:
-
-- GitHub Copilot
-- ChatGPT
-- Claude
-- Other AI assistants
-
-Example AI prompt:
-
+### Prompting AI Agents
+```text
+Use content/_templates/00-article-template.md and /humanizer to create a new guide in content/04-guides/.
 ```
-Use the template at content/_templates/article-template.md to create
-a new article about [TOPIC]. Make it [WORD_COUNT] words and include
-code examples.
-```
-
-## Template Structure
-
-```
-content/_templates/
-├── README.md                # This file
-└── article-template.md      # Main article template
-```
-
-## Creating Custom Templates
-
-You can create additional templates for specific content types:
-
-```bash
-# Tutorial template
-cp article-template.md tutorial-template.md
-
-# Guide template
-cp article-template.md guide-template.md
-
-# Blog post template
-cp article-template.md blog-template.md
-```
-
-Customize each template for your specific use case.
-
-## Front Matter Reference
-
-Required fields:
-
-```yaml
-title: "Article Title"
-description: "SEO description"
-date: "DD-MM-YYYY"
-featured: true/false
-tags: ["tag1", "tag2"]
-image: "https://example.com/image.jpg"
-```
-
-Optional fields:
-
-```yaml
-author: "Author Name"
-category: "Override default category"
-updated: "DD-MM-YYYY"
-readTime: 5
-```
-
-## Best Practices
-
-1. **Always start with the template** - Ensures consistency
-2. **Fill in ALL front matter fields** - Required for site functionality
-3. **Use descriptive filenames** - Format: `[number]-[slug].md`
-4. **Test locally** - Run `npm run dev` before committing
-5. **Optimize images** - Use WebP, compress, host on CDN
-
-## Need Help?
-
-- **Writing content:** [HOW_TO_WRITE.md](../../HOW_TO_WRITE.md)
-- **AI assistance:** [AI_CONTENT_CREATION.md](../../AI_CONTENT_CREATION.md)
-- **Content organization:** [CONTENT_GUIDE.md](../../CONTENT_GUIDE.md)
