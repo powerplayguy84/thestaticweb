@@ -3,15 +3,15 @@
 # This file contains global configuration for your static website
 
 # Your production site URL (used for sitemap and SEO metadata)
-siteUrl: "https://inventpeace.com"
+siteUrl: "https://thestaticweb.org"
 
 # Site title and description (used in metadata)
-siteTitle: "Invent Peace | Purpose-Built Web Applications"
-siteDescription: "Invent Peace engineers accessible, high-performance web applications across diverse industries. Solutions that help, mobile-first by default, crafted with peace of mind."
+siteTitle: "The Static Web | The AI-First Content & Knowledge Platform"
+siteDescription: "The Static Web is a modern, markdown-native knowledge platform engineered for humans and AI agents to collaborate seamlessly with zero database overhead."
 
 # Author information (used in structured data)
-author: "Invent Peace"
-organizationName: "Invent Peace"
+author: "The Static Web"
+organizationName: "The Static Web"
 # Logo URL (optional - used in structured data)
 logoUrl: "/logo.png"
 
@@ -28,4 +28,4 @@ adminPassword: "admin123"
 
 # Settings
 
-Global configuration for Invent Peace.
+Global configuration for The Static Web.
