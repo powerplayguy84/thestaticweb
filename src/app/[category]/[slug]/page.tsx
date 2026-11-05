@@ -23,6 +23,7 @@ import { MermaidInitializer } from "@/components/MermaidInitializer";
 import CodeCopyInitializer from "@/components/CodeCopyInitializer";
 import SearchNavigationFab from "@/components/SearchNavigationFab";
 import SearchHighlighter from "@/components/SearchHighlighter";
+import FloatingBackButton from "@/components/FloatingBackButton";
 import { ArticleSwiperSection } from "@/components/ArticleSwiperSection";
 import {
   generateArticleSchema,
@@ -185,7 +186,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main id="main-content" className="min-h-screen bg-background ambient-mesh lg:pl-56">
-        <article className="px-5 sm:px-6 pt-6 pb-12 sm:pt-10 sm:pb-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
+        <article className="relative px-5 sm:px-6 pt-6 pb-12 sm:pt-10 sm:pb-16 max-w-3xl mx-auto print:px-0 print:py-0 mb-12">
+          <FloatingBackButton fallbackHref={`/${encodeURIComponent(category)}`} />
           <div className="print:hidden">
             <Breadcrumbs
               items={[

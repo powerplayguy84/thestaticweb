@@ -6,6 +6,7 @@ import {
 } from "@/lib/markdown";
 import { formatCategoryName } from "@/lib/utils";
 import ArticleCard from "@/components/ArticleCard";
+import FloatingBackButton from "@/components/FloatingBackButton";
 import { Motion } from "@/components/ui/motion";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -64,7 +65,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <main id="main-content" className="min-h-screen bg-background ambient-mesh">
-      <div className="flex flex-col gap-6 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
+      <div className="relative flex flex-col gap-6 max-w-3xl lg:max-w-4xl mx-auto pb-16 px-4 sm:px-6 pt-6 sm:pt-10">
+        <FloatingBackButton fallbackHref="/" />
         <Motion animation="fade-in-up" delay={0} duration="long">
           <div className="space-y-2">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground">
