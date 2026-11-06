@@ -359,12 +359,13 @@ export function ArticleSwiperSection({
       >
         <DialogContent className="max-w-xl max-h-[85vh] flex flex-col p-0 overflow-hidden rounded-2xl border border-border/80 shadow-2xl">
           {activeDialogItem?.image && (
-            <div className="relative w-full h-48 sm:h-56 bg-muted/40 shrink-0 border-b border-border/50">
+            <div className="relative w-full aspect-16/10 sm:aspect-16/9 bg-muted/40 shrink-0 border-b border-border/50 overflow-hidden">
               <Image
                 src={activeDialogItem.image}
                 alt={activeDialogItem.title || "Detail view"}
                 fill
-                className="object-cover"
+                className="object-contain"
+                sizes="(max-width: 640px) 100vw, 576px"
               />
             </div>
           )}
