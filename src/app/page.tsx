@@ -12,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
+import { HeroAnimation } from "@/components/HeroAnimation";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 
@@ -19,10 +20,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const hero = await getHomepageHero();
 
   return {
-    title: hero.title,
+    title: hero.title || "Invent Peace",
     description: hero.description,
     openGraph: {
-      title: hero.title,
+      title: hero.title || "Invent Peace",
       description: hero.description,
       images: hero.image ? [{ url: hero.image }] : [],
     },
@@ -46,87 +47,95 @@ export default async function Home() {
         category,
         articles,
       };
-    })
+    }),
   );
 
   return (
     <main id="main-content" className="min-h-screen bg-background ambient-mesh">
       <div className="flex flex-col gap-10 sm:gap-14 max-w-3xl lg:max-w-4xl mx-auto pb-20 px-4 sm:px-6">
         {/* Hero Section */}
-        <section className="pt-6 sm:pt-12">
+        <section className="pt-6 sm:pt-10 md:pt-14 pb-4">
           <Motion animation="fade-in-up" delay={0} duration="long">
-            <div
-              className={cn(
-                "w-full",
-                hero.image
-                  ? "grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 md:items-stretch"
-                  : "max-w-3xl"
-              )}
-            >
-              {/* Left Column: Hero Text & Actions */}
-              <div
-                className={cn(
-                  "flex flex-col justify-center space-y-5",
-                  hero.image ? "md:col-span-7" : "w-full"
+            <div className="w-full text-center flex flex-col items-center">
+              {/* Centered Hero Header & Content */}
+              <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
+                {hero.title && (
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal tracking-tight leading-[1.08] text-foreground">
+                    {hero.title}
+                  </h1>
                 )}
-              >
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-bold tracking-tight leading-[1.1] text-foreground">
-                  {hero.title}
-                </h1>
 
                 {hero.subtitle && (
-                  <p className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-foreground/85">
+                  <p className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-foreground/90">
                     {hero.subtitle}
                   </p>
                 )}
 
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground">
-                  {hero.description}
-                </p>
-
-                {/* Primary CTA */}
-                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  {hero.cta ? (
-                    <Button
-                      asChild
-                      variant="secondary"
-                      className="w-full sm:w-auto rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-xs transition-all active:scale-[0.98] cursor-pointer"
-                    >
-                      <Link href={hero.cta.link}>
-                        {hero.cta.text}
-                        <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button
-                      asChild
-                      variant="secondary"
-                      className="w-full sm:w-auto rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-xs transition-all active:scale-[0.98] cursor-pointer"
-                    >
-                      <a href="#categories-section">
-                        Explore Work
-                        <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-                </div>
+                {hero.description && (
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground max-w-xl">
+                    {hero.description}
+                  </p>
+                )}
               </div>
 
-              {/* Right Column: Hero Image (matches height of text column on desktop) */}
-              {hero.image && (
-                <div className="md:col-span-5 w-full flex">
-                  <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-auto md:h-full min-h-[260px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border/70 shadow-md">
-                    <Image
-                      src={hero.image}
-                      alt={`${hero.title} hero banner`}
-                      fill
-                      priority
-                      className="object-cover transition-transform duration-700 hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 550px"
-                    />
-                  </div>
+              {/* Centered Hero Media (Animation or Image) */}
+              {(hero.animation || hero.image) && (
+                <div className="w-full max-w-xl my-6 sm:my-8 flex items-center justify-center">
+                  {hero.animation ? (
+                    <div className="relative w-full flex items-center justify-center">
+                      <HeroAnimation
+                        src={hero.animation}
+                        darkSrc={hero.animationDark}
+                        className="w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px] aspect-[6/5] flex items-center justify-center"
+                      />
+                    </div>
+                  ) : hero.image ? (
+                    <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border/70 shadow-xs">
+                      <Image
+                        src={hero.image}
+                        alt={`${hero.title || "Invent Peace"} hero banner`}
+                        fill
+                        priority
+                        className="object-cover transition-transform duration-700 hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 640px"
+                      />
+                    </div>
+                  ) : null}
                 </div>
               )}
+
+              {/* Primary CTA (under media) */}
+              <div className="flex flex-row items-center justify-center gap-3 pt-1">
+                {hero.cta ? (
+                  <Button
+                    asChild
+                    variant="default"
+                    className="rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-sm shadow-primary/20 transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    <Link href={hero.cta.link}>
+                      {hero.cta.text}
+                      <HugeiconsIcon
+                        icon={ArrowRight01Icon}
+                        className="w-4 h-4"
+                      />
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    variant="default"
+                    className="rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-sm shadow-primary/20 transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    <a href="#categories-section">
+                      Explore Work
+                      <HugeiconsIcon
+                        icon={ArrowRight01Icon}
+                        className="w-4 h-4"
+                      />
+                    </a>
+                  </Button>
+                )}
+              </div>
             </div>
           </Motion>
         </section>

@@ -69,7 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <FloatingBackButton fallbackHref="/" />
         <Motion animation="fade-in-up" delay={0} duration="long">
           <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-foreground">
               {displayCategory}
             </h1>
             {description && (

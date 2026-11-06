@@ -48,10 +48,14 @@ export function ArticleListFeed({ articles }: ArticleListFeedProps) {
                       <span className="px-2.5 py-0.5 rounded-full bg-muted/90 text-foreground font-medium uppercase text-[10px] tracking-wider border border-border/60">
                         {article.category}
                       </span>
-                      <span>•</span>
-                      <time dateTime={article.date}>
-                        {article.date ? formatDate(article.date) : "Recent"}
-                      </time>
+                      {article.date && (
+                        <>
+                          <span>•</span>
+                          <time dateTime={article.date}>
+                            {formatDate(article.date)}
+                          </time>
+                        </>
+                      )}
                     </div>
 
                     {/* Title */}

@@ -6,7 +6,7 @@ interface ArticleSchemaProps {
   title: string;
   description: string;
   content: string;
-  date: string;
+  date?: string;
   image?: string;
   category: string;
   slug: string;
@@ -50,8 +50,7 @@ export function generateArticleSchema({
     headline: title,
     description,
     articleBody: content,
-    datePublished: date,
-    dateModified: date,
+    ...(date ? { datePublished: date, dateModified: date } : {}),
     inLanguage: "en-US",
     wordCount,
   };

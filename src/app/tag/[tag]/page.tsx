@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: TagPageProps): Promise<Metadata> {
   const { tag } = await params;
   return {
-    title: `#${tag} - The Static Web`,
+    title: `#${tag} - Invent Peace`,
     description: `Articles tagged with ${tag}`,
   };
 }

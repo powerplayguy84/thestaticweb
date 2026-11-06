@@ -208,7 +208,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Header */}
           <div className="mb-8 print:mb-4">
             <div className="space-y-4 mb-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-foreground print:text-3xl leading-[1.12]">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-foreground print:text-3xl leading-[1.12]">
                 {article.title}
               </h1>
               {article.description && (
@@ -216,11 +216,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   {article.description}
                 </p>
               )}
-              <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2 pt-1">
-                <span>
-                  {article.date ? formatDate(article.date) : "Recent"}
-                </span>
-              </p>
+              {article.date && (
+                <p className="text-xs text-muted-foreground font-mono flex flex-wrap items-center gap-2 pt-1">
+                  <span>{formatDate(article.date)}</span>
+                </p>
+              )}
               {article.tags && article.tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5 pt-0.5 print:hidden">
                   {article.tags.map((tag) => (

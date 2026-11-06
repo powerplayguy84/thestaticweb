@@ -66,9 +66,11 @@ export default function ArticleCard({ article }: ArticleCardProps) {
           <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors leading-snug">
             {article.title}
           </h3>
-          <p className="text-xs font-mono text-muted-foreground">
-            {article.date ? formatDate(article.date) : "Recent"}
-          </p>
+          {article.date && (
+            <p className="text-xs font-mono text-muted-foreground">
+              {formatDate(article.date)}
+            </p>
+          )}
         </div>
       </div>
 

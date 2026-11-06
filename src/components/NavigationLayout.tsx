@@ -17,7 +17,7 @@ export function NavigationLayout({ children }: { children: ReactNode }) {
 
   return (
     <nav
-      className={`py-3 sm:py-3.5 bg-transparent print:hidden transition-colors w-full border-none shadow-none ${
+      className={`pt-6 pb-3 sm:pt-8 sm:pb-3.5 bg-transparent print:hidden transition-colors w-full border-none shadow-none ${
         isArticlePage ? "lg:pl-56" : ""
       }`}
     >

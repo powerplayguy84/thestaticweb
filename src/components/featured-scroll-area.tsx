@@ -95,9 +95,11 @@ export function FeaturedScrollArea({ articles }: FeaturedScrollAreaProps) {
                       </CardHeader>
 
                       <CardFooter className="p-0 pt-3 text-[11px] text-muted-foreground font-mono flex items-center justify-between mt-auto border-t border-border/40">
-                        <span>
-                          {article.date ? formatDate(article.date) : "Recent"}
-                        </span>
+                        {article.date ? (
+                          <span>{formatDate(article.date)}</span>
+                        ) : (
+                          <span />
+                        )}
                         <span className="text-foreground/70 group-hover:text-primary transition-colors font-sans text-xs font-medium flex items-center gap-1">
                           View &rarr;
                         </span>

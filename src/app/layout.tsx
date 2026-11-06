@@ -25,9 +25,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Static Web",
+  title: "Invent Peace | Cause-Led × Purposeful Technology",
   description:
-    "A collection of articles, tutorials, and guides for modern web development.",
+    "Purposeful web applications and digital engineering guided by human-first design, accessibility, and resilient architecture.",
 };
 
 export default function RootLayout({
@@ -43,7 +43,7 @@ export default function RootLayout({
   );
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background ambient-mesh`}
       >

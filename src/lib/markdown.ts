@@ -68,7 +68,7 @@ export interface Article {
   index: number;
   title: string;
   description: string;
-  date: string;
+  date?: string;
   featured: boolean;
   tags?: string[];
   image?: string;
@@ -180,7 +180,7 @@ export async function parseMarkdownFile(filePath: string): Promise<{
   metadata: {
     title: string;
     description: string;
-    date: string;
+    date?: string;
     featured: boolean;
     tags?: string[];
     image?: string;
@@ -221,7 +221,7 @@ export async function parseMarkdownFile(filePath: string): Promise<{
     metadata: {
       title: data.title || "Untitled",
       description: data.description || "",
-      date: data.date || new Date().toISOString().split("T")[0],
+      date: data.date || undefined,
       featured: data.featured || false,
       tags: data.tags || [],
       image: data.image && data.image.trim() ? data.image : undefined,
@@ -398,7 +398,7 @@ async function parseArticleDirectory(
       primaryMetadata = {
         title: slug.replace(/-/g, " "),
         description: "",
-        date: new Date().toISOString().split("T")[0],
+        date: undefined,
         featured: false,
         tags: [],
       };
@@ -425,7 +425,7 @@ async function parseArticleDirectory(
     index,
     title: primaryMetadata.title || "Untitled",
     description: primaryMetadata.description || "",
-    date: primaryMetadata.date || new Date().toISOString().split("T")[0],
+    date: primaryMetadata.date || undefined,
     featured: primaryMetadata.featured || false,
     tags: primaryMetadata.tags || [],
     image: primaryMetadata.image,
@@ -586,7 +586,9 @@ export async function getAllArticles(): Promise<ArticleMetadata[]> {
   return allArticles
     .flat()
     .sort(
-      (a, b) => parseDateTimestamp(b.date) - parseDateTimestamp(a.date)
+      (a, b) =>
+        parseDateTimestamp(b.date || "") - parseDateTimestamp(a.date || "") ||
+        a.index - b.index
     );
 }
 
@@ -608,7 +610,9 @@ export async function getAllArticlesWithContent(): Promise<Article[]> {
   }
 
   return articles.sort(
-    (a, b) => parseDateTimestamp(b.date) - parseDateTimestamp(a.date)
+    (a, b) =>
+      parseDateTimestamp(b.date || "") - parseDateTimestamp(a.date || "") ||
+      a.index - b.index
   );
 }
 
@@ -711,10 +715,12 @@ export function getSiteSettings(): {
  * Get homepage hero configuration from homepage.md
  */
 export async function getHomepageHero(): Promise<{
-  title: string;
+  title?: string;
   subtitle?: string;
   description?: string;
   image?: string;
+  animation?: string;
+  animationDark?: string;
   cta?: {
     text: string;
     link: string;
@@ -755,11 +761,28 @@ export async function getHomepageHero(): Promise<{
     htmlContent = processedContent.toString();
   }
 
+  const animation =
+    data.animation ||
+    (typeof data.image === "string" &&
+    (data.image.endsWith(".lottie") || data.image.endsWith(".json"))
+      ? data.image
+      : undefined);
+
+  const animationDark =
+    data.animationDark ||
+    (animation && typeof animation === "string"
+      ? animation.includes(".lottie")
+        ? animation.replace(/\.lottie$/, "-dark.lottie")
+        : animation.replace(/\.json$/, "-dark.json")
+      : undefined);
+
   return {
-    title: data.title || "Invent Peace",
-    subtitle: data.subtitle || undefined,
-    description: data.description || undefined,
+    title: data.title ? String(data.title).trim() : undefined,
+    subtitle: data.subtitle ? String(data.subtitle).trim() : undefined,
+    description: data.description ? String(data.description).trim() : undefined,
     image: data.image || undefined,
+    animation,
+    animationDark,
     logo: data.logo || undefined,
     cta: data.cta || undefined,
     navbar: data.navbar

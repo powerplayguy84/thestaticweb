@@ -24,12 +24,12 @@ export function CategoryCarouselSection({
   return (
     <section className="space-y-4 w-full">
       {/* Category Header */}
-      <div className="space-y-1 pb-1">
+      <div className="space-y-1 pb-1 text-center flex flex-col items-center">
         <h2 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight text-foreground">
           {displayName}
         </h2>
         {category.description && (
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             {category.description}
           </p>
         )}

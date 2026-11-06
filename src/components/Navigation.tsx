@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getHomepageHero } from "@/lib/markdown";
-import ThemeToggle from "@/components/ThemeToggle";
 import Search from "@/components/Search";
 import { NavigationLayout } from "@/components/NavigationLayout";
 
@@ -11,6 +10,7 @@ export default async function Navigation() {
   // If navbar is explicitly configured, use navbar.title (allowing it to be omitted/undefined)
   const navbarTitle =
     hero.navbar !== undefined ? hero.navbar.title : hero.title;
+  const brandName = navbarTitle || hero.title || "Invent Peace";
   const navbarLogo =
     hero.navbar?.logo !== undefined ? hero.navbar.logo : hero.logo;
   const logoStyle = hero.navbar?.logoStyle ?? "square";
@@ -41,19 +41,35 @@ export default async function Navigation() {
             }`}
           >
             {logoStyle === "fullwidth" ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={navbarLogo}
-                alt={`${navbarTitle} logo`}
-                className="h-full w-auto max-w-[42vw] sm:max-w-none object-contain block"
-              />
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={navbarLogo}
+                  alt={`${brandName} logo`}
+                  className="h-full w-auto max-w-[42vw] sm:max-w-none object-contain block dark:hidden"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo_dark.png"
+                  alt={`${brandName} logo`}
+                  className="h-full w-auto max-w-[42vw] sm:max-w-none object-contain hidden dark:block"
+                />
+              </>
             ) : (
-              <Image
-                src={navbarLogo}
-                alt={`${navbarTitle} logo`}
-                fill
-                className="object-contain"
-              />
+              <>
+                <Image
+                  src={navbarLogo}
+                  alt={`${brandName} logo`}
+                  fill
+                  className="object-contain block dark:hidden"
+                />
+                <Image
+                  src="/logo_dark.png"
+                  alt={`${brandName} logo`}
+                  fill
+                  className="object-contain hidden dark:block"
+                />
+              </>
             )}
           </div>
         ) : (
@@ -75,7 +91,6 @@ export default async function Navigation() {
       </Link>
       <div className="flex items-center gap-2.5 sm:gap-3.5">
         <Search />
-        <ThemeToggle />
       </div>
     </NavigationLayout>
   );
