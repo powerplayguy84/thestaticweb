@@ -21,7 +21,7 @@ iconUrl: "./public/logo.png"
 # Light mode configuration: "light", "dark", or "both"
 # If "both", a theme toggle button will be displayed in the navigation.
 # If "light" or "dark", the site is locked to that theme.
-lightMode: "dark"
+lightMode: "both"
 
 # Hidden categories (won't appear in navigation)
 hiddenCategories:
