@@ -63,7 +63,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
 
         {/* Content Details */}
         <div className="p-5 sm:p-6 space-y-2">
-          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors leading-snug">
+          <h3 className="text-lg sm:text-xl font-sans font-bold tracking-tight text-foreground group-hover:text-primary transition-colors leading-snug">
             {article.title}
           </h3>
           {article.date && (

@@ -665,38 +665,32 @@ input, textarea {
     @apply text-left;
   }
 
-  /* Markdown content heading styles */
-  article h1,
+  /* Markdown content heading styles - scoped to markdown prose containers */
   .prose h1,
   .markdown h1 {
     @apply font-serif font-normal text-3xl sm:text-4xl mt-12 mb-5 text-foreground tracking-tight;
   }
 
-  article h2,
   .prose h2,
   .markdown h2 {
     @apply font-serif font-normal text-2xl sm:text-[1.65rem] mt-10 mb-4 text-foreground tracking-tight pb-2;
   }
 
-  article h3,
   .prose h3,
   .markdown h3 {
     @apply font-serif font-normal text-xl sm:text-2xl mt-8 mb-3 text-foreground tracking-tight;
   }
 
-  article h4,
   .prose h4,
   .markdown h4 {
     @apply font-sans font-semibold text-lg sm:text-xl mt-6 mb-2.5 text-foreground;
   }
 
-  article h5,
   .prose h5,
   .markdown h5 {
     @apply text-base font-semibold mt-5 mb-2 text-foreground;
   }
 
-  article h6,
   .prose h6,
   .markdown h6 {
     @apply text-xs uppercase tracking-wider font-semibold mt-4 mb-2 text-muted-foreground;

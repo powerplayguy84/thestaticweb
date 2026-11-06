@@ -30,7 +30,7 @@ export default function RelatedArticles({
       className="mt-12 pt-8 border-t border-border/40 w-full overflow-hidden"
       data-no-search-highlight
     >
-      <h3 className="text-base font-semibold tracking-tight text-foreground mb-4">
+      <h3 className="text-base font-sans font-semibold tracking-tight text-foreground mb-4">
         More in this category
       </h3>
 
