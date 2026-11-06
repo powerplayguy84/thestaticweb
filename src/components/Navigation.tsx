@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getHomepageHero } from "@/lib/markdown";
+import { getHomepageHero, getSiteSettings } from "@/lib/markdown";
 import Search from "@/components/Search";
+import ThemeToggle from "@/components/ThemeToggle";
 import { NavigationLayout } from "@/components/NavigationLayout";
 
 export default async function Navigation() {
   const hero = await getHomepageHero();
+  const settings = getSiteSettings();
 
   // If navbar is explicitly configured, use navbar.title (allowing it to be omitted/undefined)
   const navbarTitle =
@@ -91,6 +93,7 @@ export default async function Navigation() {
       </Link>
       <div className="flex items-center gap-2.5 sm:gap-3.5">
         <Search />
+        {settings.lightMode === "both" && <ThemeToggle />}
       </div>
     </NavigationLayout>
   );

@@ -683,6 +683,7 @@ export function getSiteSettings(): {
   logoUrl?: string;
   iconUrl?: string;
   theme?: string;
+  lightMode: "light" | "dark" | "both";
 } {
   const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
 
@@ -693,11 +694,18 @@ export function getSiteSettings(): {
       siteDescription: "Invent Peace Web Portal",
       author: "Invent Peace",
       organizationName: "Invent Peace",
+      lightMode: "dark",
     };
   }
 
   const fileContent = fs.readFileSync(settingsFilePath, "utf-8");
   const { data } = matter(fileContent);
+
+  const rawLightMode = (data.lightMode || "").toString().toLowerCase().trim();
+  const lightMode: "light" | "dark" | "both" =
+    rawLightMode === "light" || rawLightMode === "dark" || rawLightMode === "both"
+      ? rawLightMode
+      : "dark";
 
   return {
     siteUrl: data.siteUrl || "https://yourdomain.com",
@@ -708,6 +716,7 @@ export function getSiteSettings(): {
     logoUrl: data.logoUrl || undefined,
     iconUrl: data.iconUrl || undefined,
     theme: data.theme || undefined,
+    lightMode,
   };
 }
 

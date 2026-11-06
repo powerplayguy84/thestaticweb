@@ -35,15 +35,32 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { siteUrl, organizationName, logoUrl } = getSiteSettings();
+  const { siteUrl, organizationName, logoUrl, lightMode } = getSiteSettings();
 
   // Generate organization schema for global SEO
   const organizationSchema = cleanSchema(
     generateOrganizationSchema(organizationName, siteUrl, logoUrl)
   );
 
+  const initialClassName = lightMode === "light" ? "" : "dark";
+  const initialColorScheme = lightMode === "light" ? "light" : "dark";
+
   return (
-    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
+    <html
+      lang="en"
+      className={initialClassName}
+      style={{ colorScheme: initialColorScheme }}
+      suppressHydrationWarning
+    >
+      <head>
+        {lightMode === "both" && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="light"){document.documentElement.classList.remove("dark");document.documentElement.style.colorScheme="light";}else if(t==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}}catch(e){}})();`,
+            }}
+          />
+        )}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background ambient-mesh`}
       >
