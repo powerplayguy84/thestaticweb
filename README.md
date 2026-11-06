@@ -30,14 +30,18 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) to see your portal running.
 
 ### 2. Configure Your Brand
-Edit `content/homepage.md` and `content/settings.md`:
+Edit `content/homepage.md` and `config/settings.md`:
 * **Site title & tagline:** Set `title` and `subtitle` in `content/homepage.md`.
-* **Theme & colors:** Adjust palettes in `content/theme.md` or visit `/theme` in your browser.
-* **Navigation:** Organize visible and hidden categories in `content/settings.md`.
+* **Theme & colors:** Adjust palettes in `config/theme.md` or visit `/theme` in your browser.
+* **Navigation:** Organize visible and hidden categories in `config/settings.md`.
 
 ### 3. Add Content & Categories (Manually or with AI)
 Organize content using folders with numeric prefixes inside `content/`:
 ```bash
+config/
+├── settings.md
+└── theme.md
+
 content/
 ├── 01-getting-started/
 │   ├── overview.md
@@ -46,9 +50,7 @@ content/
 │   └── deployment.md
 ├── _templates/
 │   └── article-template.md
-├── homepage.md
-├── settings.md
-└── theme.md
+└── homepage.md
 ```
 Ask your AI assistant: *"Create a new article about Next.js in 02-guides based on `_templates/article-template.md`"*.
 

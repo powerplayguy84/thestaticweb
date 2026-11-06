@@ -12,6 +12,19 @@ import type { Element } from "hast";
 import { parseDateTimestamp } from "@/lib/date";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+const CONFIG_DIR = path.join(process.cwd(), "config");
+
+function getSettingsFilePath(): string {
+  const configPath = path.join(CONFIG_DIR, "settings.md");
+  if (fs.existsSync(configPath)) return configPath;
+  return path.join(CONTENT_DIR, "settings.md");
+}
+
+function getThemeFilePath(): string {
+  const configPath = path.join(CONFIG_DIR, "theme.md");
+  if (fs.existsSync(configPath)) return configPath;
+  return path.join(CONTENT_DIR, "theme.md");
+}
 
 // Custom rehype plugin to convert mermaid code blocks to divs before syntax highlighting
 function rehypeMermaidToDiv() {
@@ -118,7 +131,7 @@ export async function getCategoriesWithInfo(): Promise<CategoryInfo[]> {
   const items = fs.readdirSync(CONTENT_DIR, { withFileTypes: true });
 
   // Read hidden categories from settings
-  const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
+  const settingsFilePath = getSettingsFilePath();
   let hiddenCategories: string[] = [];
 
   if (fs.existsSync(settingsFilePath)) {
@@ -685,7 +698,7 @@ export function getSiteSettings(): {
   theme?: string;
   lightMode: "light" | "dark" | "both";
 } {
-  const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
+  const settingsFilePath = getSettingsFilePath();
 
   if (!fs.existsSync(settingsFilePath)) {
     return {
@@ -814,4 +827,145 @@ export async function getHomepageHero(): Promise<{
       : undefined,
     content: htmlContent || undefined,
   };
+}
+
+/**
+ * Color and theme definitions from theme.md
+ */
+export interface ThemeData {
+  colors?: {
+    light?: Record<string, string>;
+    dark?: Record<string, string>;
+  };
+  radius?: string;
+}
+
+/**
+ * Convert Hex color to CSS OKLCH format for consistent Tailwind color tokens
+ */
+export function hexToOklch(hex: string): string {
+  if (!hex || typeof hex !== "string") return hex;
+  hex = hex.trim();
+
+  // If already a valid CSS function or variable, return untouched
+  if (
+    hex.startsWith("oklch") ||
+    hex.startsWith("rgb") ||
+    hex.startsWith("hsl") ||
+    hex.startsWith("var")
+  ) {
+    return hex;
+  }
+
+  if (!hex.startsWith("#")) return hex;
+
+  let alpha = 1;
+  let cleanHex = hex.slice(1);
+  if (cleanHex.length === 8) {
+    alpha = parseInt(cleanHex.slice(6, 8), 16) / 255;
+    cleanHex = cleanHex.slice(0, 6);
+  } else if (cleanHex.length === 4) {
+    alpha = parseInt(cleanHex[3] + cleanHex[3], 16) / 255;
+    cleanHex = cleanHex.slice(0, 3);
+  }
+  if (cleanHex.length === 3) {
+    cleanHex = cleanHex
+      .split("")
+      .map((c) => c + c)
+      .join("");
+  }
+  if (cleanHex.length !== 6) return hex;
+
+  const r8 = parseInt(cleanHex.slice(0, 2), 16);
+  const g8 = parseInt(cleanHex.slice(2, 4), 16);
+  const b8 = parseInt(cleanHex.slice(4, 6), 16);
+
+  const toLinear = (c: number) => {
+    const v = c / 255;
+    return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  };
+  const r = toLinear(r8);
+  const g = toLinear(g8);
+  const b = toLinear(b8);
+
+  const l_ = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m_ = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s_ = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+
+  const L = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
+  const a = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
+  const bOklab = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_;
+
+  const C = Math.sqrt(a * a + bOklab * bOklab);
+  let h = (Math.atan2(bOklab, a) * 180) / Math.PI;
+  if (h < 0) h += 360;
+
+  const L_round = Math.round(L * 1000) / 1000;
+  const C_round = Math.round(C * 1000) / 1000;
+  const h_round = Math.round(h * 10) / 10;
+
+  const cFormatted = C_round < 0.001 ? 0 : C_round;
+  const hFormatted = C_round < 0.001 ? 0 : h_round;
+
+  if (alpha < 1) {
+    return `oklch(${L_round} ${cFormatted} ${hFormatted} / ${Math.round(alpha * 100)}%)`;
+  }
+  return `oklch(${L_round} ${cFormatted} ${hFormatted})`;
+}
+
+/**
+ * Read theme.md configuration and generate CSS custom properties
+ */
+export function getThemeConfig(): {
+  cssVariables: string;
+} {
+  const themeFilePath = getThemeFilePath();
+  if (!fs.existsSync(themeFilePath)) {
+    return { cssVariables: "" };
+  }
+
+  try {
+    const fileContent = fs.readFileSync(themeFilePath, "utf-8");
+    const { data } = matter(fileContent);
+    const theme = data as ThemeData;
+
+    const camelToKebab = (str: string) =>
+      str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+
+    const generateRules = (colorMap?: Record<string, string>) => {
+      if (!colorMap) return "";
+      const declarations: string[] = [];
+      for (const [key, rawVal] of Object.entries(colorMap)) {
+        if (!rawVal) continue;
+        const cssVarName = `--${camelToKebab(key)}`;
+        const oklchVal = hexToOklch(rawVal);
+        declarations.push(`${cssVarName}: ${oklchVal};`);
+      }
+      return declarations.join("\n    ");
+    };
+
+    const lightDeclarations = generateRules(theme.colors?.light);
+    const darkDeclarations = generateRules(theme.colors?.dark);
+    const radiusDecl = theme.radius ? `\n    --radius: ${theme.radius};` : "";
+
+    const cssParts: string[] = [];
+
+    if (lightDeclarations || radiusDecl) {
+      cssParts.push(`:root {\n    ${lightDeclarations}${radiusDecl}\n  }`);
+    }
+
+    if (darkDeclarations) {
+      cssParts.push(`.dark {\n    ${darkDeclarations}\n  }`);
+      cssParts.push(
+        `@media (prefers-color-scheme: dark) {\n    :root:not(.light) {\n      ${darkDeclarations}\n    }\n  }`
+      );
+    }
+
+    return {
+      cssVariables: cssParts.join("\n  "),
+    };
+  } catch (error) {
+    console.error("Error reading theme.md:", error);
+    return { cssVariables: "" };
+  }
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SearchIndexInitializer } from "@/components/SearchIndexInitializer";
 import { NavbarWrapper } from "@/components/NavbarWrapper";
-import { getSiteSettings } from "@/lib/markdown";
+import { getSiteSettings, getThemeConfig } from "@/lib/markdown";
 import { generateOrganizationSchema, cleanSchema } from "@/lib/schema";
 
 const dmSerif = DM_Serif_Display({
@@ -36,6 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { siteUrl, organizationName, logoUrl, lightMode } = getSiteSettings();
+  const { cssVariables } = getThemeConfig();
 
   // Generate organization schema for global SEO
   const organizationSchema = cleanSchema(
@@ -53,6 +54,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {cssVariables && (
+          <style
+            id="theme-md-variables"
+            dangerouslySetInnerHTML={{ __html: cssVariables }}
+          />
+        )}
         {lightMode === "both" && (
           <script
             dangerouslySetInnerHTML={{

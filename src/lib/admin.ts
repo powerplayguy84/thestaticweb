@@ -3,6 +3,13 @@ import path from "path";
 import matter from "gray-matter";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+const CONFIG_DIR = path.join(process.cwd(), "config");
+
+function getSettingsFilePath(): string {
+  const configPath = path.join(CONFIG_DIR, "settings.md");
+  if (fs.existsSync(configPath)) return configPath;
+  return path.join(CONTENT_DIR, "settings.md");
+}
 
 export interface AdminSettings {
   adminPassword: string;
@@ -12,7 +19,7 @@ export interface AdminSettings {
  * Get admin password from settings.md
  */
 export function getAdminSettings(): AdminSettings {
-  const settingsFilePath = path.join(CONTENT_DIR, "settings.md");
+  const settingsFilePath = getSettingsFilePath();
 
   if (!fs.existsSync(settingsFilePath)) {
     return { adminPassword: "admin123" }; // Default password

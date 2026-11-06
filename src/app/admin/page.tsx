@@ -500,7 +500,7 @@ export default function AdminPage() {
             </form>
 
             <div className="mt-4 text-sm text-muted-foreground text-center">
-              Password is set in <code>content/settings.md</code>
+              Password is set in <code>config/settings.md</code>
             </div>
           </CardContent>
         </Card>

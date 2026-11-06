@@ -46,7 +46,9 @@ async function fetchImageFromUrl(url, outputPath) {
 }
 
 function getIconUrlFromSettings() {
-  const settingsPath = path.join(__dirname, "..", "content", "settings.md");
+  const configPath = path.join(__dirname, "..", "config", "settings.md");
+  const fallbackPath = path.join(__dirname, "..", "content", "settings.md");
+  const settingsPath = fs.existsSync(configPath) ? configPath : fallbackPath;
 
   if (!fs.existsSync(settingsPath)) {
     console.log("⚠️  settings.md not found, skipping icon generation");

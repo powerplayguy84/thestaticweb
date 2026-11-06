@@ -25,7 +25,14 @@ async function checkForConflict(): Promise<boolean> {
 }
 
 async function getThemeData(): Promise<ThemeData> {
-  const filePath = path.join(process.cwd(), "content", "theme.md");
+  const configPath = path.join(process.cwd(), "config", "theme.md");
+  const fallbackPath = path.join(process.cwd(), "content", "theme.md");
+  let filePath = configPath;
+  try {
+    await fs.access(configPath);
+  } catch {
+    filePath = fallbackPath;
+  }
   const fileContents = await fs.readFile(filePath, "utf8");
   const { data } = matter(fileContents);
   return data as ThemeData;
@@ -497,15 +504,11 @@ export default async function ThemePage() {
             </h3>
             <ol className="space-y-2 text-sm text-muted-foreground">
               <li>
-                1. Edit the <code>content/theme.md</code> file with your desired
+                1. Edit the <code>config/theme.md</code> file with your desired
                 hex color values
               </li>
               <li>
-                2. Save the file and refresh this page to see the updated colors
-              </li>
-              <li>
-                3. To apply these colors to your app, update{" "}
-                <code>src/app/globals.css</code> with the converted OKLCH values
+                2. Save the file and refresh to see the updated colors applied automatically
               </li>
               <li>
                 4. Use tools like{" "}
