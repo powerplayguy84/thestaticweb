@@ -83,10 +83,15 @@ export default async function Home() {
                 <div className="w-full max-w-xl my-6 sm:my-8 flex items-center justify-center">
                   {hero.animation ? (
                     <div className="relative w-full flex items-center justify-center">
+                      {/* Soft Radial Mint/Emerald Glow Halo */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute w-[280px] sm:w-[360px] md:w-[440px] aspect-square rounded-full bg-[radial-gradient(circle,_rgba(0,191,99,0.26)_0%,_rgba(52,211,153,0.14)_42%,_transparent_72%)] dark:bg-[radial-gradient(circle,_rgba(0,191,99,0.38)_0%,_rgba(16,185,129,0.22)_45%,_transparent_72%)] blur-2xl pointer-events-none"
+                      />
                       <HeroAnimation
                         src={hero.animation}
                         darkSrc={hero.animationDark}
-                        className="w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px] aspect-[6/5] flex items-center justify-center"
+                        className="relative z-10 w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px] aspect-[6/5] flex items-center justify-center"
                       />
                     </div>
                   ) : hero.image ? (
