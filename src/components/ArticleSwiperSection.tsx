@@ -7,8 +7,7 @@ import { A11y, Keyboard } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { CarouselNavButtons, useSwiperNav } from "@/components/CarouselNavButtons";
 import {
   Dialog,
   DialogContent,
@@ -42,6 +41,7 @@ export function ArticleSwiperSection({
 }: ArticleSwiperSectionProps) {
   const [activeDialogItem, setActiveDialogItem] = useState<SwiperCardItem | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const { swiper, canPrev, canNext, onSwiper, syncNavState } = useSwiperNav();
 
   // Close lightbox on Escape key
   useEffect(() => {
@@ -159,26 +159,31 @@ export function ArticleSwiperSection({
                   <Button
                     type="button"
                     variant="secondary"
-                    size="icon"
-                    aria-label="Read more"
-                    className="rounded-full shadow-xs transition-all pointer-events-none group-hover:scale-105"
+                    size="sm"
+                    className="rounded-full px-4 text-xs font-semibold shadow-xs transition-all pointer-events-none group-hover:scale-105"
                   >
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
-                    />
+                    More
                   </Button>
                 </div>
               </div>
             )}
           </div>
         ) : (
-          <Swiper
-            modules={[A11y, Keyboard]}
-            spaceBetween={16}
-            slidesPerView={1.15}
-            keyboard={{ enabled: true }}
-            breakpoints={{
+          <div className="relative">
+            <Swiper
+              modules={[A11y, Keyboard]}
+              spaceBetween={16}
+              slidesPerView={1.15}
+              keyboard={{ enabled: true }}
+              onSwiper={onSwiper}
+              onSlideChange={syncNavState}
+              onResize={syncNavState}
+              onReachBeginning={syncNavState}
+              onReachEnd={syncNavState}
+              onFromEdge={syncNavState}
+              onLock={syncNavState}
+              onUnlock={syncNavState}
+              breakpoints={{
               480: {
                 slidesPerView: 1.3,
                 spaceBetween: 16,
@@ -293,21 +298,19 @@ export function ArticleSwiperSection({
                       <Button
                         type="button"
                         variant="secondary"
-                        size="icon"
-                        aria-label="Read more"
-                        className="rounded-full shadow-xs transition-all pointer-events-none group-hover:scale-105"
+                        size="sm"
+                        className="rounded-full px-4 text-xs font-semibold shadow-xs transition-all pointer-events-none group-hover:scale-105"
                       >
-                        <HugeiconsIcon
-                          icon={ArrowRight01Icon}
-                          className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
-                        />
+                        More
                       </Button>
                     </div>
                   </div>
                 </SwiperSlide>
               );
             })}
-          </Swiper>
+            </Swiper>
+            <CarouselNavButtons swiper={swiper} canPrev={canPrev} canNext={canNext} />
+          </div>
         )}
       </div>
 

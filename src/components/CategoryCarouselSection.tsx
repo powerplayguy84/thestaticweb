@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Keyboard } from "swiper/modules";
 import { ArticleMetadata, CategoryInfo } from "@/lib/markdown";
 import ArticleCard from "@/components/ArticleCard";
+import { CarouselNavButtons, useSwiperNav } from "@/components/CarouselNavButtons";
 import { formatCategoryName } from "@/lib/utils";
 
 import "swiper/css";
@@ -17,6 +18,8 @@ export function CategoryCarouselSection({
   category,
   articles,
 }: CategoryCarouselSectionProps) {
+  const { swiper, canPrev, canNext, onSwiper, syncNavState } = useSwiperNav();
+
   if (!articles || articles.length === 0) return null;
 
   const displayName = category.title || formatCategoryName(category.slug);
@@ -42,39 +45,50 @@ export function CategoryCarouselSection({
             <ArticleCard article={articles[0]} />
           </div>
         ) : (
-          <Swiper
-            modules={[A11y, Keyboard]}
-            spaceBetween={16}
-            slidesPerView={1.15}
-            keyboard={{ enabled: true }}
-            breakpoints={{
-              480: {
-                slidesPerView: 1.3,
-                spaceBetween: 16,
-              },
-              640: {
-                slidesPerView: 1.6,
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: articles.length > 2 ? 2.2 : articles.length,
-                spaceBetween: 24,
-              },
-              1024: {
-                slidesPerView: articles.length > 2 ? 2.6 : articles.length,
-                spaceBetween: 24,
-              },
-            }}
-            className="pb-2 cursor-grab active:cursor-grabbing w-full"
-          >
-            {articles.map((article) => (
-              <SwiperSlide key={`${article.category}-${article.slug}`} className="h-auto">
-                <div className="h-full">
-                  <ArticleCard article={article} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <>
+            <Swiper
+              modules={[A11y, Keyboard]}
+              spaceBetween={16}
+              slidesPerView={1.15}
+              keyboard={{ enabled: true }}
+              onSwiper={onSwiper}
+              onSlideChange={syncNavState}
+              onResize={syncNavState}
+              onReachBeginning={syncNavState}
+              onReachEnd={syncNavState}
+              onFromEdge={syncNavState}
+              onLock={syncNavState}
+              onUnlock={syncNavState}
+              breakpoints={{
+                480: {
+                  slidesPerView: 1.3,
+                  spaceBetween: 16,
+                },
+                640: {
+                  slidesPerView: 1.6,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: articles.length > 2 ? 2.2 : articles.length,
+                  spaceBetween: 24,
+                },
+                1024: {
+                  slidesPerView: articles.length > 2 ? 2.6 : articles.length,
+                  spaceBetween: 24,
+                },
+              }}
+              className="pb-2 cursor-grab active:cursor-grabbing w-full"
+            >
+              {articles.map((article) => (
+                <SwiperSlide key={`${article.category}-${article.slug}`} className="h-auto">
+                  <div className="h-full">
+                    <ArticleCard article={article} />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <CarouselNavButtons swiper={swiper} canPrev={canPrev} canNext={canNext} />
+          </>
         )}
       </div>
     </section>

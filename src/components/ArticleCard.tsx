@@ -5,8 +5,6 @@ import { ArticleMetadata } from "@/lib/markdown";
 import { formatDate } from "@/lib/date";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 
 interface ArticleCardProps {
@@ -79,14 +77,10 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         <Button
           type="button"
           variant="secondary"
-          size="icon"
-          aria-label="Read more"
-          className="rounded-full shadow-xs transition-all pointer-events-none group-hover:scale-105"
+          size="sm"
+          className="rounded-full px-4 text-xs font-semibold shadow-xs transition-all pointer-events-none group-hover:scale-105"
         >
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
-          />
+          More
         </Button>
       </div>
     </div>

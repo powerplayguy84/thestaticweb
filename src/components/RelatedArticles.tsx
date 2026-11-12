@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Keyboard } from "swiper/modules";
 import { ArticleMetadata } from "@/lib/markdown";
 import ArticleCard from "@/components/ArticleCard";
+import { CarouselNavButtons, useSwiperNav } from "@/components/CarouselNavButtons";
 
 import "swiper/css";
 
@@ -19,6 +20,7 @@ export default function RelatedArticles({
   category,
   currentSlug,
 }: RelatedArticlesProps) {
+  const { swiper, canPrev, canNext, onSwiper, syncNavState } = useSwiperNav();
   const related = articles.filter((article) => article.slug !== currentSlug);
 
   if (related.length === 0) {
@@ -40,6 +42,14 @@ export default function RelatedArticles({
           spaceBetween={16}
           slidesPerView={1.15}
           keyboard={{ enabled: true }}
+          onSwiper={onSwiper}
+          onSlideChange={syncNavState}
+          onResize={syncNavState}
+          onReachBeginning={syncNavState}
+          onReachEnd={syncNavState}
+          onFromEdge={syncNavState}
+          onLock={syncNavState}
+          onUnlock={syncNavState}
           breakpoints={{
             480: {
               slidesPerView: related.length > 1 ? 1.3 : 1,
@@ -68,6 +78,7 @@ export default function RelatedArticles({
             </SwiperSlide>
           ))}
         </Swiper>
+        <CarouselNavButtons swiper={swiper} canPrev={canPrev} canNext={canNext} />
       </div>
     </aside>
   );

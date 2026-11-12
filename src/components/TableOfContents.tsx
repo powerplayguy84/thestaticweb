@@ -206,7 +206,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           <SheetTrigger asChild>
             <Button
               variant="outline"
-              className="fixed bottom-6 right-6 z-40 gap-2 shadow-xl rounded-full bg-background/95 hover:bg-background text-foreground border border-border/80 backdrop-blur-md active:scale-95 transition-all px-4 py-2.5 h-11"
+              className="fixed bottom-6 right-6 z-40 gap-2 shadow-xl rounded-full bg-card hover:bg-card/95 text-card-foreground border border-border/80 backdrop-blur-md active:scale-95 transition-all px-4 py-2.5 h-11"
               aria-label="Open table of contents"
             >
               <HugeiconsIcon icon={Menu01Icon} className="w-4 h-4 text-primary" />

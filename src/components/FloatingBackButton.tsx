@@ -15,7 +15,7 @@ interface FloatingBackButtonProps {
 export default function FloatingBackButton({
   fallbackHref = "/",
   className = "",
-  variant = "default",
+  variant = "outline",
 }: FloatingBackButtonProps) {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
@@ -65,15 +65,18 @@ export default function FloatingBackButton({
         variant={variant}
         size="icon"
         onClick={handleBack}
-        className={`h-10 w-10 rounded-full shadow-md active:scale-95 transition-all focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`h-11 w-11 rounded-full shadow-xl active:scale-95 transition-all focus-visible:ring-2 focus-visible:ring-ring ${
           variant === "default"
             ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/20"
-            : "bg-background/90 hover:bg-background text-foreground border border-border/80 backdrop-blur-md"
+            : "bg-card hover:bg-card/95 text-card-foreground border border-border/80 backdrop-blur-md"
         }`}
         aria-label="Go back"
         title="Go back"
       >
-        <HugeiconsIcon icon={ArrowLeft01Icon} className="w-5 h-5" />
+        <HugeiconsIcon
+          icon={ArrowLeft01Icon}
+          className={`w-5 h-5 ${variant === "default" ? "" : "text-primary"}`}
+        />
       </Button>
     </div>
   );

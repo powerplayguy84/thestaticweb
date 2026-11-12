@@ -114,28 +114,28 @@ export default async function Home() {
                 {hero.cta ? (
                   <Button
                     asChild
-                    variant="default"
-                    className="rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-sm shadow-primary/20 transition-all active:scale-[0.98] cursor-pointer"
+                    variant="outline"
+                    className="rounded-full px-6 py-2.5 h-11 text-sm font-semibold justify-center gap-2 shadow-xl bg-card hover:bg-card/95 text-card-foreground border border-border/80 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
                   >
                     <Link href={hero.cta.link}>
                       {hero.cta.text}
                       <HugeiconsIcon
                         icon={ArrowRight01Icon}
-                        className="w-4 h-4"
+                        className="w-4 h-4 text-primary"
                       />
                     </Link>
                   </Button>
                 ) : (
                   <Button
                     asChild
-                    variant="default"
-                    className="rounded-full px-6 py-2.5 h-auto text-sm font-semibold justify-center gap-2 shadow-sm shadow-primary/20 transition-all active:scale-[0.98] cursor-pointer"
+                    variant="outline"
+                    className="rounded-full px-6 py-2.5 h-11 text-sm font-semibold justify-center gap-2 shadow-xl bg-card hover:bg-card/95 text-card-foreground border border-border/80 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
                   >
                     <a href="#categories-section">
                       Explore Work
                       <HugeiconsIcon
                         icon={ArrowRight01Icon}
-                        className="w-4 h-4"
+                        className="w-4 h-4 text-primary"
                       />
                     </a>
                   </Button>
