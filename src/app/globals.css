@@ -558,20 +558,44 @@ input, textarea {
   /* Markdown Tables - Wrapper approach for horizontal scrolling */
   article .table-wrapper,
   .prose .table-wrapper,
-  .markdown .table-wrapper {
+  .markdown .table-wrapper,
+  .table-wrapper {
     @apply overflow-x-auto my-7 border border-border/70 rounded-xl bg-card shadow-xs;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
 
   article .table-wrapper table,
   .prose .table-wrapper table,
-  .markdown .table-wrapper table {
+  .markdown .table-wrapper table,
+  .table-wrapper table {
     @apply w-full text-sm border-0 rounded-none my-0;
     display: table;
     table-layout: auto;
     border-collapse: collapse;
     min-width: max-content;
+  }
+
+  /* Utility to hide scrollbars */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Direct fallback for tables rendered without wrapper */
+  article table:not(.table-wrapper table),
+  .prose table:not(.table-wrapper table),
+  .markdown table:not(.table-wrapper table) {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   /* Scrollbar styles for table wrapper */

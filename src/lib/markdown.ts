@@ -230,6 +230,12 @@ export async function parseMarkdownFile(filePath: string): Promise<{
     }
   );
 
+  // Wrap tables with table-wrapper for horizontal scrolling
+  htmlContent = htmlContent.replace(
+    /<table(?:\s[^>]*)?>[\s\S]*?<\/table>/gi,
+    (match) => `<div class="table-wrapper">${match}</div>`
+  );
+
   return {
     metadata: {
       title: data.title || "Untitled",
@@ -781,6 +787,10 @@ export async function getHomepageHero(): Promise<{
       .process(content);
 
     htmlContent = processedContent.toString();
+    htmlContent = htmlContent.replace(
+      /<table(?:\s[^>]*)?>[\s\S]*?<\/table>/gi,
+      (match) => `<div class="table-wrapper">${match}</div>`
+    );
   }
 
   const animation =

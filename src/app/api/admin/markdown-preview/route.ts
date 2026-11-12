@@ -30,7 +30,11 @@ export async function POST(request: NextRequest) {
       .use(rehypeStringify) // Convert AST to string
       .process(markdown);
 
-    const html = String(file);
+    let html = String(file);
+    html = html.replace(
+      /<table(?:\s[^>]*)?>[\s\S]*?<\/table>/gi,
+      (match) => `<div class="table-wrapper">${match}</div>`
+    );
 
     return NextResponse.json({ html });
   } catch (err) {
